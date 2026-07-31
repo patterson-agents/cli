@@ -32,6 +32,8 @@
         "@patterson/emitter-opencode": "workspace:*",
         "@patterson/emitter-vscode": "workspace:*",
         "@patterson/emitter-zed": "workspace:*",
+        "@patterson/mcp": "workspace:*",
+        "@patterson/skills": "workspace:*",
         "citty": "0.2.2",
         "zod": "4.4.3",
       },
@@ -132,6 +134,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@modelcontextprotocol/sdk": "1.30.0",
+        "@patterson/cli": "workspace:*",
         "@patterson/core": "workspace:*",
         "zod": "4.4.3",
       },
@@ -141,6 +144,7 @@
       "version": "0.0.1",
       "dependencies": {
         "@patterson/core": "workspace:*",
+        "zod": "4.4.3",
       },
     },
   },

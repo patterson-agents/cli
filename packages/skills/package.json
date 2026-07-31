@@ -5,7 +5,8 @@
   "type": "module",
   "module": "src/index.ts",
   "dependencies": {
-    "@patterson/core": "workspace:*"
+    "@patterson/core": "workspace:*",
+    "zod": "4.4.3"
   },
   "author": "Daniel Bodnar",
   "license": "UNLICENSED",

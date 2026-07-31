@@ -123,5 +123,12 @@ export function renderDefaultSetupMd(name: string): string {
     "- `patterson doctor` — verify emitted files match their provenance records",
     "- edit `patterson.config.ts`, then `patterson sync` to re-emit",
     "",
+    "## Skills & MCP (optional, needs network)",
+    "",
+    "- `patterson skills add <owner>/<repo>` — install agent skills via the pinned",
+    "  skills CLI (canonical home `.agents/skills/`, linked into `.claude/skills/`)",
+    "- add MCP servers under `mcp:` in `patterson.config.ts`, then `patterson sync`",
+    "- `patterson plugins marketplace list` — known plugin marketplaces",
+    "",
   ].join("\n");
 }

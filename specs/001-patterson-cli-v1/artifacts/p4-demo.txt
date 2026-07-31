@@ -1,0 +1,38 @@
+P4 SKILLS + MARKETPLACES + MCP SERVE DEMO TRANSCRIPT
+generated: 2026-07-31T15:47:19Z
+==============================================================================
+
+### 1. patterson skills list (this repo: real skills-lock.json + .agents/skills + .claude/skills)
+16 skill(s) installed (13 managed).
+  - claude-command-converter (managed, dceoy/speckit-agent-skills)
+  - find-skills (managed, vercel-labs/skills)
+  - gh-skill-creator (hand-installed; not in skills-lock.json) — .claude/skills only: invisible to other agents (move to .agents/skills + symlink)
+  - opentui (managed, anomalyco/opentui)
+  - plugin-dev (hand-installed; not in skills-lock.json) — .claude/skills only: invisible to other agents (move to .agents/skills + symlink)
+  - readme-updater (hand-installed; not in skills-lock.json)
+  - speckit-analyze (managed, dceoy/speckit-agent-skills)
+  - speckit-baseline (managed, dceoy/speckit-agent-skills)
+  - speckit-checklist (managed, dceoy/speckit-agent-skills)
+  - speckit-clarify (managed, dceoy/speckit-agent-skills)
+  - speckit-constitution (managed, dceoy/speckit-agent-skills)
+  - speckit-implement (managed, dceoy/speckit-agent-skills)
+  - speckit-plan (managed, dceoy/speckit-agent-skills)
+  - speckit-specify (managed, dceoy/speckit-agent-skills)
+  - speckit-tasks (managed, dceoy/speckit-agent-skills)
+  - speckit-taskstoissues (managed, dceoy/speckit-agent-skills)
+  => exit code 0
+
+### 2. patterson plugins marketplace list (curated, pinned registry)
+4 known marketplace(s).
+  - claude-code-plugins [claude] — Anthropic's official Claude Code plugin marketplace
+  - claude-plugins-official [claude] — Anthropic's official Claude plugins marketplace
+  - claude-community [claude] — Community Claude plugin marketplace
+  - awesome-copilot [copilot] — GitHub's awesome-copilot collection (pin @SHA in patterson.config.ts — the 2026-02 restructure moved prompts/ into skills/ and removed collections/)
+  => exit code 0
+
+### 3. mcp serve handshake (scripted stdio client, packages/mcp/test/serve.e2e.test.ts)
+
+ 4 pass
+ 0 fail
+ 13 expect() calls
+Ran 4 tests across 1 file. [200.00ms]

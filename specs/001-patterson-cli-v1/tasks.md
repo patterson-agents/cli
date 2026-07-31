@@ -197,7 +197,7 @@ hand-edit then sync --yes preserves + exits 2.
       SETUP.md polish, `design refresh` command (authenticated refresh; unauthenticated
       → exit 0 + snapshot-age warning per FR-014; named `refresh` to avoid colliding
       with top-level `sync`)
-- [ ] E-P4 [US3,US4] Skills (pinned skills@1.5.21 wrapper, backup guard, marketplace
+- [X] E-P4 [US3,US4] Skills (pinned skills@1.5.21 wrapper, backup guard, marketplace
       registry @SHA), plugins, `mcp serve` (S1 diagnostics, non-interactive assertion,
       wizard steps for skills/MCP)
 - [ ] E-P5 [US5] Generators ×6 + post-scaffold validations; shared JSON-RPC handshake

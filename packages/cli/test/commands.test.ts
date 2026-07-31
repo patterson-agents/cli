@@ -20,6 +20,10 @@ describe("command registry wiring", () => {
       "design.tokens",
       "doctor",
       "init",
+      "plugins.marketplace.list",
+      "skills.add",
+      "skills.list",
+      "skills.remove",
       "sync",
     ]);
   });

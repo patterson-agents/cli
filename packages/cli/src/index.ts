@@ -66,6 +66,57 @@ const main = defineCommand({
       ]);
       return cittyCommandFor(checkCommand);
     },
+    skills: async () => {
+      const [{ skillsListCommand, skillsAddCommand, skillsRemoveCommand }, { cittyCommandFor }] =
+        await Promise.all([import("./commands/skills.ts"), import("./commands/frontend.ts")]);
+      return defineCommand({
+        meta: { name: "skills", description: "Install and inventory agent skills (pinned skills CLI)" },
+        subCommands: {
+          list: cittyCommandFor(skillsListCommand),
+          add: cittyCommandFor(skillsAddCommand, { positionals: ["ref"] }),
+          remove: cittyCommandFor(skillsRemoveCommand, { positionals: ["name"] }),
+        },
+      });
+    },
+    plugins: async () => {
+      const [{ marketplaceListCommand }, { cittyCommandFor }] = await Promise.all([
+        import("./commands/plugins.ts"),
+        import("./commands/frontend.ts"),
+      ]);
+      return defineCommand({
+        meta: { name: "plugins", description: "Plugin marketplaces" },
+        subCommands: {
+          marketplace: defineCommand({
+            meta: { name: "marketplace", description: "Marketplace registry" },
+            subCommands: { list: cittyCommandFor(marketplaceListCommand) },
+          }),
+        },
+      });
+    },
+    mcp: async () => {
+      return defineCommand({
+        meta: { name: "mcp", description: "Model Context Protocol surface" },
+        subCommands: {
+          serve: defineCommand({
+            meta: {
+              name: "serve",
+              description: "Serve the patterson command registry as a stdio MCP server",
+            },
+            async run() {
+              // Lazy import: the MCP SDK enters the process only on this path.
+              const mcp = await import("@patterson/mcp");
+              const { buildRegistry } = await import("./commands/registry.ts");
+              const server = mcp.buildPattersonMcpServer(buildRegistry(), {
+                cwd: process.cwd(),
+              });
+              await mcp.serveStdio(server);
+              // Keep serving until the client closes stdio.
+              await new Promise(() => {});
+            },
+          }),
+        },
+      });
+    },
     design: async () => {
       const [{ designTemplatesCommand, designTokensCommand, designRefreshCommand }, { cittyCommandFor }] =
         await Promise.all([import("./commands/design.ts"), import("./commands/frontend.ts")]);
