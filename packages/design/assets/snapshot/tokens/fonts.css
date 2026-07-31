@@ -1,0 +1,64 @@
+/* ============================================================
+   Patterson Companies — Webfonts
+   ------------------------------------------------------------
+   BRAND FONT: **proxima-nova** (Adobe Fonts / Typekit) — the exact face
+   pattersondental.com & pattersonvet.com render, from kit `rul6mjk`.
+   font-family on the live sites: proxima-nova, Arial, sans-serif.
+
+   Self-hosted here from the licensed Typekit files supplied by the brand team.
+   Weights were verified by canvas advance-width measurement:
+     - proxima-nova-400.woff2     normal 400  (regular)
+     - proxima-nova-700.woff2     normal 700  (bold — ~4% wider)
+     - proxima-nova-italic.woff2  italic 400
+   Bold-italic is synthesized by the browser from the 700 face.
+
+   >>> IMPORTANT — ONLY 400 AND 700 ARE REAL <<<
+   The official kit (`assets/fonts/typekit-rul6mjk.css`, published
+   2024-08-01) serves exactly four faces: n4, i4, n7, i7. There is
+   **no 500, 600 or 800 face in the Patterson Proxima Nova license.**
+   The production theme nevertheless declares `font-weight: 800` on
+   h1/h2, 600 on .btn and 500 on .eyebrow — so those are rendered by
+   the browser as SYNTHESIZED (faux) bold off the 700 master.
+   Consequence for this system: treat 700 as the real bold ceiling.
+   `--fw-extra` (800) is retained only to reproduce production output
+   faithfully; it does not correspond to a licensed face. If genuine
+   heavier weights are wanted, additional Proxima Nova variations must
+   be added to the Typekit kit first.
+
+   To load the fonts from Adobe instead of the self-hosted copies,
+   swap the @font-face blocks below for:
+     @import url('../assets/fonts/typekit-rul6mjk.css');
+   (that file is the verbatim kit CSS and requires network access.)
+
+   NOTE: these are licensed Adobe Fonts binaries, provided by the user for use
+   within this brand's properties. FALLBACK is "Figtree" (closest free Google
+   match) → system sans, used only if a face fails to load. Do NOT alias a
+   different family to the 'proxima-nova' name.
+   ============================================================ */
+
+/* Fallback display sans + monospace (must precede @font-face per CSS spec) */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: 'proxima-nova';
+  src: url('../assets/fonts/proxima-nova-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima-nova';
+  src: url('../assets/fonts/proxima-nova-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'proxima-nova';
+  src: url('../assets/fonts/proxima-nova-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "name": "permissions",
+  "policy": {
+    "allow": ["Read", "Bash(bun test:*)"],
+    "deny": ["Read(./.env)"],
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": ["../shared"]
+  },
+  "models": { "default": "opus", "fallback": "sonnet" },
+  "hooks": {
+    "agentHooks": [
+      {
+        "event": "PostToolUse",
+        "matcher": "Edit|Write",
+        "exec": { "argv": ["bunx", "oxlint", "--fix"] }
+      },
+      { "event": "NotAnEvent", "exec": { "argv": ["echo", "nope"] } },
+      { "event": "SessionStart", "exec": { "argv": ["echo", "hi"], "cwd": "/tmp" } }
+    ],
+    "gitHooks": []
+  }
+}

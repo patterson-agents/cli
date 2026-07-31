@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "mcp.events.timeoutMs",
+    "targetId": "claude-code",
+    "reason": ".mcp.json has no per-server timeout field (MCP_TIMEOUT is an environment concern); timeoutMs was dropped for this target.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.user-scoped",
+    "targetId": "claude-code",
+    "reason": "MCP scope \"user\" is not emittable: the project .mcp.json is project-scope only, and .claude/settings.local.json is on the never-write list (Constitution II).",
+    "fallbackApplied": false
+  }
+]

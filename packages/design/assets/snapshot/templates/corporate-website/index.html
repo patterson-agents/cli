@@ -1,0 +1,77 @@
+<!-- @template name="Corporate Website" description="Interactive recreation of pattersoncompanies.com — navy hero, capability pillars, We-Are-Patterson stats, tabbed capabilities, newsroom and footer." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterson Companies — Corporate Website</title>
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; background: var(--surface-page); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="icons.jsx"></script>
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<script type="text/babel" src="HomeScreen.jsx"></script>
+<script type="text/babel" src="WhatWeDoScreen.jsx"></script>
+<script type="text/babel" src="NewsroomScreen.jsx"></script>
+<script type="text/babel">
+  const { useState } = React;
+
+  function Placeholder({ title, onNavigate }) {
+    const { Button } = window.PattersonCompaniesDesignSystem_3534f9;
+    return (
+      <main style={{ minHeight: 460 }}>
+        <section className="pat-container" style={{ paddingTop: 'var(--space-11)', paddingBottom: 'var(--space-11)', textAlign: 'center', maxWidth: 640 }}>
+          <div className="pat-eyebrow">Patterson Companies</div>
+          <h1 style={{ margin: '12px 0 14px' }}>{title}</h1>
+          <p style={{ fontSize: 'var(--fs-lead)' }}>This section isn't part of the UI-kit recreation. The kit demonstrates the <b>Home</b>, <b>What We Do</b> and <b>Newsroom</b> templates using the Patterson component library.</p>
+          <div style={{ marginTop: 24 }}>
+            <Button variant="primary" onClick={() => onNavigate('home')}>Back to home</Button>
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  function App() {
+    const [route, setRoute] = useState('home');
+    const go = (r) => { setRoute(r); window.scrollTo({ top: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' }); };
+
+    let screen;
+    if (route === 'home') screen = <window.HomeScreen onNavigate={go} />;
+    else if (route === 'what-we-do') screen = <window.WhatWeDoScreen onNavigate={go} />;
+    else if (route === 'newsroom') screen = <window.NewsroomScreen onNavigate={go} />;
+    else {
+      const titles = { 'our-company': 'Our Company', 'how-we-do-it': 'How We Do It', 'community-strong': 'Community Strong', 'join-us': 'Join Us' };
+      screen = <Placeholder title={titles[route] || 'Patterson Companies'} onNavigate={go} />;
+    }
+
+    return (
+      <React.Fragment>
+        <window.Header route={route} onNavigate={go} />
+        {screen}
+        <window.Footer />
+      </React.Fragment>
+    );
+  }
+
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  function start() {
+    const ready = window.PattersonCompaniesDesignSystem_3534f9
+      && window.Header && window.Footer && window.HomeScreen
+      && window.WhatWeDoScreen && window.NewsroomScreen;
+    if (!ready) { return void setTimeout(start, 60); }
+    root.render(<App />);
+  }
+  start();
+</script>
+</body>
+</html>

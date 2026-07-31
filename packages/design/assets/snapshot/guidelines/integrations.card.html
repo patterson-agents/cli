@@ -1,0 +1,51 @@
+<!-- @dsCard group="Brand" viewport="700x300" name="Framework integrations" subtitle="One brand across Theme UI, Tailwind v4, UnoCSS & shadcn/ui" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); font-family: var(--font-sans); color: var(--text-body); }
+  .eyebrow { font-size: var(--fs-xs); font-weight: var(--fw-bold); letter-spacing: var(--ls-caps); text-transform: uppercase; color: var(--pat-sky); margin: 0 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .cell { border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 14px 12px; box-shadow: var(--shadow-xs); display: flex; flex-direction: column; gap: 8px; }
+  .name { font-weight: var(--fw-bold); color: var(--text-heading); font-size: var(--fs-sm); }
+  .file { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+  .swatches { display: flex; gap: 4px; margin-top: auto; }
+  .sw { width: 18px; height: 18px; border-radius: var(--radius-sm); }
+  .note { margin: 18px 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+  .note b { color: var(--text-strong); font-weight: var(--fw-semibold); }
+</style>
+</head>
+<body>
+  <p class="eyebrow">Portable brand · generated from theme.json</p>
+  <div class="grid">
+    <div class="cell">
+      <span class="name">Theme UI</span>
+      <span class="file">theme-ui.js</span>
+      <div class="swatches"><span class="sw" style="background:var(--pat-navy)"></span><span class="sw" style="background:var(--pat-sky)"></span></div>
+    </div>
+    <div class="cell">
+      <span class="name">Tailwind v4</span>
+      <span class="file">tailwind.css</span>
+      <div class="swatches"><span class="sw" style="background:var(--pat-navy)"></span><span class="sw" style="background:var(--pat-sky)"></span></div>
+    </div>
+    <div class="cell">
+      <span class="name">Tailwind v3</span>
+      <span class="file">tailwind.config.js</span>
+      <div class="swatches"><span class="sw" style="background:var(--pat-navy)"></span><span class="sw" style="background:var(--pat-sky)"></span></div>
+    </div>
+    <div class="cell">
+      <span class="name">UnoCSS</span>
+      <span class="file">uno.config.js</span>
+      <div class="swatches"><span class="sw" style="background:var(--pat-navy)"></span><span class="sw" style="background:var(--pat-sky)"></span></div>
+    </div>
+    <div class="cell">
+      <span class="name">shadcn/ui</span>
+      <span class="file">shadcn-theme.css</span>
+      <div class="swatches"><span class="sw" style="background:var(--pat-navy)"></span><span class="sw" style="background:var(--pat-sky)"></span></div>
+    </div>
+  </div>
+  <p class="note">Same navy, sky, cool-gray, pill buttons and navy-tinted elevation in every stack. Source of truth: <b>theme.json</b> → <b>integrations/</b>. See integrations/README.md.</p>
+</body>
+</html>

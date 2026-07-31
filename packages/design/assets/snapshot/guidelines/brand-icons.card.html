@@ -1,0 +1,37 @@
+<!-- @dsCard group="Brand" viewport="1100x620" name="Icon set" subtitle="Official Patterson icon font — 93 glyphs" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:26px;background:var(--surface-page);font-family:var(--font-sans)}
+  h1{font-size:19px;font-weight:700;color:var(--text-strong);margin:0 0 4px}
+  .sub{font-size:13px;color:var(--text-body);margin:0 0 20px;max-width:760px;line-height:1.5}
+  .sub code{font-family:var(--font-mono);font-size:11px;background:var(--surface-muted);padding:1px 5px;border-radius:var(--radius-field)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:6px}
+  .cell{display:flex;flex-direction:column;align-items:center;gap:7px;padding:12px 6px;border:var(--border-w) solid var(--border-subtle);border-radius:var(--radius-btn-elevated);background:var(--surface-card)}
+  .cell i{font-size:24px;color:var(--pat-navy)}
+  .cell span{font-family:var(--font-mono);font-size:9px;color:var(--text-muted);text-align:center;word-break:break-all;line-height:1.3}
+  .bar{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin-bottom:20px;padding:14px 16px;background:var(--surface-subtle);border-radius:var(--radius-btn-elevated)}
+  .demo{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-body)}
+  .demo i{color:var(--pat-sky)}
+  .demo.navy i{color:var(--pat-navy)}
+  .demo.big i{font-size:var(--icon-size-lg)}
+</style>
+</head>
+<body>
+  <h1>Official Patterson icon set</h1>
+  <p class="sub">Extracted from the production storefront pattern library — 93 glyphs in a webfont (PUA <code>U+E900</code>+). This is the system's UI-glyph tier and it <strong>replaces Lucide</strong>. Because it is a font, glyphs inherit <code>color</code> and scale with <code>font-size</code>; there is no stroke to set. Use <code>&lt;i class="pat-i pat-i-cart"&gt;</code> or the <code>&lt;Icon name="cart"&gt;</code> component.</p>
+  <div class="bar">
+    <div class="demo navy"><i class="pat-i pat-i-search" style="font-size:var(--icon-size-sm)"></i>14px inline — production default</div>
+    <div class="demo navy"><i class="pat-i pat-i-cart"></i>20px — system default</div>
+    <div class="demo big"><i class="pat-i pat-i-shipping"></i>24px, sky accent</div>
+  </div>
+  <div class="grid" id="g"></div>
+<script>
+const names=["action-gallery","action-lightbox","action-play","alert","arrow-down","arrow-left","arrow-right","arrow-up","cart","chat","chat_alt","check","check_alt","chevron-down","chevron-down_light","chevron-left","chevron-left_light","chevron-right","chevron-right_light","chevron-up","chevron-up_light","close","close_light","close_medium","collapse","document","down-caret","down-right-arrow","download","email","excel","expand","external-link","facebook","facebook_alt","facebook_alt_bold","filter","formulary-list","gear","grid","hazmat","help","house","info","instagram","instagram_alt","instagram_outline","linkedin","linkedin_filled","list","list-1","locator","locked","mail","map-pin","map-pin_alt_outline","menu-dots","menu-lines","menu-lines_thin","pause","pdf","pedigree","phone","pinterest","pinterest_alt","play","plus_circle","prescription","previouslypurchased","promotion","question-mark","reddit","remove","search","search_alt","shiponice","shipping","snapchat","speech-bubbles","tag-percentage","tag-price","toggle-gridview","toggle-listview","trash","twitter","twitter_alt","up-caret","upload","user","user_alt","user_bold","youtube","youtube_alt"];
+document.getElementById('g').innerHTML=names.map(n=>`<div class="cell"><i class="pat-i pat-i-${n}"></i><span>${n}</span></div>`).join('');
+</script>
+</body>
+</html>

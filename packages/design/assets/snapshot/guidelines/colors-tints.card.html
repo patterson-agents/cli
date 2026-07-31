@@ -1,0 +1,44 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Tints — navy & sky" subtitle="Use sparingly for depth and data viz" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-page); }
+  .ramp { display: flex; flex-direction: column; gap: 12px; }
+  .line { display: flex; align-items: center; gap: 14px; }
+  .label { width: 52px; font-size: var(--fs-xs); font-weight: var(--fw-bold); color: var(--text-muted); letter-spacing: var(--ls-wide); text-transform: uppercase; }
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; flex: 1; }
+  .s { height: 44px; border-radius: var(--radius-sm); display: flex; align-items: flex-end; padding: 5px; }
+  .t { font-family: var(--font-mono); font-size: 9px; color: rgba(255,255,255,0.85); }
+  .t.dark { color: rgba(0,0,0,0.45); }
+</style>
+</head>
+<body>
+  <div class="ramp">
+    <div class="line">
+      <div class="label">Navy</div>
+      <div class="swatches">
+        <div class="s" style="background:var(--pat-navy)"><span class="t">100</span></div>
+        <div class="s" style="background:var(--pat-navy-80)"><span class="t">80</span></div>
+        <div class="s" style="background:var(--pat-navy-60)"><span class="t">60</span></div>
+        <div class="s" style="background:var(--pat-navy-40)"><span class="t dark">40</span></div>
+        <div class="s" style="background:var(--pat-navy-20)"><span class="t dark">20</span></div>
+        <div class="s" style="background:var(--pat-navy-10)"><span class="t dark">10</span></div>
+      </div>
+    </div>
+    <div class="line">
+      <div class="label">Sky</div>
+      <div class="swatches">
+        <div class="s" style="background:var(--pat-sky)"><span class="t">100</span></div>
+        <div class="s" style="background:var(--pat-sky-80)"><span class="t">80</span></div>
+        <div class="s" style="background:var(--pat-sky-60)"><span class="t dark">60</span></div>
+        <div class="s" style="background:var(--pat-sky-40)"><span class="t dark">40</span></div>
+        <div class="s" style="background:var(--pat-sky-20)"><span class="t dark">20</span></div>
+        <div class="s" style="background:var(--pat-sky-10)"><span class="t dark">10</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

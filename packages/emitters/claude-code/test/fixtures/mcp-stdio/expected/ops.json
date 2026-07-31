@@ -1,0 +1,29 @@
+[
+  {
+    "path": ".mcp.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "mcpServers",
+          "docs"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "bunx",
+          "args": [
+            "docs-server",
+            "--root",
+            "."
+          ],
+          "env": {
+            "PROJECT_DIR": "${CLAUDE_PROJECT_DIR:-.}",
+            "TOKEN": "${DOCS_TOKEN}",
+            "MODE": "fast"
+          }
+        }
+      }
+    ]
+  }
+]

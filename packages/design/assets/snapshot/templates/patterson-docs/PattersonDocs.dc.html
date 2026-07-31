@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Patterson Docs" description="VitePress-style documentation shell organised by Diátaxis. Five scaffolded pages (How-to + Reference) wired to the sidebar, top nav and prev/next pager, with a built-in settings panel (light/dark theme, accent, width, section toggles). Edit the PAGES/NAV data in the logic to add your own; copy in place." -->
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="./ds-base.js"></script>
+<style>
+  html,body{margin:0}
+  body{background:#f6f7f8}
+  ::selection{background:rgba(0,168,225,.22)}
+  /* theme tokens (light default) */
+  .pat-docs{
+    --doc-bg:#ffffff; --doc-surface:#f6f7f8; --doc-surface-2:#ffffff;
+    --doc-ink:#1d1d20; --doc-muted:#58585B; --doc-faint:#7c7c80;
+    --doc-border:#e2e2e4; --doc-border-soft:#ececec; --doc-nav-bg:rgba(255,255,255,.85);
+    --doc-accent:#147EC2; --doc-accent-strong:#003767;
+    --doc-shell-max:1440px; --doc-article-max:720px;
+  }
+  .pat-docs[data-theme="dark"]{
+    --doc-bg:#15181e; --doc-surface:#20252e; --doc-surface-2:#1b1f27;
+    --doc-ink:#f1f3f5; --doc-muted:#b4bac4; --doc-faint:#828a96;
+    --doc-border:#2a2f39; --doc-border-soft:#262b34; --doc-nav-bg:rgba(21,24,30,.86);
+    --doc-accent:#4aa8e6; --doc-accent-strong:#0d4f86;
+  }
+  .pat-docs[data-accent="teal"]{ --doc-accent:#00A8E1; --doc-accent-strong:#0a6a99; }
+  .pat-docs[data-accent="green"]{ --doc-accent:#2FA36B; --doc-accent-strong:#22794f; }
+  .pat-docs[data-accent="violet"]{ --doc-accent:#7B6AF0; --doc-accent-strong:#4a3bb5; }
+  .pat-docs[data-theme="dark"][data-accent="teal"]{ --doc-accent:#3dc3f5; --doc-accent-strong:#0a6a99; }
+  .pat-docs[data-theme="dark"][data-accent="green"]{ --doc-accent:#4fc98c; --doc-accent-strong:#22794f; }
+  .pat-docs[data-theme="dark"][data-accent="violet"]{ --doc-accent:#9d8ffb; --doc-accent-strong:#4a3bb5; }
+  .pat-docs[data-width="wide"]{ --doc-shell-max:1680px; --doc-article-max:860px; }
+</style>
+</helmet>
+
+<div class="pat-docs" data-theme="{{ theme }}" data-accent="{{ accent }}" data-width="{{ widthKey }}" style="font-family:var(--font-sans,'Figtree',system-ui,sans-serif);color:var(--doc-ink);min-height:100vh;background:var(--doc-bg);font-size:16px;line-height:1.6;transition:background .25s,color .25s;">
+
+  <!-- top nav -->
+  <header style="position:sticky;top:0;z-index:20;height:64px;display:flex;align-items:center;gap:18px;padding:0 28px;background:var(--doc-nav-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--doc-border-soft);">
+    <a onClick="{{ goHome }}" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;font-weight:700;cursor:pointer;">
+      <span style="width:30px;height:30px;border-radius:8px;background:var(--doc-accent-strong);color:#fff;display:grid;place-items:center;font-weight:800;">P</span>
+      <span style="font-size:16px;">Patterson <b style="color:var(--doc-accent);">Docs</b></span>
+    </a>
+    <nav style="display:flex;gap:2px;margin-left:8px;">
+      <sc-for list="{{ topnav }}" as="t" hint-placeholder-count="4">
+        <sc-if value="{{ t.active }}"><a onClick="{{ t.go }}" style="padding:6px 12px;border-radius:7px;text-decoration:none;cursor:pointer;font-size:14.5px;font-weight:700;color:var(--doc-accent);">{{ t.text }}</a></sc-if>
+        <sc-if value="{{ t.inactive }}"><a onClick="{{ t.go }}" style="padding:6px 12px;border-radius:7px;text-decoration:none;cursor:pointer;font-size:14.5px;font-weight:600;color:var(--doc-muted);">{{ t.text }}</a></sc-if>
+      </sc-for>
+    </nav>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--doc-faint);">
+      <div style="display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 11px;border:1px solid var(--doc-border);background:var(--doc-surface);border-radius:8px;font-size:13.5px;">
+        <span style="font-weight:500;">Search</span>
+        <span style="font-family:var(--font-mono,'IBM Plex Mono',monospace);font-size:11px;border:1px solid var(--doc-border);border-radius:5px;padding:1px 5px;background:var(--doc-surface-2);">⌘K</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- shell -->
+  <div style="max-width:var(--doc-shell-max);margin:0 auto;display:flex;align-items:flex-start;padding:0 28px;">
+
+    <!-- sidebar -->
+    <nav style="width:280px;flex:none;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;padding:28px 22px 40px 0;">
+      <sc-for list="{{ nav }}" as="group" hint-placeholder-count="2">
+        <div style="margin-bottom:22px;">
+          <p style="margin:0 0 6px;font-size:13px;font-weight:800;color:var(--doc-ink);">{{ group.title }}</p>
+          <ul style="list-style:none;margin:0;padding:0;">
+            <sc-for list="{{ group.items }}" as="it" hint-placeholder-count="3">
+              <li>
+                <sc-if value="{{ it.active }}"><a onClick="{{ it.go }}" style="display:block;padding:5px 0 5px 12px;text-decoration:none;cursor:pointer;font-size:13.75px;line-height:1.4;border-left:1.5px solid var(--doc-accent);font-weight:700;color:var(--doc-accent);">{{ it.text }}</a></sc-if>
+                <sc-if value="{{ it.inactive }}"><a onClick="{{ it.go }}" style="display:block;padding:5px 0 5px 12px;text-decoration:none;cursor:pointer;font-size:13.75px;line-height:1.4;border-left:1.5px solid var(--doc-border-soft);font-weight:500;color:var(--doc-muted);">{{ it.text }}</a></sc-if>
+              </li>
+            </sc-for>
+          </ul>
+        </div>
+      </sc-for>
+    </nav>
+
+    <!-- content + aside -->
+    <main style="flex:1;min-width:0;">
+      <div style="display:flex;gap:40px;padding:32px 0 64px 40px;">
+
+        <article style="flex:1;min-width:0;max-width:var(--doc-article-max);">
+          <p style="margin:0 0 8px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--doc-accent);">{{ page.group }}</p>
+          <h1 style="font-size:33px;line-height:1.2;letter-spacing:-.02em;margin:0 0 8px;font-weight:800;color:var(--doc-ink);">{{ page.title }}</h1>
+          <p style="font-size:18px;line-height:1.6;color:var(--doc-muted);margin:0 0 26px;">{{ page.lead }}</p>
+
+          <!-- Diátaxis compass note -->
+          <sc-if value="{{ showCompass }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;gap:12px;align-items:flex-start;margin:0 0 26px;padding:14px 18px;border-radius:9px;background:linear-gradient(180deg,color-mix(in srgb,var(--doc-accent) 13%,transparent),transparent);border:1px solid color-mix(in srgb,var(--doc-accent) 45%,transparent);font-size:14.5px;color:var(--doc-muted);">
+              <span style="flex:none;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#fff;background:var(--doc-accent-strong);padding:4px 9px;border-radius:20px;margin-top:1px;">Diátaxis</span>
+              <span>{{ page.compass }}</span>
+            </div>
+          </sc-if>
+
+          <sc-for list="{{ page.sections }}" as="s" hint-placeholder-count="2">
+            <h2 style="font-size:23px;font-weight:700;letter-spacing:-.01em;margin:44px 0 16px;padding-top:22px;border-top:1px solid var(--doc-border-soft);color:var(--doc-ink);">{{ s.h }}</h2>
+            <sc-for list="{{ s.paras }}" as="para" hint-placeholder-count="1">
+              <p style="margin:16px 0;">{{ para }}</p>
+            </sc-for>
+            <sc-if value="{{ s.hasSteps }}">
+              <ol style="margin:16px 0;padding-left:24px;">
+                <sc-for list="{{ s.steps }}" as="step" hint-placeholder-count="2">
+                  <li style="margin:7px 0;">{{ step }}</li>
+                </sc-for>
+              </ol>
+            </sc-if>
+          </sc-for>
+
+          <!-- pager -->
+          <div style="display:flex;justify-content:space-between;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--doc-border-soft);">
+            <sc-if value="{{ hasPrev }}" hint-placeholder-val="{{ true }}">
+              <a onClick="{{ goPrev }}" style="flex:1;max-width:48%;display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--doc-border);border-radius:9px;text-decoration:none;cursor:pointer;" style-hover="border-color:var(--doc-accent);">
+                <span style="font-size:12px;color:var(--doc-faint);font-weight:600;">Previous</span>
+                <span style="font-weight:700;color:var(--doc-accent);font-size:14.5px;">← {{ prevText }}</span>
+              </a>
+            </sc-if>
+            <sc-if value="{{ hasNext }}" hint-placeholder-val="{{ true }}">
+              <a onClick="{{ goNext }}" style="flex:1;max-width:48%;display:flex;flex-direction:column;gap:4px;padding:12px 16px;border:1px solid var(--doc-border);border-radius:9px;text-decoration:none;text-align:right;align-items:flex-end;cursor:pointer;" style-hover="border-color:var(--doc-accent);">
+                <span style="font-size:12px;color:var(--doc-faint);font-weight:600;">Next</span>
+                <span style="font-weight:700;color:var(--doc-accent);font-size:14.5px;">{{ nextText }} →</span>
+              </a>
+            </sc-if>
+          </div>
+        </article>
+
+        <!-- on this page -->
+        <sc-if value="{{ showToc }}" hint-placeholder-val="{{ true }}">
+          <aside style="width:230px;flex:none;position:sticky;top:88px;height:max-content;">
+            <p style="font-size:13px;font-weight:800;margin:0 0 10px;color:var(--doc-ink);">On this page</p>
+            <ul style="list-style:none;margin:0;padding:0;border-left:1px solid var(--doc-border-soft);">
+              <sc-for list="{{ page.toc }}" as="t" hint-placeholder-count="2">
+                <li><span style="display:block;padding:4px 0 4px 14px;font-size:13px;color:var(--doc-muted);">{{ t }}</span></li>
+              </sc-for>
+            </ul>
+          </aside>
+        </sc-if>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ===================== settings ===================== -->
+  <button onClick="{{ togglePanel }}" aria-label="Settings" style="position:fixed;right:22px;bottom:22px;z-index:40;width:48px;height:48px;border-radius:50%;border:none;background:var(--doc-accent-strong);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(0,20,45,.28);display:grid;place-items:center;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+
+  <sc-if value="{{ panelOpen }}">
+    <div style="position:fixed;right:22px;bottom:82px;z-index:41;width:288px;background:var(--doc-surface-2);border:1px solid var(--doc-border);border-radius:14px;box-shadow:0 18px 50px rgba(0,20,45,.28);padding:18px;color:var(--doc-ink);">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <span style="font-weight:800;font-size:15px;">Settings</span>
+        <button onClick="{{ togglePanel }}" aria-label="Close" style="background:none;border:none;color:var(--doc-faint);cursor:pointer;padding:2px;display:grid;place-items:center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+
+      <!-- theme -->
+      <p style="margin:0 0 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--doc-faint);">Theme</p>
+      <div style="display:flex;gap:4px;background:var(--doc-surface);border:1px solid var(--doc-border);border-radius:9px;padding:3px;margin-bottom:16px;">
+        <sc-if value="{{ themeLight }}"><span style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--doc-surface-2);color:var(--doc-accent);box-shadow:0 1px 3px rgba(0,0,0,.12);">Light</span></sc-if>
+        <sc-if value="{{ themeDark }}"><span onClick="{{ goThemeLight }}" style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:600;color:var(--doc-muted);cursor:pointer;">Light</span></sc-if>
+        <sc-if value="{{ themeDark }}"><span style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--doc-surface-2);color:var(--doc-accent);box-shadow:0 1px 3px rgba(0,0,0,.12);">Dark</span></sc-if>
+        <sc-if value="{{ themeLight }}"><span onClick="{{ goThemeDark }}" style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:600;color:var(--doc-muted);cursor:pointer;">Dark</span></sc-if>
+      </div>
+
+      <!-- accent -->
+      <p style="margin:0 0 8px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--doc-faint);">Accent</p>
+      <div style="display:flex;gap:12px;margin-bottom:16px;">
+        <sc-if value="{{ accentNavy }}"><span style="width:26px;height:26px;border-radius:50%;background:#147EC2;box-shadow:0 0 0 2px var(--doc-surface-2),0 0 0 4px #147EC2;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentNavyOff }}"><span onClick="{{ goAccentNavy }}" style="width:26px;height:26px;border-radius:50%;background:#147EC2;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentTeal }}"><span style="width:26px;height:26px;border-radius:50%;background:#00A8E1;box-shadow:0 0 0 2px var(--doc-surface-2),0 0 0 4px #00A8E1;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentTealOff }}"><span onClick="{{ goAccentTeal }}" style="width:26px;height:26px;border-radius:50%;background:#00A8E1;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentGreen }}"><span style="width:26px;height:26px;border-radius:50%;background:#2FA36B;box-shadow:0 0 0 2px var(--doc-surface-2),0 0 0 4px #2FA36B;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentGreenOff }}"><span onClick="{{ goAccentGreen }}" style="width:26px;height:26px;border-radius:50%;background:#2FA36B;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentViolet }}"><span style="width:26px;height:26px;border-radius:50%;background:#7B6AF0;box-shadow:0 0 0 2px var(--doc-surface-2),0 0 0 4px #7B6AF0;cursor:pointer;"></span></sc-if>
+        <sc-if value="{{ accentVioletOff }}"><span onClick="{{ goAccentViolet }}" style="width:26px;height:26px;border-radius:50%;background:#7B6AF0;cursor:pointer;"></span></sc-if>
+      </div>
+
+      <!-- width -->
+      <p style="margin:0 0 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--doc-faint);">Content width</p>
+      <div style="display:flex;gap:4px;background:var(--doc-surface);border:1px solid var(--doc-border);border-radius:9px;padding:3px;margin-bottom:16px;">
+        <sc-if value="{{ widthComfort }}"><span style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--doc-surface-2);color:var(--doc-accent);box-shadow:0 1px 3px rgba(0,0,0,.12);">Comfortable</span></sc-if>
+        <sc-if value="{{ widthWide }}"><span onClick="{{ goWidthComfort }}" style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:600;color:var(--doc-muted);cursor:pointer;">Comfortable</span></sc-if>
+        <sc-if value="{{ widthWide }}"><span style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:700;background:var(--doc-surface-2);color:var(--doc-accent);box-shadow:0 1px 3px rgba(0,0,0,.12);">Wide</span></sc-if>
+        <sc-if value="{{ widthComfort }}"><span onClick="{{ goWidthWide }}" style="flex:1;text-align:center;padding:6px;border-radius:6px;font-size:13px;font-weight:600;color:var(--doc-muted);cursor:pointer;">Wide</span></sc-if>
+      </div>
+
+      <!-- toggles -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--doc-border-soft);">
+        <span style="font-size:13.5px;font-weight:600;">On this page</span>
+        <sc-if value="{{ showToc }}"><span onClick="{{ toggleToc }}" style="width:38px;height:22px;border-radius:20px;background:var(--doc-accent);position:relative;cursor:pointer;"><span style="position:absolute;top:2px;left:18px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span></sc-if>
+        <sc-if value="{{ tocOff }}"><span onClick="{{ toggleToc }}" style="width:38px;height:22px;border-radius:20px;background:var(--doc-border);position:relative;cursor:pointer;"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span></sc-if>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--doc-border-soft);">
+        <span style="font-size:13.5px;font-weight:600;">Diátaxis notes</span>
+        <sc-if value="{{ showCompass }}"><span onClick="{{ toggleCompass }}" style="width:38px;height:22px;border-radius:20px;background:var(--doc-accent);position:relative;cursor:pointer;"><span style="position:absolute;top:2px;left:18px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span></sc-if>
+        <sc-if value="{{ compassOff }}"><span onClick="{{ toggleCompass }}" style="width:38px;height:22px;border-radius:20px;background:var(--doc-border);position:relative;cursor:pointer;"><span style="position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;"></span></span></sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTheme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;light&quot;,&quot;dark&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'light' | 'dark'&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;navy&quot;,&quot;teal&quot;,&quot;green&quot;,&quot;violet&quot;],&quot;default&quot;:&quot;navy&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Appearance&quot;},&quot;wide&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showToc&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showCompass&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Layout&quot;}}">
+class Component extends DCLogic {
+  state = { current: 'setup', panelOpen: false, theme: 'light', accent: 'navy', wide: false, showToc: true, showCompass: true };
+
+  componentDidMount() {
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem('patdocs-settings') || '{}'); } catch (e) {}
+    const p = this.props || {};
+    this.setState({
+      theme: saved.theme ?? p.defaultTheme ?? 'light',
+      accent: saved.accent ?? p.accent ?? 'navy',
+      wide: saved.wide ?? p.wide ?? false,
+      showToc: saved.showToc ?? p.showToc ?? true,
+      showCompass: saved.showCompass ?? p.showCompass ?? true,
+    });
+  }
+
+  persist() {
+    const { theme, accent, wide, showToc, showCompass } = this.state;
+    try { localStorage.setItem('patdocs-settings', JSON.stringify({ theme, accent, wide, showToc, showCompass })); } catch (e) {}
+  }
+  set(patch) { this.setState(patch, () => this.persist()); }
+
+  get PAGES() {
+    return {
+      'about': { section: 'how-to', group: 'How-to guides', title: 'About how-to guides',
+        lead: 'How-to guides are goal-oriented recipes for a reader who is already at work. This landing page introduces the guides in this section.',
+        compass: 'Task-oriented · the reader is applying the craft · this section informs action.',
+        sections: [
+          { h: 'What belongs here', paras: ['Directions that achieve a specific, real-world goal. Assume competence — leave out the teaching that belongs in a Tutorial.'] },
+          { h: 'In this section', paras: ['Set up your environment, then everyday workflows. Introduce each guide with a sentence rather than listing bare titles.'] },
+        ], toc: ['What belongs here', 'In this section'] },
+
+      'setup': { section: 'how-to', group: 'How-to guides', title: 'Set up your environment',
+        lead: 'Practical directions for a reader who is already at work. Replace this lead with your own.',
+        compass: 'Task-oriented · the reader is applying the craft · this page informs action. Keep learning material in Tutorials and background in Explanation.',
+        sections: [
+          { h: 'Prerequisites', paras: ['List what the reader must already have in place. Keep it to the essentials and link elsewhere for setup.'] },
+          { h: 'Steps', paras: ['Number each action; verify the result at the end.'], hasSteps: true, steps: ['Do the first thing.', 'Then the next thing.', 'Verify the result.'] },
+        ], toc: ['Prerequisites', 'Steps'] },
+
+      'workflows': { section: 'how-to', group: 'How-to guides', title: 'Everyday workflows',
+        lead: 'The handful of tasks a reader will repeat daily, each as a short, self-contained recipe.',
+        compass: 'Task-oriented · one page per goal · resist the urge to explain the machinery here.',
+        sections: [
+          { h: 'Run a build', paras: ['State the goal in the heading, then give the shortest reliable path to it.'], hasSteps: true, steps: ['Open the project.', 'Run the build command.', 'Check the output.'] },
+          { h: 'Ship a change', paras: ['Each workflow stands alone — a reader lands here from search, not from the top.'] },
+        ], toc: ['Run a build', 'Ship a change'] },
+
+      'config': { section: 'reference', group: 'Reference', title: 'Configuration',
+        lead: 'A dry, accurate description of every configuration option. Consult it while working; it does not instruct.',
+        compass: 'Information-oriented · the reader is applying the craft · this page informs cognition.',
+        sections: [
+          { h: 'Options', paras: ['Describe each key: its type, default, and effect. Stay neutral — no tutorials, no opinions.'] },
+          { h: 'File locations', paras: ['State where configuration is read from and in what order it is merged.'] },
+        ], toc: ['Options', 'File locations'] },
+
+      'cli': { section: 'reference', group: 'Reference', title: 'CLI',
+        lead: 'Complete reference for every command and flag. Austere, accurate, and complete.',
+        compass: 'Information-oriented · a map, not a travel guide.',
+        sections: [
+          { h: 'Commands', paras: ['One row per command with its purpose. Keep descriptions to a single clause.'] },
+          { h: 'Global flags', paras: ['Flags that apply to every command belong in their own table.'] },
+        ], toc: ['Commands', 'Global flags'] },
+    };
+  }
+
+  get NAV() {
+    return [
+      { title: 'How-to guides', items: [
+        { text: 'About how-to guides', id: 'about' },
+        { text: 'Set up your environment', id: 'setup' },
+        { text: 'Everyday workflows', id: 'workflows' },
+      ]},
+      { title: 'Reference', items: [
+        { text: 'Configuration', id: 'config' },
+        { text: 'CLI', id: 'cli' },
+      ]},
+    ];
+  }
+
+  get TOPNAV() {
+    return [
+      { text: 'Tutorials', section: 'tutorials', id: 'about' },
+      { text: 'How-to', section: 'how-to', id: 'about' },
+      { text: 'Reference', section: 'reference', id: 'config' },
+      { text: 'Explanation', section: 'explanation', id: 'about' },
+    ];
+  }
+
+  go(id) { return () => this.setState({ current: id }); }
+
+  renderVals() {
+    const cur = this.state.current;
+    const PAGES = this.PAGES;
+    const page = PAGES[cur];
+    const sec = page.section;
+    const { theme, accent, wide, showToc, showCompass, panelOpen } = this.state;
+
+    const nav = this.NAV.map(g => ({
+      title: g.title,
+      items: g.items.map(it => {
+        const active = it.id === cur;
+        return { text: it.text, go: this.go(it.id), active, inactive: !active };
+      }),
+    }));
+
+    const topnav = this.TOPNAV.map(t => {
+      const active = t.section === sec;
+      return { text: t.text, go: this.go(t.id), active, inactive: !active };
+    });
+
+    const order = this.NAV.flatMap(g => g.items).filter(it => PAGES[it.id].section === sec).map(it => it.id);
+    const i = order.indexOf(cur);
+    const prevId = i > 0 ? order[i - 1] : null;
+    const nextId = i >= 0 && i < order.length - 1 ? order[i + 1] : null;
+
+    const sections = page.sections.map(s => ({ h: s.h, paras: s.paras, hasSteps: !!s.hasSteps, steps: s.steps || [] }));
+
+    return {
+      goHome: this.go('about'),
+      topnav, nav,
+      page: { group: page.group, title: page.title, lead: page.lead, compass: page.compass, sections, toc: page.toc },
+      hasPrev: !!prevId, prevText: prevId ? PAGES[prevId].title : '', goPrev: prevId ? this.go(prevId) : null,
+      hasNext: !!nextId, nextText: nextId ? PAGES[nextId].title : '', goNext: nextId ? this.go(nextId) : null,
+
+      // settings — wrapper attributes + panel state
+      theme, accent, widthKey: wide ? 'wide' : 'comfortable',
+      panelOpen, showToc, showCompass, tocOff: !showToc, compassOff: !showCompass,
+      togglePanel: () => this.setState(s => ({ panelOpen: !s.panelOpen })),
+
+      themeLight: theme === 'light', themeDark: theme === 'dark',
+      goThemeLight: () => this.set({ theme: 'light' }), goThemeDark: () => this.set({ theme: 'dark' }),
+
+      accentNavy: accent === 'navy', accentNavyOff: accent !== 'navy', goAccentNavy: () => this.set({ accent: 'navy' }),
+      accentTeal: accent === 'teal', accentTealOff: accent !== 'teal', goAccentTeal: () => this.set({ accent: 'teal' }),
+      accentGreen: accent === 'green', accentGreenOff: accent !== 'green', goAccentGreen: () => this.set({ accent: 'green' }),
+      accentViolet: accent === 'violet', accentVioletOff: accent !== 'violet', goAccentViolet: () => this.set({ accent: 'violet' }),
+
+      widthComfort: !wide, widthWide: wide,
+      goWidthComfort: () => this.set({ wide: false }), goWidthWide: () => this.set({ wide: true }),
+
+      toggleToc: () => this.set({ showToc: !this.state.showToc }),
+      toggleCompass: () => this.set({ showCompass: !this.state.showCompass }),
+    };
+  }
+}
+</script>
+</body>
+</html>

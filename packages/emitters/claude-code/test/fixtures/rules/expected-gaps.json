@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "instructions.bad/id",
+    "targetId": "claude-code",
+    "reason": "Instruction id is not usable as a sentinel id / rules filename (allowed: alphanumerics plus \"._-\", starting alphanumeric).",
+    "fallbackApplied": false
+  }
+]

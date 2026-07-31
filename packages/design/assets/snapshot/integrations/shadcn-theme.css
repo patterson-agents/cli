@@ -1,0 +1,167 @@
+/* ============================================================
+   Patterson Companies — shadcn/ui theme
+   ------------------------------------------------------------
+   Drop-in replacement for the CSS-variable block shadcn/ui generates
+   (new-york / default style, Tailwind v4 layout). Paste into your global
+   stylesheet AFTER `@import "tailwindcss";`, or @import this file.
+
+   Maps shadcn's semantic contract to the Patterson brand. Colors are the
+   exact brand hexes (not re-derived to oklch) so components render in true
+   Patterson navy & sky. --radius is 10px = the brand card radius.
+
+   Light mode is the paper-white brand ground. The .dark palette is grounded
+   in Patterson's existing navy emphasis surfaces (the navy hero bands and
+   the on-dark button treatment) — not an invented dark theme.
+
+   After this, shadcn components (Button, Card, Input, Dialog, Tabs, Badge…)
+   inherit Patterson styling with no per-component edits.
+
+   PRODUCTION NOTE: Patterson buttons are 5px (`rounded-[5px]`), NOT pills —
+   the live stylesheet has no pill radius. Primary hover is a lighter navy
+   #315D83, not sky. Both are reflected below.
+   ============================================================ */
+
+:root {
+  --radius: 0.625rem; /* 10px — Patterson card radius (--radius-lg) */
+
+  --background: #ffffff;
+  --foreground: #1d1d20;
+
+  --card: #ffffff;
+  --card-foreground: #1d1d20;
+
+  --popover: #ffffff;
+  --popover-foreground: #1d1d20;
+
+  /* Primary = Patterson navy */
+  --primary: #003767;
+  --primary-foreground: #ffffff;
+
+  /* Secondary = Patterson's REAL secondary button: filled light blue
+     #6DCFF6 with a navy label (verified against production).          */
+  --secondary: #6DCFF6;
+  --secondary-foreground: #003767;
+
+  --muted: #ececec;
+  --muted-foreground: #7c7c80;
+
+  /* Accent = sky, used tinted for hover/highlight surfaces */
+  --accent: #e5f6fc;
+  --accent-foreground: #003767;
+
+  --destructive: #c0392b;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e2e4;
+  --input: #AFA593; /* production's WARM taupe field border */
+  --ring: #00a8e1; /* Patterson sky focus ring */
+
+  /* Data-viz — the tertiary/brand palette */
+  --chart-1: #003767;
+  --chart-2: #00a8e1;
+  --chart-3: #00817d;
+  --chart-4: #7bc24d;
+  --chart-5: #522e91;
+
+  /* Sidebar — a branded navy rail */
+  --sidebar: #003767;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00a8e1;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #335f85;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #335f85;
+  --sidebar-ring: #00a8e1;
+}
+
+.dark {
+  /* Navy-ground treatment (Patterson's emphasis surfaces) */
+  --background: #003767;
+  --foreground: #ffffff;
+
+  --card: #0a4074;
+  --card-foreground: #ffffff;
+
+  --popover: #0a4074;
+  --popover-foreground: #ffffff;
+
+  /* On navy, sky becomes the primary action */
+  --primary: #00a8e1;
+  --primary-foreground: #003767;
+
+  --secondary: #335f85;
+  --secondary-foreground: #ffffff;
+
+  --muted: #335f85;
+  --muted-foreground: #ccd7e1;
+
+  --accent: #147ec2;
+  --accent-foreground: #ffffff;
+
+  --destructive: #e5695c;
+  --destructive-foreground: #ffffff;
+
+  --border: #335f85;
+  --input: #6687a4;
+  --ring: #00a8e1;
+
+  --chart-1: #6dcff6;
+  --chart-2: #00a8e1;
+  --chart-3: #7bc24d;
+  --chart-4: #99dcf3;
+  --chart-5: #b79be0;
+
+  --sidebar: #002846;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00a8e1;
+  --sidebar-primary-foreground: #003767;
+  --sidebar-accent: #335f85;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #335f85;
+  --sidebar-ring: #00a8e1;
+}
+
+/* Expose the variables to Tailwind v4 utilities (shadcn's @theme inline block).
+   Font families and the radius scale are wired to Patterson tokens here too. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: 'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+}

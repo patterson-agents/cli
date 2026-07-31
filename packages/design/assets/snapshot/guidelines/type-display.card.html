@@ -1,0 +1,26 @@
+<!-- @dsCard group="Type" viewport="700x250" name="Display & headings" subtitle="Bold, tight-tracked headlines in navy" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .line { display: flex; align-items: baseline; gap: 16px; }
+  .tag { font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); width: 78px; flex: none; }
+  .d { font-size: var(--fs-display); font-weight: var(--fw-bold); color: var(--text-strong); letter-spacing: var(--ls-tight); line-height: 1; }
+  .h1 { font-size: var(--fs-h1); font-weight: var(--fw-bold); color: var(--text-heading); letter-spacing: var(--ls-snug); line-height: 1; }
+  .h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); color: var(--text-heading); line-height: 1; }
+  .h3 { font-size: var(--fs-h3); font-weight: var(--fw-semibold); color: var(--text-heading); line-height: 1; }
+</style>
+</head>
+<body>
+  <div class="stack">
+    <div class="line"><span class="tag">display</span><span class="d">Trusted expertise</span></div>
+    <div class="line"><span class="tag">h1</span><span class="h1">Unrivaled support</span></div>
+    <div class="line"><span class="tag">h2</span><span class="h2">We are Patterson</span></div>
+    <div class="line"><span class="tag">h3</span><span class="h3">Bold solutions, a personal touch</span></div>
+  </div>
+</body>
+</html>

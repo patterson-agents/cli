@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "instructions-shim",
+  "targets": ["claude-code"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" },
+    {
+      "id": "claude-tail",
+      "body": "Claude-specific: prefer bun over node.",
+      "reach": "universal",
+      "targets": ["claude-code"]
+    },
+    {
+      "id": "copilot-only",
+      "body": "Copilot only content.",
+      "reach": "universal",
+      "targets": ["copilot"]
+    }
+  ]
+}

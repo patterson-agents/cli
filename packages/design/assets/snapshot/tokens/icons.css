@@ -1,0 +1,144 @@
+/* ============================================================
+   Patterson Companies — Icon Font (OFFICIAL)
+   ------------------------------------------------------------
+   The real Patterson icon set, extracted from the production
+   storefront pattern library (icons.woff / .ttf / .svg — 84 glyphs,
+   1024 units-per-em, ascent 960 / descent -64, PUA range U+E900+).
+
+   This REPLACES Lucide as the system's UI-glyph tier. Icons are a
+   FONT, so they inherit `color` and `font-size` from their context —
+   there is no stroke to set.
+
+   Usage:
+     <i class="pat-i pat-i-cart" aria-hidden="true"></i>
+     <button><i class="pat-i pat-i-search"></i><span>Search</span></button>
+   Always pair a glyph with a text label or an aria-label; the glyph
+   itself is in a private-use codepoint and reads as nothing to a
+   screen reader.
+   ============================================================ */
+
+@font-face {
+  font-family: 'patterson-icons';
+  src: url('../assets/fonts/patterson-icons.woff') format('woff'),
+       url('../assets/fonts/patterson-icons.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+:root {
+  --font-icons: 'patterson-icons';
+  --icon-size-sm: 0.875rem; /* 14px — production inline glyph @kind other */
+  --icon-size-md: 1.25rem;  /* 20px — default @kind other */
+  --icon-size-lg: 1.5rem;   /* 24px @kind other */
+}
+
+.pat-i {
+  font-family: 'patterson-icons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: var(--icon-size-md);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Glyph map (93 icons) ------------------------------- */
+.pat-i-alert:before{content:"\e900"}
+.pat-i-arrow-down:before{content:"\e901"}
+.pat-i-arrow-left:before{content:"\e902"}
+.pat-i-arrow-right:before{content:"\e903"}
+.pat-i-arrow-up:before{content:"\e904"}
+.pat-i-chevron-down:before{content:"\e905"}
+.pat-i-chevron-left:before{content:"\e906"}
+.pat-i-chevron-right:before{content:"\e907"}
+.pat-i-chevron-up:before{content:"\e908"}
+.pat-i-facebook:before{content:"\e909"}
+.pat-i-filter:before{content:"\e90a"}
+.pat-i-help:before{content:"\e90b"}
+.pat-i-house:before{content:"\e90c"}
+.pat-i-instagram:before{content:"\e90d"}
+.pat-i-linkedin:before{content:"\e90e"}
+.pat-i-menu-dots:before{content:"\e90f"}
+.pat-i-menu-lines:before{content:"\e910"}
+.pat-i-pause:before{content:"\e911"}
+.pat-i-play:before{content:"\e912"}
+.pat-i-reddit:before{content:"\e913"}
+.pat-i-remove:before{content:"\e914"}
+.pat-i-search:before{content:"\e915"}
+.pat-i-snapchat:before{content:"\e916"}
+.pat-i-twitter:before{content:"\e917"}
+.pat-i-youtube:before{content:"\e918"}
+.pat-i-check:before{content:"\e919"}
+.pat-i-mail:before{content:"\e91a"}
+.pat-i-list:before{content:"\e91b"}
+.pat-i-user:before{content:"\e91c"}
+.pat-i-grid:before{content:"\e91d"}
+.pat-i-question-mark:before{content:"\e91e"}
+.pat-i-chevron-up_light:before{content:"\e91f"}
+.pat-i-chevron-right_light:before{content:"\e920"}
+.pat-i-external-link:before{content:"\e921"}
+.pat-i-user_alt:before{content:"\e922"}
+.pat-i-linkedin_filled:before{content:"\e923"}
+.pat-i-chevron-left_light:before{content:"\e924"}
+.pat-i-chevron-down_light:before{content:"\e925"}
+.pat-i-document:before{content:"\e926"}
+.pat-i-speech-bubbles:before{content:"\e927"}
+.pat-i-close:before{content:"\e928"}
+.pat-i-close_light:before{content:"\e929"}
+.pat-i-map-pin_alt_outline:before{content:"\e92a"}
+.pat-i-search_alt:before{content:"\e92b"}
+.pat-i-menu-lines_thin:before{content:"\e92c"}
+.pat-i-down-caret:before{content:"\e92d"}
+.pat-i-download:before{content:"\e92e"}
+.pat-i-down-right-arrow:before{content:"\e92f"}
+.pat-i-email:before{content:"\e930"}
+.pat-i-excel:before{content:"\e931"}
+.pat-i-formulary-list:before{content:"\e932"}
+.pat-i-gear:before{content:"\e933"}
+.pat-i-hazmat:before{content:"\e934"}
+.pat-i-locator:before{content:"\e935"}
+.pat-i-cart:before{content:"\e936"}
+.pat-i-close_medium:before{content:"\e937"}
+.pat-i-trash:before{content:"\e938"}
+.pat-i-collapse:before{content:"\e939"}
+.pat-i-expand:before{content:"\e93a"}
+.pat-i-list-1:before{content:"\e93d"}
+.pat-i-chat_alt:before{content:"\e93e"}
+.pat-i-pdf:before{content:"\e940"}
+.pat-i-pedigree:before{content:"\e941"}
+.pat-i-phone:before{content:"\e943"}
+.pat-i-prescription:before{content:"\e944"}
+.pat-i-previouslypurchased:before{content:"\e945"}
+.pat-i-promotion:before{content:"\e946"}
+.pat-i-shiponice:before{content:"\e952"}
+.pat-i-upload:before{content:"\e95f"}
+.pat-i-toggle-gridview:before{content:"\e962"}
+.pat-i-toggle-listview:before{content:"\e963"}
+.pat-i-up-caret:before{content:"\e967"}
+.pat-i-action-play:before{content:"\e968"}
+.pat-i-check_alt:before{content:"\e969"}
+.pat-i-facebook_alt_bold:before{content:"\e96d"}
+.pat-i-info:before{content:"\e96e"}
+.pat-i-plus_circle:before{content:"\e96f"}
+.pat-i-map-pin:before{content:"\e971"}
+.pat-i-locked:before{content:"\e972"}
+.pat-i-tag-percentage:before{content:"\e973"}
+.pat-i-tag-price:before{content:"\e974"}
+.pat-i-user_bold:before{content:"\e975"}
+.pat-i-facebook_alt:before{content:"\e977"}
+.pat-i-youtube_alt:before{content:"\e978"}
+.pat-i-instagram_alt:before{content:"\e979"}
+.pat-i-pinterest:before{content:"\e97b"}
+.pat-i-pinterest_alt:before{content:"\e97c"}
+.pat-i-instagram_outline:before{content:"\e97d"}
+.pat-i-twitter_alt:before{content:"\e97e"}
+.pat-i-action-gallery:before{content:"\e97f"}
+.pat-i-action-lightbox:before{content:"\e980"}
+.pat-i-chat:before{content:"\e981"}
+.pat-i-shipping:before{content:"\e98e"}

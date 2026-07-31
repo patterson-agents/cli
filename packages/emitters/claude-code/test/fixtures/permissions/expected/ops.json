@@ -1,0 +1,80 @@
+[
+  {
+    "path": ".claude/settings.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "permissions",
+          "allow"
+        ],
+        "value": [
+          "Bash(git status)",
+          "Read",
+          "Bash(bun test:*)"
+        ]
+      },
+      {
+        "keyPath": [
+          "permissions",
+          "deny"
+        ],
+        "value": [
+          "Read(./.env)"
+        ]
+      },
+      {
+        "keyPath": [
+          "permissions",
+          "additionalDirectories"
+        ],
+        "value": [
+          "../shared"
+        ]
+      },
+      {
+        "keyPath": [
+          "permissions",
+          "defaultMode"
+        ],
+        "value": "acceptEdits"
+      },
+      {
+        "keyPath": [
+          "model"
+        ],
+        "value": "opus"
+      },
+      {
+        "keyPath": [
+          "fallbackModel"
+        ],
+        "value": [
+          "sonnet"
+        ]
+      },
+      {
+        "keyPath": [
+          "hooks",
+          "PostToolUse"
+        ],
+        "value": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bunx",
+                "args": [
+                  "oxlint",
+                  "--fix"
+                ]
+              }
+            ],
+            "matcher": "Edit|Write"
+          }
+        ]
+      }
+    ]
+  }
+]

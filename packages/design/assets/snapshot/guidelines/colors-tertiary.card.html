@@ -1,0 +1,25 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Tertiary palette" subtitle="Infographics & presentations — depth and interest" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-page); }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .sw { border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .chip { height: 84px; }
+  .meta { padding: 10px 12px; }
+  .name { font-weight: var(--fw-bold); color: var(--text-heading); font-size: var(--fs-sm); }
+  .hex { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+  .pms { font-size: 10px; color: var(--text-muted); letter-spacing: var(--ls-wide); text-transform: uppercase; margin-top: 1px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background: var(--pat-green)"></div><div class="meta"><div class="name">Green</div><div class="hex">#7BC24D</div><div class="pms">PMS 369</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--pat-teal)"></div><div class="meta"><div class="name">Teal</div><div class="hex">#00817D</div><div class="pms">PMS 7718</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--pat-purple)"></div><div class="meta"><div class="name">Purple</div><div class="hex">#522E91</div><div class="pms">PMS 7679</div></div></div>
+  </div>
+</body>
+</html>

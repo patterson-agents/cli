@@ -1,0 +1,21 @@
+[
+  {
+    "path": ".agents/skills/deploy/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: deploy\ndescription: \"Deploy skill.\"\n---\n\nDeploy body.\n"
+  },
+  {
+    "path": ".claude/skills/deploy",
+    "format": "text",
+    "mode": "own",
+    "content": "../../.agents/skills/deploy",
+    "linkMode": "symlink"
+  },
+  {
+    "path": ".claude/skills/release/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: release\ndescription: \"Cut a release.\"\n---\n\nRelease version $1: run the release checklist.\n"
+  }
+]

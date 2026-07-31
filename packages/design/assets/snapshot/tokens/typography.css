@@ -1,0 +1,106 @@
+/* ============================================================
+   Patterson Companies — Typography Tokens
+   Primary family: proxima-nova (see fonts.css; Figtree fallback)
+
+   TWO SCALES LIVE HERE:
+   1. PRODUCTION scale (--pt-*) — the exact values the live Patterson
+      theme ships, verified against theme-styles.min.css. Use these
+      when the goal is matching pattersondental.com / pattersonvet.com.
+   2. SYSTEM scale (--fs-*, fluid) — this design system's own scale.
+      Broadly compatible, but see DESIGN.md → Verification for the
+      deltas (tracking, body leading, h3/h4 weight).
+   ============================================================ */
+
+:root {
+  /* --- Families -------------------------------------------- */
+  /* proxima-nova = the REAL Patterson brand font (Adobe Fonts; add your
+     Typekit embed to render it). Figtree = loaded free fallback. */
+  --font-sans: 'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* --- Weights --------------------------------------------- */
+  --fw-light:    300; /* @kind other */
+  --fw-regular:  400; /* @kind other */
+  --fw-medium:   500; /* @kind other */
+  --fw-semibold: 600; /* @kind other */
+  --fw-bold:     700; /* @kind other */
+  --fw-extra:    800; /* @kind other */
+  --fw-black:    900; /* @kind other */
+  /* 700 is the REAL bold ceiling — the only licensed bold face. 300, 500,
+     600, 800 and 900 have no licensed face and are browser-synthesized
+     (faux) off the 400/700 masters. See tokens/fonts.css. */
+
+  /* --- Type scale (hero, headings, body) — px noted in name - */
+  --fs-display:  clamp(2.75rem, 1.6rem + 4.2vw, 4.5rem);   /* @kind other */
+  --fs-h1:       clamp(2.25rem, 1.5rem + 2.6vw, 3.25rem);  /* @kind other */
+  --fs-h2:       clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);   /* @kind other */
+  --fs-h3:       clamp(1.375rem, 1.15rem + 0.8vw, 1.75rem);/* @kind other */
+  --fs-h4:       1.25rem;   /* 20px @kind other */
+  --fs-h5:       1.0625rem; /* 17px @kind other */
+  --fs-lead:     1.25rem;   /* 20px @kind other */
+  --fs-body:     1rem;      /* 16px @kind other */
+  --fs-sm:       0.875rem;  /* 14px @kind other */
+  --fs-xs:       0.75rem;   /* 12px @kind other */
+  --fs-stat:     clamp(2.5rem, 1.4rem + 4vw, 4rem);        /* @kind other */
+
+  /* --- Line heights ---------------------------------------- */
+  --lh-tight:    1.05; /* @kind other */
+  --lh-snug:     1.2;  /* @kind other */
+  --lh-heading:  1.15; /* @kind other */
+  --lh-body:     1.6;  /* @kind other */
+  --lh-relaxed:  1.75; /* @kind other */
+
+  /* --- Letter spacing -------------------------------------- */
+  --ls-tight:    -0.02em; /* @kind other */
+  --ls-snug:     -0.01em; /* @kind other */
+  --ls-normal:   0;       /* @kind other */
+  --ls-wide:     0.04em;  /* @kind other */
+  --ls-caps:     0.08em;  /* @kind other */
+  /* NOTE: production declares NO letter-spacing anywhere — not on
+     display sizes, not on uppercase labels. The tracking tokens above
+     are a system convention. Use --ls-normal to match production. */
+
+  /* =========================================================
+     PRODUCTION TYPE SCALE (verified — theme-styles.min.css)
+     Paired size/line-height, mobile-first with a desktop step.
+     Weight 800 on h1/h2 only; h3 and h4 drop to 400.
+     ========================================================= */
+  --pt-h1-size:       2.75rem;  /* 44px @kind other */
+  --pt-h1-lh:         3rem;     /* 48px @kind other */
+  --pt-h1-size-lg:    4rem;     /* 64px desktop @kind other */
+  --pt-h1-lh-lg:      4.25rem;  /* 68px @kind other */
+  --pt-h1-weight:     800;      /* @kind other */
+
+  --pt-h2-size:       2.25rem;  /* 36px @kind other */
+  --pt-h2-lh:         2.5rem;   /* 40px @kind other */
+  --pt-h2-size-lg:    2.75rem;  /* 44px desktop @kind other */
+  --pt-h2-lh-lg:      3rem;     /* 48px @kind other */
+  --pt-h2-weight:     800;      /* @kind other */
+
+  --pt-h3-size:       1.5rem;   /* 24px @kind other */
+  --pt-h3-lh:         1.75rem;  /* 28px @kind other */
+  --pt-h3-size-lg:    2.25rem;  /* 36px desktop @kind other */
+  --pt-h3-lh-lg:      2.5rem;   /* 40px @kind other */
+  --pt-h3-weight:     400;      /* REGULAR, not bold @kind other */
+
+  --pt-h4-size:       1.5rem;   /* 24px @kind other */
+  --pt-h4-lh:         1.75rem;  /* 28px @kind other */
+  --pt-h4-weight:     400;      /* @kind other */
+
+  --pt-body-size:     1.125rem; /* 18px @kind other */
+  --pt-body-lh:       1.5rem;   /* 24px = 1.33 ratio @kind other */
+  --pt-body-weight:   400;      /* @kind other */
+
+  --pt-eyebrow-size:  0.875rem; /* 14px @kind other */
+  --pt-eyebrow-lh:    1.375rem; /* 22px @kind other */
+  --pt-eyebrow-weight: 500;     /* navy, NOT sky, NOT tracked @kind other */
+
+  --pt-caption-size:  0.875rem; /* 14px @kind other */
+  --pt-caption-lh:    1rem;     /* 16px @kind other */
+  --pt-caption-weight: 400;     /* @kind other */
+
+  --pt-btn-size:      0.9375rem;/* 15px @kind other */
+  --pt-btn-lh:        1.25rem;  /* 20px @kind other */
+  --pt-btn-weight:    600;      /* @kind other */
+}

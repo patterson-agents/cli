@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "skills-copy",
+  "skills": [
+    {
+      "name": "review",
+      "description": "Review code against the checklist.",
+      "body": "Review the diff using checklist.md.",
+      "files": ["checklist.md", "missing.md"],
+      "linkMode": "copy"
+    }
+  ]
+}

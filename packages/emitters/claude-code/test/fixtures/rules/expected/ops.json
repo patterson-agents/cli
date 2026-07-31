@@ -1,0 +1,8 @@
+[
+  {
+    "path": ".claude/rules/ts-style.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\npaths: [\"**/*.ts\", \"**/*.tsx\"]\n---\n\nUse `import type` for type-only imports.\n"
+  }
+]

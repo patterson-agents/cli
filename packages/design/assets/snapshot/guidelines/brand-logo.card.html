@@ -1,0 +1,31 @@
+<!-- @dsCard group="Brand" viewport="700x340" name="Logo" subtitle="Official Patterson lockup — white, navy & square variants" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .row { display: flex; gap: 20px; align-items: stretch; }
+  .row + .row { margin-top: 20px; }
+  .panel { flex: 1; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-lg); height: 132px; position: relative; }
+  .light { background: var(--surface-page); border: 1px solid var(--border-subtle); }
+  .dark { background: var(--pat-navy); }
+  .sky { background: var(--pat-sky); }
+  .logo { height: 40px; width: auto; display: block; }
+  .logo.sm { height: 84px; }
+  .tag { position: absolute; bottom: 8px; left: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+  .dark .tag, .sky .tag { color: rgba(255,255,255,0.7); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="panel light"><img class="logo" src="../assets/brand/patterson-logo-navy.svg" alt="Patterson logo, navy"><span class="tag">logo-navy · on light</span></div>
+    <div class="panel dark"><img class="logo" src="../assets/brand/patterson-logo-white.svg" alt="Patterson logo, white"><span class="tag">logo-white · on navy</span></div>
+  </div>
+  <div class="row">
+    <div class="panel sky"><img class="logo" src="../assets/brand/patterson-logo-white.svg" alt="Patterson logo, white on sky"><span class="tag">logo-white · on sky</span></div>
+    <div class="panel light"><img class="logo sm" src="../assets/brand/patterson-logo-square.svg" alt="Patterson square lockup"><span class="tag">logo-square · app/avatar</span></div>
+  </div>
+</body>
+</html>

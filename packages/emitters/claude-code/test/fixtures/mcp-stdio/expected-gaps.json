@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "mcp.secretive",
+    "targetId": "claude-code",
+    "reason": "KEY: SecretRef kind \"prompt\" is inexpressible in .mcp.json (only ${NAME} env expansion is supported); use { kind: \"env\" } or configure the secret out of band.",
+    "fallbackApplied": false
+  }
+]

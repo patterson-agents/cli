@@ -1,0 +1,146 @@
+/* =============================================================
+   Patterson Slide Layout System
+   Reversed from the corporate "Purpose. Vision. Values."
+   PowerPoint master (3 masters / 21 layouts, 13.333in × 7.5in).
+   Canvas: 1920 × 1080  →  1 inch = 144px, 1 pt = 2px.
+
+   Layouts recovered from the deck:
+     .lay-cover      Custom Layout      white column + navy icon panel
+     .lay-bar        Title and Content  navy icon rail + title/body well
+     .lay-navy       Blue Slide + PPV   full-bleed navy pattern + eyebrow
+     .lay-wave-navy  2_Title Only       navy wave field
+     .lay-wave-light Hands only         white wave field
+     .lay-plain      Blue Bar Blank     plain white
+
+   Type recovered from slideMaster1:
+     title  48pt bold  #147EC2 caps    (master titleStyle)
+     body   18pt bold  #003767         (master bodyStyle)
+     footer  7pt light gray, right     (©… | … | pattersoncompanies.com | #)
+   ============================================================= */
+
+.pslide{position:relative;width:100%;height:100%;overflow:hidden;background:#fff;color:var(--pat-navy,#003767);font-family:var(--font-sans);font-size:36px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.pslide *{box-sizing:border-box}
+/* headings inherit the slide/panel ink instead of the global navy default */
+.pslide :where(h1,h2,h3,h4,h5,h6){color:inherit}
+.pslide picture,.pslide img{display:block}
+
+/* ---- backgrounds ---------------------------------------------------- */
+.lay-bar{background:#fff url('../brand/deck/bg-bluebar.png') left center/cover no-repeat}
+.lay-navy{background:var(--pat-navy,#003767) url('../brand/deck/bg-navy-plain.png') left center/cover no-repeat}
+.lay-wave-navy{background:var(--pat-navy,#003767) url('../brand/deck/bg-wave-navy.png') center/cover no-repeat}
+.lay-wave-light{background:#fff url('../brand/deck/bg-wave-light.png') center/cover no-repeat}
+.lay-plain{background:#fff}
+.lay-navy,.lay-wave-navy{color:#fff}
+
+/* ---- the well: content sits clear of the 15.3% icon rail ------------ */
+.well{position:absolute;inset:0;padding:117px 250px 128px 383px;display:flex;flex-direction:column}
+.lay-navy .well,.lay-wave-navy .well,.lay-wave-light .well,.lay-plain .well{padding-left:250px}
+.well.center{justify-content:center}
+.well.pad-tight{padding-top:96px}
+.well.indent{padding-left:500px}
+
+/* ---- type ----------------------------------------------------------- */
+.ptitle{margin:0;font-family:var(--font-display);font-size:96px;font-weight:700;line-height:1.02;letter-spacing:-.01em;text-transform:uppercase;color:var(--pat-blue,#147EC2)}
+.lay-navy .ptitle,.lay-wave-navy .ptitle{color:#fff}
+.plead{margin:0;font-size:48px;font-weight:700;line-height:1.34;color:var(--pat-navy,#003767)}
+.pbody{margin:0;font-size:36px;font-weight:700;line-height:1.5;color:var(--pat-navy,#003767)}
+.psmall{margin:0;font-size:28px;font-weight:400;line-height:1.4;color:var(--pat-gray,#58585B)}
+.lay-navy .plead,.lay-navy .pbody,.lay-wave-navy .plead,.lay-wave-navy .pbody{color:#fff}
+.lay-navy .psmall,.lay-wave-navy .psmall{color:rgba(255,255,255,.72)}
+.pnumeral{margin:0;font-family:var(--font-display);font-size:144px;font-weight:700;line-height:1;text-transform:uppercase;letter-spacing:-.01em;color:#fff}
+.p-sky{color:var(--pat-sky,#00A8E1)}
+.p-blue{color:var(--pat-blue,#147EC2)}
+.p-navy{color:var(--pat-navy,#003767)}
+.p-green{color:var(--pat-green,#7BC24D)}
+.p-purple{color:var(--pat-purple,#522E91)}
+
+/* eyebrow — top-right stamp on the navy section layout */
+.peyebrow{position:absolute;top:60px;right:96px;margin:0;font-size:28px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--pat-sky,#00A8E1)}
+
+/* kicker — letterspaced navy caps over a sky hairline (statement layouts) */
+.pkicker{margin:0 auto;padding-bottom:16px;border-bottom:2px solid var(--pat-sky,#00A8E1);font-size:34px;font-weight:700;letter-spacing:.42em;text-indent:.42em;text-transform:uppercase;color:var(--pat-navy,#003767);width:fit-content}
+
+/* footer rule line, verbatim from the master's footer placeholder */
+.pfoot{position:absolute;right:96px;bottom:52px;margin:0;font-size:15px;font-weight:400;letter-spacing:.02em;color:var(--pat-gray-500,#75757a)}
+.lay-navy .pfoot,.lay-wave-navy .pfoot{color:rgba(255,255,255,.6)}
+.pfoot .sep{opacity:.5;padding:0 6px}
+
+/* ---- cover ---------------------------------------------------------- */
+.lay-cover{display:grid;grid-template-columns:27.65% 1fr;background:#fff}
+.lay-cover .cover-copy{display:flex;flex-direction:column;justify-content:center;align-items:flex-end;padding:0 66px 0 90px;text-align:right}
+.lay-cover .cover-panel{background:var(--pat-navy,#003767) url('../brand/deck/bg-cover-panel.png') center/cover no-repeat}
+.cover-title{margin:0;font-family:var(--font-display);font-size:58px;font-weight:700;line-height:1.16;letter-spacing:-.005em;text-transform:uppercase}
+.cover-meta{margin:44px 0 0;font-size:24px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pat-sky,#00A8E1)}
+.cover-meta span{display:block;font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--pat-gray,#58585B);margin-top:8px}
+
+/* ---- stair-step cards ("What is it?") ------------------------------- */
+.stair{position:relative;flex:1}
+.stair-card{position:absolute;width:700px;padding:30px 36px 34px;color:#fff}
+.stair-card h3{margin:0 0 10px;font-size:48px;font-weight:700;line-height:1.05;text-transform:uppercase;letter-spacing:-.005em;color:#fff}
+.stair-card p{margin:0;font-size:32px;font-weight:400;line-height:1.34}
+.stair-1{left:0;top:0;background:var(--pat-navy,#003767)}
+.stair-2{left:220px;top:230px;background:var(--pat-blue,#147EC2)}
+.stair-3{left:540px;top:436px;background:var(--pat-sky,#00A8E1)}
+
+/* ---- column chart -------------------------------------------------- */
+.chart{display:flex;align-items:flex-end;gap:84px;height:430px}
+.chart-col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;width:230px;height:100%}
+.chart-val{margin:0 0 14px;font-size:40px;font-weight:700;color:var(--pat-navy,#003767)}
+.chart-bar{width:230px}
+.chart-cap{margin:18px 0 0;width:290px;text-align:center;font-size:26px;font-weight:400;line-height:1.3;color:var(--pat-gray,#58585B)}
+.chart-delta{align-self:flex-end;margin-bottom:170px;padding:10px 22px;background:#fff;border:2px solid var(--pat-gray-200,#e2e2e4);font-size:40px;font-weight:700;color:var(--pat-navy,#003767);white-space:nowrap}
+
+/* ---- annotation callouts (marked-up statement slides) -------------- */
+.callout{position:absolute;max-width:420px;font-size:30px;font-weight:400;line-height:1.32;color:var(--pat-navy,#003767)}
+.callout::before{content:"";position:absolute;left:-2px;top:-18px;width:56px;height:2px;background:currentColor;opacity:.45}
+
+/* ---- values: four flush colour columns ----------------------------- */
+.values{position:absolute;left:24px;right:24px;top:192px;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.value-col{min-width:0;padding:150px 42px 0;color:#fff;text-align:center}
+.value-col.v-passionate{background:#41B8DA}
+.value-col.v-focused{background:var(--pat-green,#7BC24D)}
+.value-col.v-people{background:var(--pat-purple,#522E91)}
+.value-col.v-advancing{background:var(--pat-blue,#147EC2)}
+.value-stack{display:flex;flex-direction:column;align-items:center;width:100%}
+.value-stack b{font-size:42px;font-weight:700;line-height:1.14;text-transform:uppercase;letter-spacing:-.01em;color:rgba(255,255,255,.26);white-space:nowrap}
+.value-stack b.on{color:#fff}
+.value-col p{margin:74px 0 0;font-size:34px;font-weight:700;line-height:1.3}
+
+/* ---- statement lockup (PURPOSE / VISION / VALUES recap) ------------ */
+.lockup{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start;max-width:1400px;margin:0 auto}
+.lockup-mark{margin:0;font-family:var(--font-display);font-size:96px;font-weight:700;line-height:.98;letter-spacing:-.01em;text-transform:uppercase;text-align:right;color:var(--pat-blue,#147EC2)}
+.lockup-mark.tone-sky{color:var(--pat-sky,#00A8E1)}
+.lockup-mark.tone-cyan{color:#4CB6DA}
+.lockup-text{margin:0;font-size:60px;font-weight:400;line-height:1.14;color:var(--pat-navy,#003767)}
+.lockup-icon{margin:64px auto 0;height:150px;width:auto}
+
+/* ---- three-column recap -------------------------------------------- */
+.recap{display:grid;grid-template-columns:repeat(3,1fr);gap:80px;align-items:stretch}
+.recap-col{display:flex;flex-direction:column;text-align:center}
+.recap-col .rule{width:190px;height:3px;margin:0 auto 26px;background:currentColor;opacity:.9}
+.recap-col h3{margin:0;color:inherit;font-size:52px;font-weight:700;line-height:1.06;text-transform:uppercase;letter-spacing:-.005em}
+.recap-col p{margin:26px 0 0;font-size:30px;font-weight:400;line-height:1.3;color:rgba(255,255,255,.86)}
+.recap-col .icon{display:flex;align-items:flex-end;justify-content:center;height:150px;margin-top:auto;padding-top:38px}
+.recap-col .icon img{height:100%;width:auto;object-fit:contain}
+
+/* ---- misc ----------------------------------------------------------- */
+.stack-24>*+*{margin-top:24px}
+.stack-32>*+*{margin-top:32px}
+.stack-48>*+*{margin-top:48px}
+.marker-list{list-style:none;margin:0;padding:0}
+.marker-list li{position:relative;padding-left:38px;font-size:36px;font-weight:700;line-height:1.3;color:var(--pat-navy,#003767)}
+.marker-list li+li{margin-top:26px}
+.marker-list li::before{content:"";position:absolute;left:0;top:.44em;width:16px;height:16px;background:var(--pat-sky,#00A8E1)}
+.lay-navy .marker-list li,.lay-wave-navy .marker-list li{color:#fff}
+
+/* ---- entrance ------------------------------------------------------- */
+.anim{opacity:1}
+@media (prefers-reduced-motion:no-preference){
+  [data-deck-active] .anim{animation:pat-rise .55s cubic-bezier(.16,1,.3,1) forwards}
+  [data-deck-active] .anim.d1{animation-delay:.06s}
+  [data-deck-active] .anim.d2{animation-delay:.14s}
+  [data-deck-active] .anim.d3{animation-delay:.22s}
+  [data-deck-active] .anim.d4{animation-delay:.30s}
+  [data-deck-active] .anim.d5{animation-delay:.38s}
+}
+@keyframes pat-rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}

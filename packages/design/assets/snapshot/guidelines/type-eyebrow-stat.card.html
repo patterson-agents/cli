@@ -1,0 +1,30 @@
+<!-- @dsCard group="Type" viewport="700x180" name="Eyebrow, stat & mono" subtitle="Overlines, big numbers and monospaced data" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+  .col { display: flex; flex-direction: column; gap: 6px; }
+  .stat { font-size: var(--fs-stat); font-weight: var(--fw-bold); color: var(--pat-sky); letter-spacing: var(--ls-tight); line-height: 1; }
+  .stat small { font-size: 0.4em; color: var(--text-muted); font-weight: var(--fw-semibold); display: block; letter-spacing: 0; }
+  .mono { font-family: var(--font-mono); font-size: var(--fs-sm); color: var(--text-body); background: var(--surface-muted); padding: 8px 12px; border-radius: var(--radius-sm); }
+  .divider { width: 1px; align-self: stretch; background: var(--border-subtle); }
+</style>
+</head>
+<body>
+  <div class="col">
+    <span class="pat-eyebrow">What we do</span>
+    <span style="font-size:var(--fs-h4); font-weight:var(--fw-bold); color:var(--text-heading)">Section eyebrow</span>
+  </div>
+  <div class="divider"></div>
+  <div class="col">
+    <span class="stat">86M<small>U.S. households with pets</small></span>
+  </div>
+  <div class="divider"></div>
+  <div class="col">
+    <span class="mono">--font-mono · SKU&nbsp;7716-204</span>
+  </div>
+</body>
+</html>

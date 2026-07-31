@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": ["Bash(git status)"],
+    "defaultMode": "plan"
+  },
+  "cleanupPeriodDays": 30
+}

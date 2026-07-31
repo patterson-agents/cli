@@ -1,0 +1,43 @@
+/* ============================================================
+   Patterson Companies — Effects: shadows, transitions, focus
+   The brand reads clean and corporate: soft, low-contrast
+   shadows; restrained motion; a clear sky-blue focus ring.
+   ============================================================ */
+
+:root {
+  /* --- Elevation (cool, low-spread, navy-tinted) ----------- */
+  --shadow-xs:  0 1px 2px rgba(0, 55, 103, 0.06);
+  --shadow-sm:  0 1px 3px rgba(0, 55, 103, 0.08), 0 1px 2px rgba(0, 55, 103, 0.06);
+  --shadow-md:  0 4px 12px rgba(0, 55, 103, 0.10), 0 2px 4px rgba(0, 55, 103, 0.06);
+  --shadow-lg:  0 12px 28px rgba(0, 55, 103, 0.12), 0 4px 10px rgba(0, 55, 103, 0.07);
+  --shadow-xl:  0 24px 48px rgba(0, 55, 103, 0.16);
+
+  /* --- Elevation: PRODUCTION-VERIFIED ----------------------
+     The live theme's ONLY elevation token, on download / external
+     link buttons. Note it is NEUTRAL black at very low alpha —
+     the navy tint above is this system's convention.           */
+  --download-shadow: 0 4px 8px rgba(0, 0, 0, 0.08), 0 0 4px rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.12);
+
+  /* --- Rings ----------------------------------------------- */
+  --ring-focus: 0 0 0 3px rgba(0, 168, 225, 0.45);   /* sky */
+  --ring-error: 0 0 0 3px rgba(192, 57, 43, 0.35);
+
+  /* --- Motion ---------------------------------------------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1); /* @kind other */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --dur-fast:   120ms; /* @kind other */
+  --dur-base:   200ms; /* @kind other */
+  --dur-slow:   320ms; /* @kind other */
+
+  /* Production timings & easings (verified): 100–200ms, plain easings,
+     applied only to background-color, border-color, color, transform
+     and height. Nothing else animates.                              */
+  --dur-prod-fast: 100ms; /* @kind other */
+  --dur-prod-base: 200ms; /* @kind other */
+  --ease-prod:     ease-in-out; /* @kind other */
+  --transition-prod: 0.2s ease-in-out; /* @kind other */
+
+  /* --- Overlay & blur -------------------------------------- */
+  --overlay-scrim: rgba(0, 55, 103, 0.55); /* @kind color */
+  --blur-panel: saturate(140%) blur(12px); /* @kind other */
+}

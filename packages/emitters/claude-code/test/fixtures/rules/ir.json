@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "name": "rules",
+  "instructions": [
+    {
+      "id": "ts-style",
+      "body": "Use `import type` for type-only imports.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["**/*.ts", "**/*.tsx"] }
+    },
+    {
+      "id": "bad/id",
+      "body": "Unemittable id.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["*"] }
+    }
+  ]
+}

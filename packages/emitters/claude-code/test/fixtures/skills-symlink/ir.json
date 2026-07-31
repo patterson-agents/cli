@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "skills-symlink",
+  "skills": [
+    {
+      "name": "deploy",
+      "description": "Deploy the app to staging.",
+      "body": "# Deploy\n\nRun `bun run deploy`.",
+      "allowedTools": ["Bash", "Read"],
+      "linkMode": "symlink"
+    }
+  ]
+}

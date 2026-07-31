@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "commands-as-skills",
+  "skills": [
+    { "name": "deploy", "description": "Deploy skill.", "body": "Deploy body.", "linkMode": "symlink" }
+  ],
+  "commands": [
+    {
+      "name": "release",
+      "description": "Cut a release.",
+      "template": "Release version $1: run the release checklist.",
+      "args": ["version"]
+    },
+    { "name": "Bad_Name", "template": "unemittable" },
+    { "name": "deploy", "template": "collides with the deploy skill" }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "path": ".mcp.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "mcpServers",
+          "httpd"
+        ],
+        "value": {
+          "type": "http",
+          "url": "https://example.com/mcp",
+          "headers": {
+            "Authorization": "${MCP_TOKEN}"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "mcpServers",
+          "events"
+        ],
+        "value": {
+          "type": "sse",
+          "url": "https://example.com/sse"
+        }
+      },
+      {
+        "keyPath": [
+          "mcpServers",
+          "sock"
+        ],
+        "value": {
+          "type": "ws",
+          "url": "wss://example.com/ws"
+        }
+      }
+    ]
+  }
+]

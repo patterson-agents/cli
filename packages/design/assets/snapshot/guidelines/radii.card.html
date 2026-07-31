@@ -1,0 +1,44 @@
+<!-- @dsCard group="Spacing" viewport="820x300" name="Corner radii" subtitle="Production is restrained — 5px buttons, 2px fields" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .row { display: flex; gap: 18px; align-items: flex-end; flex-wrap: wrap; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .box { width: 70px; height: 56px; background: var(--pat-navy-10); border: 2px solid var(--pat-navy); }
+  .lbl { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-align: center; line-height: 1.4; }
+  .prod .box { background: var(--pat-sky-10); border-color: var(--pat-sky); }
+  .prod .lbl { color: var(--pat-teal); font-weight: 600; }
+  h2 { font-family: var(--font-sans); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--text-muted); margin: 0 0 12px; }
+  .sect { margin-bottom: 22px; }
+  .note { font-family: var(--font-sans); font-size: 12px; line-height: 1.5; color: var(--text-body); background: var(--pat-warning-bg); border-left: 3px solid var(--pat-warning); padding: 10px 12px; max-width: 720px; }
+  .note b { color: var(--text-strong); }
+</style>
+</head>
+<body>
+  <div class="sect prod">
+    <h2>Production-verified</h2>
+    <div class="row">
+      <div class="item"><div class="box" style="border-radius:var(--radius-field)"></div><span class="lbl">field · 2<br>input/select</span></div>
+      <div class="item"><div class="box" style="border-radius:var(--radius-btn)"></div><span class="lbl">btn · 5<br>.btn</span></div>
+      <div class="item"><div class="box" style="border-radius:var(--radius-btn-elevated)"></div><span class="lbl">btn-elevated · 6<br>download/external</span></div>
+    </div>
+  </div>
+  <div class="sect">
+  <h2>System scale</h2>
+  <div class="row">
+    <div class="item"><div class="box" style="border-radius:var(--radius-xs)"></div><span class="lbl">xs · 2</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-sm)"></div><span class="lbl">sm · 4</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-md)"></div><span class="lbl">md · 6</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-lg)"></div><span class="lbl">lg · 10</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-xl)"></div><span class="lbl">xl · 16</span></div>
+    <div class="item"><div class="box" style="border-radius:var(--radius-2xl)"></div><span class="lbl">2xl · 24</span></div>
+    <div class="item"><div class="box" style="width:90px;border-radius:var(--radius-pill)"></div><span class="lbl">pill<br>(system only)</span></div>
+  </div>
+  </div>
+  <p class="note"><b>Patterson is not a pill brand.</b> The production stylesheet contains no <code>border-radius: 999px</code> anywhere — buttons are 5px and fields are 2px. The <code>pill</code> token is this design system's own convention; use it knowingly, not as brand truth.</p>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "path": ".agents/skills/review/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: review\ndescription: \"Review code against the checklist.\"\n---\n\nReview the diff using checklist.md.\n"
+  },
+  {
+    "path": ".claude/skills/review/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: review\ndescription: \"Review code against the checklist.\"\n---\n\nReview the diff using checklist.md.\n",
+    "linkMode": "copy"
+  },
+  {
+    "path": ".claude/skills/review/checklist.md",
+    "format": "text",
+    "mode": "own",
+    "content": "# Checklist\n\n- [ ] tests pass\n- [ ] no drift\n",
+    "linkMode": "copy"
+  }
+]

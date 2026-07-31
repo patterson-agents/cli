@@ -1,0 +1,40 @@
+<!-- @dsCard group="Type" viewport="900x620" name="Production scale" subtitle="Exact live-theme sizes, weights & line-heights" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:26px;background:var(--surface-page);font-family:var(--font-sans)}
+  h1{font-size:19px;font-weight:700;color:var(--text-strong);margin:0 0 4px}
+  .sub{font-size:13px;color:var(--text-body);margin:0 0 22px;max-width:740px;line-height:1.5}
+  .stack{display:flex;flex-direction:column;gap:16px}
+  .row{display:grid;grid-template-columns:1fr 190px;gap:20px;align-items:baseline;padding-bottom:14px;border-bottom:var(--border-w) solid var(--border-subtle)}
+  .meta{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);line-height:1.6;text-align:right}
+  .meta b{color:var(--pat-navy)}
+  .flag{color:var(--pat-warning)!important;font-weight:600}
+  .h1s{color:var(--pat-navy);font-size:var(--pt-h1-size);line-height:var(--pt-h1-lh);font-weight:var(--pt-h1-weight)}
+  .h2s{color:var(--pat-navy);font-size:var(--pt-h2-size);line-height:var(--pt-h2-lh);font-weight:var(--pt-h2-weight)}
+  .h3s{color:var(--pat-navy);font-size:var(--pt-h3-size);line-height:var(--pt-h3-lh);font-weight:var(--pt-h3-weight)}
+  .h4s{color:var(--pat-navy);font-size:var(--pt-h4-size);line-height:var(--pt-h4-lh);font-weight:var(--pt-h4-weight)}
+  .bodys{color:var(--pat-gray);font-size:var(--pt-body-size);line-height:var(--pt-body-lh);font-weight:var(--pt-body-weight)}
+  .eyes{color:var(--pat-navy);font-size:var(--pt-eyebrow-size);line-height:var(--pt-eyebrow-lh);font-weight:var(--pt-eyebrow-weight)}
+  .caps{color:var(--pat-navy);font-size:var(--pt-caption-size);line-height:var(--pt-caption-lh);font-weight:var(--pt-caption-weight)}
+  .btns{color:var(--pat-navy);font-size:var(--pt-btn-size);line-height:var(--pt-btn-lh);font-weight:var(--pt-btn-weight)}
+</style>
+</head>
+<body>
+  <h1>Production type scale</h1>
+  <p class="sub">The exact values the live Patterson theme ships, verified against <code>theme-styles.min.css</code>. Every heading level is <strong>navy</strong> — headings are never gray or black. Note the hard weight drop: <strong>800 at h1/h2, then 400 from h3 down</strong>. Production declares <strong>no letter-spacing anywhere</strong>. Mobile values shown; the desktop step is noted at right.</p>
+  <div class="stack">
+    <div class="row"><div class="h1s">Trusted expertise</div><div class="meta"><b>h1</b> 2.75rem/3rem · 800 <span class="flag">faux</span><br>desktop 4rem/4.25rem</div></div>
+    <div class="row"><div class="h2s">Unrivaled support</div><div class="meta"><b>h2</b> 2.25rem/2.5rem · 800 <span class="flag">faux</span><br>desktop 2.75rem/3rem</div></div>
+    <div class="row"><div class="h3s">We strengthen the people who keep us healthy</div><div class="meta"><b>h3</b> 1.5rem/1.75rem · <b>400</b><br>desktop 2.25rem/2.5rem</div></div>
+    <div class="row"><div class="h4s">Bold solutions, personal touch</div><div class="meta"><b>h4</b> 1.5rem/1.75rem · <b>400</b><br>no desktop step</div></div>
+    <div class="row"><div class="bodys">Generations of quality customer service define our business operations and our personal interactions. We are much more than a distributor — we are an indispensable partner.</div><div class="meta"><b>body</b> 1.125rem/1.5rem · 400<br>ratio 1.33 (not 1.6)</div></div>
+    <div class="row"><div class="eyes">Trusted expertise</div><div class="meta"><b>.eyebrow</b> 0.875rem/1.375rem · 500 <span class="flag">faux</span><br><b>navy, not sky · no tracking</b></div></div>
+    <div class="row"><div class="caps">Dr. Sarah Chen, DVM | Saint Paul, MN</div><div class="meta"><b>.caption</b> 0.875rem/1rem · 400<br>navy</div></div>
+    <div class="row"><div class="btns">Explore solutions</div><div class="meta"><b>.btn</b> 0.9375rem/1.25rem · 600 <span class="flag">faux</span><br>15px/30px padding ≈ 50px</div></div>
+  </div>
+</body>
+</html>

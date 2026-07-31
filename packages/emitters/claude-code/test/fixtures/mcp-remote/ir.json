@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "mcp-remote",
+  "mcp": [
+    {
+      "name": "httpd",
+      "transport": {
+        "kind": "http",
+        "url": "https://example.com/mcp",
+        "headers": { "Authorization": { "kind": "env", "name": "MCP_TOKEN" } }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "events",
+      "transport": { "kind": "sse", "url": "https://example.com/sse" },
+      "scope": "project",
+      "timeoutMs": 5000
+    },
+    {
+      "name": "sock",
+      "transport": { "kind": "ws", "url": "wss://example.com/ws" },
+      "scope": "project"
+    },
+    {
+      "name": "user-scoped",
+      "transport": { "kind": "http", "url": "https://example.com/user" },
+      "scope": "user"
+    }
+  ]
+}

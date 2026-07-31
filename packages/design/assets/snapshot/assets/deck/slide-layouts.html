@@ -1,0 +1,92 @@
+<!-- @dsCard group="Presentation" viewport="1280x900" name="Slide Layouts" subtitle="Five masters reversed from the corporate Purpose·Vision·Values PowerPoint" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Patterson — Slide Layouts</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="../../assets/deck/patterson-slides.css">
+<style>
+  body{margin:0;padding:56px;background:var(--pat-gray-50);font-family:var(--font-sans)}
+  h1{margin:0 0 8px;font-size:32px;font-weight:700;color:var(--pat-navy)}
+  .sub{margin:0 0 44px;font-size:16px;line-height:1.5;color:var(--pat-gray);max-width:74ch}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:36px}
+  figure{margin:0}
+  .frame{width:100%;aspect-ratio:16/9;overflow:hidden;border:1px solid var(--pat-gray-200);background:#fff}
+  .frame>.pslide{width:1920px;height:1080px;transform-origin:top left}
+  figcaption{margin-top:12px;font-size:13px;line-height:1.5;color:var(--pat-gray)}
+  figcaption b{display:block;font-size:15px;color:var(--pat-navy);text-transform:uppercase;letter-spacing:.06em}
+  figcaption code{font-family:var(--font-mono);font-size:12px;color:var(--pat-blue)}
+</style>
+</head>
+<body>
+<h1>Slide layouts</h1>
+<p class="sub">Reversed from the corporate <b>Purpose. Vision. Values.</b> PowerPoint master (13.333in × 7.5in → a 1920 × 1080 canvas, so 1in = 144px and 1pt = 2px). Titles are 48pt bold uppercase in secondary blue; body copy is 18pt bold navy; the footer rule line is 7pt gray, right-aligned. Load <code>assets/deck/patterson-slides.css</code> and put one layout class on each <code>&lt;section class="pslide …"&gt;</code>.</p>
+
+<div class="grid">
+  <figure>
+    <div class="frame"><div class="pslide lay-cover">
+      <div class="cover-copy"><h1 class="cover-title"><span class="p-sky">Purpose</span><br><span class="p-blue">Vision</span><br><span class="p-navy">Values</span></h1><p class="cover-meta">Manager Slides<span>July 2026</span></p></div>
+      <div class="cover-panel"></div>
+    </div></div>
+    <figcaption><b>lay-cover</b><code>.lay-cover</code> — white copy column (27.65%) + navy icon-collage panel with the sky logo flag. Cover only.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame"><div class="pslide lay-bar">
+      <div class="well"><h2 class="ptitle">Title goes here</h2><p class="pbody" style="margin-top:40px;max-width:1100px">Body copy sits in the well, clear of the 15.3% navy icon rail. 18pt bold navy.</p></div>
+      <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>3</p>
+    </div></div>
+    <figcaption><b>lay-bar</b><code>.lay-bar</code> — the workhorse content layout. Navy icon rail at left with the Patterson mark; content in <code>.well</code>.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame"><div class="pslide lay-navy">
+      <p class="peyebrow">Purpose. Vision. Values.</p>
+      <div class="well center indent"><p class="pnumeral">Section</p></div>
+      <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>4</p>
+    </div></div>
+    <figcaption><b>lay-navy</b><code>.lay-navy</code> — full-bleed navy with the icon pattern bleeding off the left edge. Section dividers; sky eyebrow top-right.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame"><div class="pslide lay-wave-navy">
+      <div class="well center" style="padding-left:250px;padding-right:250px"><p class="pkicker" style="margin:0;color:#fff;border-color:var(--pat-sky)">Kicker</p><p class="pnumeral" style="margin-top:56px;font-size:96px;max-width:1200px;line-height:1.1">Statement or quote slide</p></div>
+      <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>6</p>
+    </div></div>
+    <figcaption><b>lay-wave-navy</b><code>.lay-wave-navy</code> — navy wave field. Quotes, statements, closers.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame"><div class="pslide lay-wave-light">
+      <div class="well center" style="padding-left:150px;padding-right:150px">
+        <p class="pkicker">Purpose</p>
+        <div class="lockup" style="margin-top:100px"><p class="lockup-mark">We are<br>Patterson</p><p class="lockup-text">We Strengthen the People Who Keep Us and Our Animals Healthy.</p></div>
+      </div>
+      <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>15</p>
+    </div></div>
+    <figcaption><b>lay-wave-light</b><code>.lay-wave-light</code> — white wave field for the <code>.pkicker</code> + <code>.lockup</code> statement pattern.</figcaption>
+  </figure>
+
+  <figure>
+    <div class="frame"><div class="pslide lay-plain">
+      <div class="values" style="top:120px">
+        <div class="value-col v-passionate"><div class="value-stack"><b class="on">Passionate</b><b>Focused</b></div></div>
+        <div class="value-col v-focused"><div class="value-stack"><b>Passionate</b><b class="on">Focused</b></div></div>
+        <div class="value-col v-people"><div class="value-stack"><b class="on">People-First</b></div></div>
+        <div class="value-col v-advancing"><div class="value-stack"><b class="on">Always Advancing</b></div></div>
+      </div>
+    </div></div>
+    <figcaption><b>lay-plain</b><code>.lay-plain</code> — plain white, used for edge-to-edge colour fields such as the four <code>.value-col</code> value panels (cyan · green · purple · blue).</figcaption>
+  </figure>
+</div>
+
+<script>
+  const fit = () => document.querySelectorAll('.frame').forEach(f => {
+    const s = f.clientWidth / 1920;
+    f.firstElementChild.style.transform = 'scale(' + s + ')';
+  });
+  fit(); addEventListener('resize', fit);
+</script>
+</body>
+</html>

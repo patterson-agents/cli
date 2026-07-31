@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "commands.Bad_Name",
+    "targetId": "claude-code",
+    "reason": "Command name \"Bad_Name\" is not a valid skill directory name (skills-as-commands requires ^[a-z0-9]([a-z0-9-]*[a-z0-9])?$, ≤64 chars, no \"--\").",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "commands.deploy",
+    "targetId": "claude-code",
+    "reason": "Command \"deploy\" collides with a skill of the same name; both compile to .claude/skills/deploy/SKILL.md.",
+    "fallbackApplied": false
+  }
+]

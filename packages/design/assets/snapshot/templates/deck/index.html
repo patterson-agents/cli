@@ -1,0 +1,163 @@
+<!-- @template name="Presentation Deck" description="Patterson 16:9 slide deck on the corporate PowerPoint master — cover panel, icon-rail content slides, navy section dividers, stats, comparison, quote, table and closing." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterson Companies — Presentation Deck</title>
+<script src="./ds-base.js"></script>
+<style>
+  deck-stage:not(:defined){visibility:hidden}
+  html,body{margin:0;background:#0a1c30}
+  deck-stage{background:#0a1c30}
+  /* deck-local pieces layered on the shared master (assets/deck/patterson-slides.css) */
+  .fact-row{display:flex;justify-content:space-between;gap:24px;padding-bottom:22px;border-bottom:1px solid var(--pat-gray-200)}
+  .fact-row:last-child{border-bottom:0;padding-bottom:0}
+  .fact-row dt{margin:0;font-size:32px;font-weight:400;color:var(--pat-gray)}
+  .fact-row dd{margin:0;font-size:32px;font-weight:700;color:var(--pat-navy)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:56px}
+  .stat b{display:block;font-family:var(--font-display);font-size:120px;font-weight:700;line-height:.95;letter-spacing:-.02em}
+  .stat span{display:block;margin-top:18px;max-width:17ch;font-size:30px;font-weight:400;line-height:1.3;color:var(--pat-gray)}
+  .panel{padding:56px;display:flex;flex-direction:column}
+  .panel h3{margin:0;font-size:56px;font-weight:700;line-height:1.04;text-transform:uppercase;letter-spacing:-.01em}
+  .panel .kick{margin:14px 0 0;font-size:26px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+  .panel p{margin:32px 0 0;font-size:32px;font-weight:400;line-height:1.4}
+  .panel .mark{margin:auto 0 0;padding-top:36px;font-size:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+  .ptable{border-top:4px solid var(--pat-navy)}
+  .ptable .tr{display:grid;grid-template-columns:.85fr 2.3fr 1.15fr;gap:44px;padding:32px 8px;border-bottom:1px solid var(--pat-gray-200);align-items:baseline}
+  .ptable .tr:last-child{border-bottom:0}
+  .ptable .th{padding:22px 8px;border-bottom:1px solid var(--pat-gray-300);font-size:24px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pat-gray)}
+  .ptable .c1{font-size:34px;font-weight:700;text-transform:uppercase;color:var(--pat-blue)}
+  .ptable .c2{font-size:30px;font-weight:400;line-height:1.38;color:var(--pat-gray)}
+  .ptable .c3{font-size:30px;font-weight:700;color:var(--pat-navy)}
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080">
+
+<!-- 1 · COVER ------------------------------------------------------------ -->
+<section data-label="Cover" data-screen-label="01" class="pslide lay-cover">
+  <div class="cover-copy">
+    <h1 class="cover-title anim"><span class="p-sky">Company</span><br><span class="p-blue">Overview</span><br><span class="p-navy">2026</span></h1>
+    <p class="cover-meta anim d1">Trusted Expertise<span>Unrivaled Support</span></p>
+  </div>
+  <div class="cover-panel"></div>
+</section>
+
+<!-- 2 · SECTION DIVIDER --------------------------------------------------- -->
+<section data-label="Who We Are" data-screen-label="02" class="pslide lay-navy">
+  <p class="peyebrow">Company Overview</p>
+  <div class="well center indent">
+    <p class="pnumeral anim">Who we are</p>
+    <p class="pbody anim d1" style="margin-top:40px;max-width:1000px;font-weight:400">An international distributor of products, technology, services and business solutions for the oral and animal health markets — since 1877.</p>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>2</p>
+</section>
+
+<!-- 3 · COMPANY AT A GLANCE ---------------------------------------------- -->
+<section data-label="Company at a Glance" data-screen-label="03" class="pslide lay-bar">
+  <div class="well">
+    <h2 class="ptitle anim">More than a distributor</h2>
+    <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:88px;align-items:start;margin-top:56px">
+      <p class="anim d1" style="margin:0;font-size:34px;font-weight:400;line-height:1.44;color:var(--pat-gray)">Patterson connects the dental and animal health communities with the products, technology and expertise they rely on every day. We pair bold solutions with a personal touch — guiding practices of every size, from independent clinics to large group networks and production operations across North America and the United Kingdom.</p>
+      <dl class="anim d2 stack-24" style="margin:0">
+        <div class="fact-row"><dt>Founded</dt><dd>1877</dd></div>
+        <div class="fact-row"><dt>Headquarters</dt><dd>Saint Paul, MN</dd></div>
+        <div class="fact-row"><dt>Markets</dt><dd>Dental &middot; Animal Health</dd></div>
+        <div class="fact-row"><dt>Footprint</dt><dd>North America &middot; UK</dd></div>
+      </dl>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>3</p>
+</section>
+
+<!-- 4 · BY THE NUMBERS --------------------------------------------------- -->
+<section data-label="By the Numbers" data-screen-label="04" class="pslide lay-bar">
+  <div class="well">
+    <h2 class="ptitle anim">The scale behind the service</h2>
+    <div class="stat-grid" style="margin-top:auto;margin-bottom:60px">
+      <div class="stat anim d1"><b class="p-navy">1877</b><span>Serving customers since</span></div>
+      <div class="stat anim d2"><b class="p-sky">86M</b><span>U.S. households have pets</span></div>
+      <div class="stat anim d3"><b class="p-sky">98%</b><span>of customers reached in 1&ndash;2 days</span></div>
+      <div class="stat anim d4"><b class="p-navy">60</b><span>fulfillment centers</span></div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>4</p>
+</section>
+
+<!-- 5 · TWO MARKETS ------------------------------------------------------ -->
+<section data-label="Two Markets" data-screen-label="05" class="pslide lay-bar">
+  <div class="well">
+    <h2 class="ptitle anim">Two markets, one mission</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:52px;flex:1;min-height:0">
+      <div class="panel anim d1" style="background:var(--pat-navy);color:#fff">
+        <h3>Dental</h3>
+        <p class="kick" style="color:var(--pat-blue-light)">Oral health</p>
+        <p style="color:rgba(255,255,255,.86)">Everyday essentials, equipment, technology and practice-management software for dentists across North America.</p>
+        <p class="mark" style="color:var(--pat-blue-light)">Patterson Dental</p>
+      </div>
+      <div class="panel anim d2" style="background:var(--pat-sky);color:#fff">
+        <h3>Animal health</h3>
+        <p class="kick" style="color:rgba(255,255,255,.9)">Veterinary &middot; Production &middot; Equine</p>
+        <p style="color:rgba(255,255,255,.92)">Supplies, equipment and software for veterinarians and producers — supporting the health of companion and production animals internationally.</p>
+        <p class="mark" style="color:#fff">Patterson Veterinary</p>
+      </div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>5</p>
+</section>
+
+<!-- 6 · QUOTE ------------------------------------------------------------ -->
+<section data-label="Quote" data-screen-label="06" class="pslide lay-wave-navy">
+  <div class="well center" style="padding-left:250px;padding-right:250px">
+    <p class="pkicker anim" style="margin:0;color:#fff;border-color:var(--pat-sky)">The Patterson promise</p>
+    <blockquote class="anim d1" style="margin:64px 0 0;font-family:var(--font-display);font-size:76px;font-weight:700;line-height:1.2;letter-spacing:-.01em;color:#fff;max-width:1360px">Generations of quality customer service define our business operations and our personal interactions.</blockquote>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>6</p>
+</section>
+
+<!-- 7 · THREE CAPABILITIES ----------------------------------------------- -->
+<section data-label="Three Capabilities" data-screen-label="07" class="pslide lay-bar">
+  <div class="well">
+    <h2 class="ptitle anim">Three core capabilities</h2>
+    <div class="ptable anim d1" style="margin-top:52px">
+      <div class="tr th"><span>Capability</span><span>What it delivers</span><span>Proof point</span></div>
+      <div class="tr"><span class="c1">Service</span><span class="c2">Dedicated representatives, equipment service and training that know each customer and market.</span><span class="c3">A personal touch</span></div>
+      <div class="tr"><span class="c1">Logistics</span><span class="c2">Fast, reliable, sustainable delivery from fulfillment centers across North America and the UK.</span><span class="c3">98% in 1&ndash;2 days</span></div>
+      <div class="tr"><span class="c1">Products</span><span class="c2">Everyday consumables through advanced equipment, diagnostics and business software.</span><span class="c3">Essentials to tech</span></div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>7</p>
+</section>
+
+<!-- 8 · FULL-BLEED IMAGE BAND -------------------------------------------- -->
+<section data-label="Personal Touch" data-screen-label="08" class="pslide" style="background:var(--pat-navy)">
+  <div style="position:absolute;inset:0;background:url('../../assets/brand/photo-markets.png') center/cover"></div>
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,28,52,.10) 0%,rgba(0,28,52,.52) 52%,rgba(0,28,52,.94) 100%)"></div>
+  <div class="well" style="justify-content:flex-end;padding-left:250px">
+    <p class="anim" style="margin:0;font-size:28px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;color:var(--pat-blue-light)">Our promise</p>
+    <h2 class="ptitle anim d1" style="margin-top:26px;color:#fff;max-width:1400px">Built on a personal touch</h2>
+    <p class="anim d2" style="margin:30px 0 0;max-width:1160px;font-size:38px;font-weight:400;line-height:1.4;color:rgba(255,255,255,.88)">Bold solutions, delivered by people who know their customers — that is how we strengthen the practices that keep us and our animals healthy.</p>
+  </div>
+  <p class="pfoot" style="color:rgba(255,255,255,.6)">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>8</p>
+</section>
+
+<!-- 9 · CLOSING ---------------------------------------------------------- -->
+<section data-label="Closing" data-screen-label="09" class="pslide lay-wave-navy">
+  <div class="well center" style="padding-left:250px">
+    <img class="anim" src="../../assets/brand/patterson-logo-white.svg" alt="Patterson" style="height:56px;width:auto">
+    <p class="pnumeral anim d1" style="margin-top:56px">Let&rsquo;s work together</p>
+    <p class="anim d2" style="margin:32px 0 0;max-width:1100px;font-size:38px;font-weight:400;line-height:1.4;color:rgba(255,255,255,.86)">Together, we are transforming the way care is delivered to people and animals.</p>
+    <dl class="anim d3" style="display:flex;gap:80px;margin:64px 0 0">
+      <div><dt style="font-size:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pat-blue-light)">Web</dt><dd style="margin:10px 0 0;font-size:34px;font-weight:700;color:#fff">pattersoncompanies.com</dd></div>
+      <div><dt style="font-size:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pat-blue-light)">Phone</dt><dd style="margin:10px 0 0;font-size:34px;font-weight:700;color:#fff">1.800.328.5536</dd></div>
+      <div><dt style="font-size:24px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pat-blue-light)">Headquarters</dt><dd style="margin:10px 0 0;font-size:34px;font-weight:700;color:#fff">Saint Paul, Minnesota</dd></div>
+    </dl>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>9</p>
+</section>
+
+</deck-stage>
+<script src="./deck-stage.js"></script>
+</body>
+</html>

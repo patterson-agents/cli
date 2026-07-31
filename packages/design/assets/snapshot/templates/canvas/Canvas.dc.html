@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Canvas" description="Patterson corporate page canvas — nav, hero, proof band, capability cards, CTA and footer. Three expressive tweaks reshape surface, density and how the page proves its claims." -->
+<helmet>
+<script src="./ds-base.js"></script>
+<style>*{box-sizing:border-box}body{margin:0}</style>
+</helmet>
+<div ref="{{ rootRef }}" style="font-family:proxima-nova,Figtree,system-ui,Arial,sans-serif;background:#fff;color:#58585B" data-screen-label="Canvas">
+<nav style="display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:80px;background:#fff;border-bottom:1px solid #e2e2e4">
+<div style="display:flex;align-items:center;gap:36px">
+<img src="../../assets/brand/patterson-logo-navy.svg" alt="Patterson" style="height:26px;width:auto">
+<div style="display:flex;gap:26px">
+<a href="#" style="color:#003767;font-size:15px;font-weight:600;text-decoration:none">What we do</a>
+<a href="#" style="color:#003767;font-size:15px;font-weight:600;text-decoration:none">Our company</a>
+<a href="#" style="color:#003767;font-size:15px;font-weight:600;text-decoration:none">Newsroom</a>
+<a href="#" style="color:#003767;font-size:15px;font-weight:600;text-decoration:none">Careers</a>
+</div>
+</div>
+<button style="border:0;border-radius:5px;background:#003767;color:#fff;font-family:inherit;font-size:15px;font-weight:600;line-height:20px;padding:11px 24px;cursor:pointer;transition:background-color 200ms ease-in-out" style-hover="background:#315D83">Contact us</button>
+</nav>
+<section style="position:relative;overflow:hidden;background:var(--pc-hero-bg,#003767);padding:var(--pc-pad-y,96px) 40px" data-screen-label="Hero">
+<div style="position:absolute;inset:0;background-image:url('../../assets/brand/wave-bg-navy.png');background-size:cover;background-position:right top;opacity:var(--pc-wave,0.45);pointer-events:none"></div>
+<div style="position:relative;max-width:1240px;margin:0 auto">
+<div style="color:var(--pc-eyebrow,#6DCFF6);font-size:14px;font-weight:500;line-height:22px;margin-bottom:var(--pc-gap,18px)">Trusted expertise. Unrivaled support.</div>
+<h1 style="color:var(--pc-hero-fg,#fff);font-size:var(--pc-h1,54px);line-height:1.08;font-weight:800;margin:0;max-width:var(--pc-measure,620px);text-wrap:pretty">We strengthen the people who keep us and our animals healthy.</h1>
+<p style="color:var(--pc-hero-sub,#ccd7e1);font-size:var(--pc-lead,20px);line-height:1.5;margin:var(--pc-gap,18px) 0 0;max-width:560px">Bold solutions and a personal touch, from a partner practices have relied on since 1877.</p>
+<div style="display:flex;gap:12px;margin-top:var(--pc-gap-lg,29px);flex-wrap:wrap">
+<button style="border:0;border-radius:5px;background:var(--pc-btn-bg,#fff);color:var(--pc-btn-fg,#003767);font-family:inherit;font-size:15px;font-weight:600;line-height:20px;padding:15px 30px;cursor:pointer;transition:background-color 200ms ease-in-out,color 200ms ease-in-out" style-hover="background:var(--pc-btn-hover,#6DCFF6)">Explore solutions</button>
+<button style="background:transparent;border:2px solid var(--pc-ghost-border,rgba(255,255,255,0.55));border-radius:5px;color:var(--pc-ghost-fg,#fff);font-family:inherit;font-size:15px;font-weight:600;line-height:20px;padding:13px 28px;cursor:pointer;transition:background-color 200ms ease-in-out" style-hover="background:var(--pc-ghost-hover,rgba(255,255,255,0.14))">Learn about our support</button>
+</div>
+</div>
+</section>
+<section style="background:var(--pc-proof-bg,#fff);padding:var(--pc-proof-pad,69px) 40px" data-screen-label="Proof">
+<div style="max-width:1240px;margin:0 auto">
+<sc-if value="{{ isStats }}" hint-placeholder-val="{{ true }}">
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pc-stat-gap,35px)">
+<sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+<div>
+<div style="color:#00A8E1;font-size:var(--pc-stat,54px);line-height:1.05;font-weight:800">{{ s.big }}</div>
+<div style="color:#58585B;font-size:14px;line-height:1.5;margin-top:8px;max-width:220px">{{ s.label }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ isVoice }}" hint-placeholder-val="{{ true }}">
+<div style="max-width:900px">
+<blockquote style="color:#003767;font-size:var(--pc-quote,31px);line-height:1.25;font-weight:800;margin:0;text-wrap:pretty">Generations of quality customer service define our business operations and our personal interactions.</blockquote>
+<div style="color:#58585B;font-size:var(--pc-lead,20px);line-height:1.5;margin-top:var(--pc-gap,18px);max-width:640px">We are much more than a distributor — we are an indispensable partner.</div>
+</div>
+</sc-if>
+</div>
+</section>
+<section style="background:var(--pc-cap-bg,#f6f7f8);padding:var(--pc-pad-y,96px) 40px" data-screen-label="Capabilities">
+<div style="max-width:1240px;margin:0 auto">
+<div style="margin-bottom:var(--pc-gap-xl,36px)">
+<div style="color:#003767;font-size:14px;font-weight:500;line-height:22px;margin-bottom:10px">What we do</div>
+<h2 style="color:#003767;font-size:var(--pc-h2,36px);line-height:1.15;font-weight:800;margin:0;max-width:var(--pc-measure,620px);text-wrap:pretty">Two markets, one standard of support.</h2>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pc-col-gap,22px)">
+<sc-for list="{{ caps }}" as="c" hint-placeholder-count="3">
+<div style="background:#fff;border:1px solid #e2e2e4;border-radius:10px;padding:var(--pc-card-pad,32px);box-shadow:0 1px 3px rgba(0,55,103,0.08);transition:box-shadow 200ms ease-in-out,transform 200ms ease-in-out" style-hover="box-shadow:0 12px 28px rgba(0,55,103,0.12);transform:translateY(-3px)">
+<i class="pat-i {{ c.icon }}" style="font-size:28px;color:#00A8E1;display:block;margin-bottom:14px"></i>
+<h3 style="color:#003767;font-size:20px;line-height:1.2;font-weight:600;margin:0 0 8px">{{ c.title }}</h3>
+<p style="color:#58585B;font-size:16px;line-height:1.6;margin:0">{{ c.body }}</p>
+<a href="#" style="display:inline-block;margin-top:16px;color:#147EC2;font-size:15px;font-weight:600;text-decoration:none">{{ c.link }}</a>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+<section style="background:var(--pc-cta-bg,#002745);padding:var(--pc-cta-pad,60px) 40px" data-screen-label="CTA">
+<div style="max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap">
+<h2 style="color:#fff;font-size:var(--pc-h2,36px);line-height:1.15;font-weight:800;margin:0;max-width:640px;text-wrap:pretty">Together, we'll identify your needs.</h2>
+<button style="border:0;border-radius:5px;background:#fff;color:#003767;font-family:inherit;font-size:15px;font-weight:600;line-height:20px;padding:15px 30px;cursor:pointer;transition:background-color 200ms ease-in-out" style-hover="background:#6DCFF6">Create my account</button>
+</div>
+</section>
+<footer style="background:#003767;color:#ccd7e1;padding:56px 40px;font-size:14px;line-height:1.6">
+<div style="max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-wrap:wrap">
+<div style="max-width:320px">
+<img src="../../assets/brand/patterson-logo-white.svg" alt="Patterson" style="height:24px;width:auto;margin-bottom:16px">
+<p style="margin:0">Saint Paul, Minnesota. Serving oral health and animal health practices since 1877.</p>
+</div>
+<div style="display:flex;gap:56px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="color:#fff;font-weight:600">Company</span>
+<a href="#" style="color:#ccd7e1;text-decoration:none">About</a>
+<a href="#" style="color:#ccd7e1;text-decoration:none">Investors</a>
+<a href="#" style="color:#ccd7e1;text-decoration:none">Careers</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span style="color:#fff;font-weight:600">Support</span>
+<a href="#" style="color:#ccd7e1;text-decoration:none">Contact</a>
+<a href="#" style="color:#ccd7e1;text-decoration:none">Equipment repair</a>
+<a href="#" style="color:#ccd7e1;text-decoration:none">Order help</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1700},&quot;surface&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Navy ground&quot;,&quot;Paper&quot;,&quot;Soft blue&quot;],&quot;default&quot;:&quot;Navy ground&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;density&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Editorial&quot;,&quot;Standard&quot;,&quot;Compact&quot;],&quot;default&quot;:&quot;Standard&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;},&quot;proof&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Statistics&quot;,&quot;Statements&quot;],&quot;default&quot;:&quot;Statistics&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Feel&quot;}}">
+/* Tweaks drive CSS custom properties set imperatively on the root element,
+   so every style attribute in the template stays literal and paints on the
+   first streamed character. The literals double as the default theme
+   (Navy ground / Standard / Statistics) via var() fallbacks. */
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.rootRef = React.createRef();
+  }
+
+  theme() {
+    const D = ({
+      'Editorial': { padY: 128, h1: 68, h2: 42, lead: 22, gap: 22, cardPad: 40, stat: 68, colGap: 28, measure: 660 },
+      'Standard': { padY: 96, h1: 54, h2: 36, lead: 20, gap: 18, cardPad: 32, stat: 54, colGap: 22, measure: 620 },
+      'Compact': { padY: 52, h1: 38, h2: 27, lead: 17, gap: 12, cardPad: 22, stat: 38, colGap: 16, measure: 560 }
+    })[this.props.density] || {};
+
+    const S = ({
+      'Navy ground': { bg: '#003767', fg: '#ffffff', sub: '#ccd7e1', eyebrow: '#6DCFF6', wave: 0.45, btnBg: '#ffffff', btnFg: '#003767', btnHover: '#6DCFF6', ghostBorder: 'rgba(255,255,255,0.55)', ghostFg: '#ffffff', ghostHover: 'rgba(255,255,255,0.14)', proofBg: '#ffffff', capBg: '#f6f7f8', ctaBg: '#002745' },
+      'Paper': { bg: '#ffffff', fg: '#003767', sub: '#58585B', eyebrow: '#003767', wave: 0, btnBg: '#003767', btnFg: '#ffffff', btnHover: '#315D83', ghostBorder: '#003767', ghostFg: '#003767', ghostHover: '#e5ebf0', proofBg: '#f6f7f8', capBg: '#ffffff', ctaBg: '#003767' },
+      'Soft blue': { bg: '#e5f6fc', fg: '#003767', sub: '#58585B', eyebrow: '#003767', wave: 0.1, btnBg: '#6DCFF6', btnFg: '#003767', btnHover: '#96DBF6', ghostBorder: '#003767', ghostFg: '#003767', ghostHover: '#ccedf9', proofBg: '#ffffff', capBg: '#f6f7f8', ctaBg: '#003767' }
+    })[this.props.surface] || {};
+
+    return { D, S };
+  }
+
+  applyVars() {
+    const el = this.rootRef.current;
+    if (!el) return;
+    const { D, S } = this.theme();
+    const set = (k, v) => { if (v !== undefined && v !== null) el.style.setProperty(k, String(v)); };
+
+    set('--pc-pad-y', D.padY + 'px');
+    set('--pc-h1', D.h1 + 'px');
+    set('--pc-h2', D.h2 + 'px');
+    set('--pc-quote', Math.round(D.h2 * 0.86) + 'px');
+    set('--pc-lead', D.lead + 'px');
+    set('--pc-gap', D.gap + 'px');
+    set('--pc-gap-lg', Math.round(D.gap * 1.6) + 'px');
+    set('--pc-gap-xl', D.gap * 2 + 'px');
+    set('--pc-card-pad', D.cardPad + 'px');
+    set('--pc-stat', D.stat + 'px');
+    set('--pc-stat-gap', Math.round(D.colGap * 1.6) + 'px');
+    set('--pc-col-gap', D.colGap + 'px');
+    set('--pc-measure', D.measure + 'px');
+    set('--pc-proof-pad', Math.round(D.padY * 0.72) + 'px');
+    set('--pc-cta-pad', Math.round(D.padY * 0.62) + 'px');
+
+    set('--pc-hero-bg', S.bg);
+    set('--pc-hero-fg', S.fg);
+    set('--pc-hero-sub', S.sub);
+    set('--pc-eyebrow', S.eyebrow);
+    set('--pc-wave', S.wave);
+    set('--pc-btn-bg', S.btnBg);
+    set('--pc-btn-fg', S.btnFg);
+    set('--pc-btn-hover', S.btnHover);
+    set('--pc-ghost-border', S.ghostBorder);
+    set('--pc-ghost-fg', S.ghostFg);
+    set('--pc-ghost-hover', S.ghostHover);
+    set('--pc-proof-bg', S.proofBg);
+    set('--pc-cap-bg', S.capBg);
+    set('--pc-cta-bg', S.ctaBg);
+  }
+
+  componentDidMount() { this.applyVars(); }
+  componentDidUpdate() { this.applyVars(); }
+
+  renderVals() {
+    const proof = this.props.proof ?? 'Statistics';
+    return {
+      rootRef: this.rootRef,
+      isStats: proof === 'Statistics',
+      isVoice: proof === 'Statements',
+      stats: [
+        { big: '1877', label: 'Serving practices since' },
+        { big: '98%', label: 'Of customers reached in 1-to-2-day shipping' },
+        { big: '60', label: 'Fulfillment centers across North America' },
+        { big: '86M', label: 'U.S. households with pets we help care for' }
+      ],
+      caps: [
+        { icon: 'pat-i-prescription', title: 'Dental', body: 'Equipment, consumables, software and service for oral-health practices of every size.', link: 'Explore dental' },
+        { icon: 'pat-i-pedigree', title: 'Companion animal', body: 'Pharmaceuticals, supplies and practice technology for veterinary teams.', link: 'Explore veterinary' },
+        { icon: 'pat-i-shipping', title: 'Production animal', body: 'Herd-health products and logistics built for scale and cold-chain integrity.', link: 'Explore production' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

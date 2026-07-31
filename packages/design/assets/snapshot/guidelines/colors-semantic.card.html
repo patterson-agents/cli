@@ -1,0 +1,26 @@
+<!-- @dsCard group="Colors" viewport="700x150" name="Semantic status" subtitle="Success, info, warning & danger, harmonized to palette" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-page); }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .item { border-radius: var(--radius-md); border: 1px solid var(--border-subtle); overflow: hidden; }
+  .bar { height: 8px; }
+  .body { padding: 12px; }
+  .name { font-weight: var(--fw-bold); color: var(--text-heading); font-size: var(--fs-sm); }
+  .hex { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+  .pill { display: inline-block; margin-top: 9px; font-size: 11px; font-weight: var(--fw-semibold); padding: 3px 9px; border-radius: var(--radius-pill); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="bar" style="background:var(--pat-success)"></div><div class="body"><div class="name">Success</div><div class="hex">#00817D</div><span class="pill" style="background:var(--pat-success-bg); color:var(--pat-success)">Active</span></div></div>
+    <div class="item"><div class="bar" style="background:var(--pat-info)"></div><div class="body"><div class="name">Info</div><div class="hex">#147EC2</div><span class="pill" style="background:var(--pat-info-bg); color:var(--pat-info)">Notice</span></div></div>
+    <div class="item"><div class="bar" style="background:var(--pat-warning)"></div><div class="body"><div class="name">Warning</div><div class="hex">#D98A00</div><span class="pill" style="background:var(--pat-warning-bg); color:var(--pat-warning)">Pending</span></div></div>
+    <div class="item"><div class="bar" style="background:var(--pat-danger)"></div><div class="body"><div class="name">Danger</div><div class="hex">#C0392B</div><span class="pill" style="background:var(--pat-danger-bg); color:var(--pat-danger)">Error</span></div></div>
+  </div>
+</body>
+</html>

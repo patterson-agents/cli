@@ -1,0 +1,32 @@
+<!-- @dsCard group="Type" viewport="760x210" name="Weights" subtitle="Only 400 & 700 are licensed — the rest are faux" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:22px;background:var(--surface-page)}
+  .row{display:flex;flex-wrap:wrap;gap:14px 26px}
+  .w{display:flex;flex-direction:column}
+  .sample{font-size:30px;color:var(--text-heading);line-height:1.1}
+  .lbl{font-family:var(--font-mono);font-size:10px;color:var(--text-muted);margin-top:2px}
+  .real .lbl{color:var(--pat-teal);font-weight:600}
+  .faux .sample{color:var(--pat-gray-500)}
+  .note{margin-top:18px;padding:10px 12px;border-left:3px solid var(--pat-warning);background:var(--pat-warning-bg);font-size:12px;line-height:1.5;color:var(--text-body);max-width:660px}
+  .note b{color:var(--text-strong)}
+  code{font-family:var(--font-mono);font-size:11px}
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="w faux"><span class="sample" style="font-weight:300">Aa</span><span class="lbl">300 faux</span></div>
+    <div class="w real"><span class="sample" style="font-weight:400">Aa</span><span class="lbl">400 real ✓</span></div>
+    <div class="w faux"><span class="sample" style="font-weight:500">Aa</span><span class="lbl">500 faux</span></div>
+    <div class="w faux"><span class="sample" style="font-weight:600">Aa</span><span class="lbl">600 faux</span></div>
+    <div class="w real"><span class="sample" style="font-weight:700">Aa</span><span class="lbl">700 real ✓</span></div>
+    <div class="w faux"><span class="sample" style="font-weight:800">Aa</span><span class="lbl">800 faux</span></div>
+    <div class="w faux"><span class="sample" style="font-weight:900">Aa</span><span class="lbl">900 faux</span></div>
+  </div>
+  <p class="note"><b>The Patterson Proxima Nova kit ships four faces only:</b> 400, 400 italic, 700, 700 italic. Every other weight is synthesized by the browser off the 700 master. The production theme still asks for <code>800</code> on h1/h2, <code>600</code> on <code>.btn</code> and <code>500</code> on <code>.eyebrow</code> — so faux bold is what the live sites actually render. Treat <b>700 as the real bold ceiling</b>; to get true heavier weights, add variations to Typekit kit <code>rul6mjk</code> first.</p>
+</body>
+</html>

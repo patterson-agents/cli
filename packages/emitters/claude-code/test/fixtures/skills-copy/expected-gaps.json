@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "skills.review",
+    "targetId": "claude-code",
+    "reason": "Skill file \"missing.md\" was not found at .agents/skills/review/missing.md (snapshot); the copy into .claude/skills/review/ was skipped.",
+    "fallbackApplied": false
+  }
+]

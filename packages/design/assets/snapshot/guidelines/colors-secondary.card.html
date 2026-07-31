@@ -1,0 +1,26 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Secondary palette" subtitle="Adds depth — complementary, never dominant" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-page); }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .sw { border-radius: var(--radius-md); overflow: hidden; box-shadow: var(--shadow-sm); }
+  .chip { height: 84px; }
+  .meta { padding: 10px 12px; }
+  .name { font-weight: var(--fw-bold); color: var(--text-heading); font-size: var(--fs-sm); }
+  .hex { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+  .pms { font-size: 10px; color: var(--text-muted); letter-spacing: var(--ls-wide); text-transform: uppercase; margin-top: 1px; }
+  .bordered { border: 1px solid var(--border-default); }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background: var(--pat-blue)"></div><div class="meta"><div class="name">Blue</div><div class="hex">#147EC2</div><div class="pms">PMS 7683</div></div></div>
+    <div class="sw"><div class="chip" style="background: var(--pat-blue-light)"></div><div class="meta"><div class="name">Light Blue</div><div class="hex">#6DCFF6</div><div class="pms">PMS 297</div></div></div>
+    <div class="sw bordered"><div class="chip" style="background: var(--pat-gray-light)"></div><div class="meta"><div class="name">Light Gray</div><div class="hex">#ECECEC</div><div class="pms">Cool Gray 1 · 50%</div></div></div>
+  </div>
+</body>
+</html>

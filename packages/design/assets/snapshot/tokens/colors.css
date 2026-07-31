@@ -1,0 +1,144 @@
+/* ============================================================
+   Patterson Companies — Color Tokens
+   Source: Patterson Companies Brand Guide 2025 (color palette)
+   ============================================================ */
+
+:root {
+  /* --- Brand: Primary -------------------------------------- */
+  --pat-navy:        #003767; /* PMS 540  | clear thought, trust */
+  --pat-sky:         #00A8E1; /* PMS 2995 | intelligence, communication */
+  --pat-gray:        #58585B; /* Cool Gray 11 (80% black) | body copy */
+  --pat-white:       #FFFFFF;
+
+  /* --- Brand: Secondary (used for depth, not dominant) ----- */
+  --pat-blue:        #147EC2; /* PMS 7683 */
+  --pat-blue-light:  #6DCFF6; /* PMS 297 */
+  --pat-gray-light:  #ECECEC; /* Cool Gray 1 @ 50% | web/email accent */
+
+  /* --- Brand: Tertiary (infographics & presentations) ------ */
+  --pat-green:       #7BC24D; /* PMS 369 */
+  --pat-teal:        #00817D; /* PMS 7718 */
+  --pat-purple:      #522E91; /* PMS 7679 */
+
+  /* --- Interaction states (VERIFIED, production theme) -----
+     These are the real Patterson button states. Note that primary
+     hover is a LIGHTER NAVY — not sky. Secondary is a filled light
+     blue, not an outline. Do not substitute.                      */
+  --pat-primary-hover:      #315D83; /* navy → lighter navy on hover */
+  --pat-primary-disabled:   #93A9BC;
+  --pat-secondary-hover:    #96DBF6; /* #6DCFF6 → lighter on hover */
+  --pat-secondary-disabled: #DAEDF5;
+
+  /* --- Warm neutral (VERIFIED) -----------------------------
+     The one non-cool gray in the brand. Production uses it for
+     input/select borders. Do not "correct" it to a cool gray.     */
+  --pat-gray-warm:   #AFA593; /* --color-medium-grey */
+  --pat-slider-nav:  #D9D9D9; /* carousel dot / track */
+
+  /* --- Navy tints ------------------------------------------ */
+  --pat-navy-80:     #335f85;
+  --pat-navy-60:     #6687a4;
+  --pat-navy-40:     #99afc2;
+  --pat-navy-20:     #ccd7e1;
+  --pat-navy-10:     #e5ebf0;
+
+  /* --- Sky tints ------------------------------------------- */
+  --pat-sky-80:      #33b9e7;
+  --pat-sky-60:      #66caed;
+  --pat-sky-40:      #99dcf3;
+  --pat-sky-20:      #ccedf9;
+  --pat-sky-10:      #e5f6fc;
+
+  /* --- Neutral ramp (cool grays) --------------------------- */
+  --pat-ink:         #1d1d20; /* near-black, headings on light */
+  --pat-gray-700:    #46464a;
+  --pat-gray-600:    #58585B; /* = --pat-gray */
+  --pat-gray-500:    #7c7c80;
+  --pat-gray-400:    #a3a3a7;
+  --pat-gray-300:    #c9c9cc;
+  --pat-gray-200:    #e2e2e4;
+  --pat-gray-100:    #ECECEC; /* = --pat-gray-light */
+  --pat-gray-50:     #f6f7f8;
+
+  /* --- Semantic status (drawn from tertiary palette) ------- */
+  --pat-success:     #00817D; /* teal */
+  --pat-success-bg:  #e5f2f1;
+  --pat-info:        #147EC2; /* blue */
+  --pat-info-bg:     #e7f1f9;
+  --pat-warning:     #d98a00; /* amber, harmonized to palette */
+  --pat-warning-bg:  #fbf1df;
+  --pat-danger:      #c0392b; /* red, harmonized to palette */
+  --pat-danger-bg:   #f8eae8;
+
+  /* =========================================================
+     SEMANTIC ALIASES — reference these in product UI
+     ========================================================= */
+
+  /* Text */
+  --text-strong:     var(--pat-navy);
+  --text-heading:    var(--pat-ink);
+  --text-body:       var(--pat-gray-600);
+  --text-muted:      var(--pat-gray-500);
+  --text-inverse:    var(--pat-white);
+  --text-link:       var(--pat-blue);
+  --text-link-hover: var(--pat-navy);
+  --text-on-brand:   var(--pat-white);
+
+  /* Surfaces */
+  --surface-page:    var(--pat-white);
+  --surface-subtle:  var(--pat-gray-50);
+  --surface-muted:   var(--pat-gray-100);
+  --surface-card:    var(--pat-white);
+  --surface-brand:   var(--pat-navy);
+  --surface-brand-alt: var(--pat-sky);
+  --surface-inverse: var(--pat-navy);
+
+  /* Borders */
+  --border-subtle:   var(--pat-gray-200);
+  --border-default:  var(--pat-gray-300);
+  --border-strong:   var(--pat-gray-400);
+  --border-brand:    var(--pat-sky);
+
+  /* Interactive / accent */
+  --accent:          var(--pat-sky);
+  --accent-strong:   var(--pat-navy);
+  --focus-ring:      var(--pat-sky);
+
+  /* Button intents (production-accurate) */
+  --btn-primary-bg:          var(--pat-navy);
+  --btn-primary-bg-hover:    var(--pat-primary-hover);
+  --btn-primary-bg-disabled: var(--pat-primary-disabled);
+  --btn-primary-fg:          var(--pat-white);
+  --btn-secondary-bg:          var(--pat-blue-light);
+  --btn-secondary-bg-hover:    var(--pat-secondary-hover);
+  --btn-secondary-bg-disabled: var(--pat-secondary-disabled);
+  --btn-secondary-fg:          var(--pat-navy);
+
+  /* Form borders — production uses the WARM gray here */
+  --border-field: var(--pat-gray-warm);
+
+  /* =========================================================
+     PRODUCTION ALIASES
+     The exact custom-property names shipped by the live Patterson
+     theme (theme-styles.min.css). Provided verbatim so markup
+     lifted from production works unchanged inside this system,
+     and so a diff against production is trivial.
+     ========================================================= */
+  --font-proxima-nova:          var(--font-sans);
+  --color-primary-dark-blue:    var(--pat-navy);
+  --color-primary-light-blue:   var(--pat-sky);
+  --color-primary-cool-grey:    var(--pat-gray);
+  --color-secondary-dark-blue:  var(--pat-blue);
+  --color-secondary-light-blue: var(--pat-blue-light);
+  --color-secondary-cool-grey:  var(--pat-gray-light);
+  --color-tertiary-green:       var(--pat-green);
+  --color-tertiary-teal:        var(--pat-teal);
+  --color-tertiary-purple:      var(--pat-purple);
+  --color-medium-grey:          var(--pat-gray-warm);
+  --color-slider-nav:           var(--pat-slider-nav);
+  --color-white:                var(--pat-white);
+  --primary-hover:              var(--pat-primary-hover);
+  --primary-disabled:           var(--pat-primary-disabled);
+  --secondary-hover:            var(--pat-secondary-hover);
+  --secondary-disabled:         var(--pat-secondary-disabled);
+}

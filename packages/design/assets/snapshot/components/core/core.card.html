@@ -1,0 +1,96 @@
+<!-- @dsCard group="Components" viewport="760x520" name="Core — Buttons, Badges, Stat, Card" subtitle="Production-accurate action set" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-subtle); }
+  .group { background: #fff; border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 14px; }
+  .label { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: var(--ls-wide); margin-bottom: 12px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  function mount(){
+  const DS = window.PattersonCompaniesDesignSystem_3534f9;
+  if(!DS) return void setTimeout(mount, 60);
+  const { Button, IconButton, Badge, Stat, Card, Icon } = DS;
+  const Search = () => <Icon name="search" size="sm" />;
+  const Arrow = () => <Icon name="arrow-right" size="sm" />;
+
+  function Demo() {
+    return (
+      <React.Fragment>
+        <div className="group">
+          <div className="label">Buttons — production variants (hover to see real states)</div>
+          <div className="row">
+            <Button variant="primary">Explore solutions</Button>
+            <Button variant="secondary">Learn about our support</Button>
+            <Button variant="outline">Our company</Button>
+            <Button variant="ghost">Learn more</Button>
+            <Button variant="primary" iconRight={<Arrow/>}>Newsroom</Button>
+          </div>
+          <div className="label" style={{marginTop:16}}>Disabled &amp; system additions</div>
+          <div className="row">
+            <Button variant="primary" disabled>Primary disabled</Button>
+            <Button variant="secondary" disabled>Secondary disabled</Button>
+            <Button variant="sky">Sky (system)</Button>
+            <Button variant="primary" pill>Pill (system)</Button>
+          </div>
+        </div>
+        <div className="group" style={{display:'flex', gap:'28px', flexWrap:'wrap', alignItems:'center'}}>
+          <div>
+            <div className="label">Sizes</div>
+            <div className="row">
+              <Button size="sm">Small</Button>
+              <Button size="md">Medium</Button>
+              <Button size="lg">Large</Button>
+            </div>
+          </div>
+          <div>
+            <div className="label">Icon buttons</div>
+            <div className="row">
+              <IconButton label="Search" variant="solid"><Search/></IconButton>
+              <IconButton label="Search" variant="sky"><Search/></IconButton>
+              <IconButton label="Search" variant="subtle"><Search/></IconButton>
+              <IconButton label="Search" variant="ghost"><Search/></IconButton>
+            </div>
+          </div>
+        </div>
+        <div className="group">
+          <div className="label">Badges</div>
+          <div className="row">
+            <Badge tone="navy">Corporate</Badge>
+            <Badge tone="sky" solid>New</Badge>
+            <Badge tone="teal">In stock</Badge>
+            <Badge tone="green">Sustainable</Badge>
+            <Badge tone="purple">Equine</Badge>
+            <Badge tone="warning">Pending</Badge>
+            <Badge tone="danger">Backordered</Badge>
+          </div>
+        </div>
+        <div className="row" style={{alignItems:'stretch'}}>
+          <Card accent="sky" style={{flex:1, minWidth:220}}>
+            <Stat value="98%" label="of customers reached in 1–2 days" tone="sky" />
+          </Card>
+          <Card accent="navy" interactive style={{flex:1, minWidth:220}}>
+            <h3 style={{margin:'0 0 6px'}}>Patterson Dental</h3>
+            <p style={{margin:0, fontSize:'var(--fs-sm)'}}>Everyday essentials and software to run the practice.</p>
+          </Card>
+        </div>
+      </React.Fragment>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+  }
+  mount();
+</script>
+</body>
+</html>

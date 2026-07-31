@@ -1,0 +1,58 @@
+/* ============================================================
+   Patterson Companies — Spacing, Radii, Layout Tokens
+   Base unit: 4px. Scale used across components & layouts.
+   ============================================================ */
+
+:root {
+  /* --- Spacing scale (4px base) ---------------------------- */
+  --space-0:   0;
+  --space-1:   0.25rem;  /* 4  */
+  --space-2:   0.5rem;   /* 8  */
+  --space-3:   0.75rem;  /* 12 */
+  --space-4:   1rem;     /* 16 */
+  --space-5:   1.5rem;   /* 24 */
+  --space-6:   2rem;     /* 32 */
+  --space-7:   2.5rem;   /* 40 */
+  --space-8:   3rem;     /* 48 */
+  --space-9:   4rem;     /* 64 */
+  --space-10:  5rem;     /* 80 */
+  --space-11:  6rem;     /* 96 */
+  --space-12:  8rem;     /* 128 */
+
+  /* --- Radii ----------------------------------------------- */
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   10px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-pill: 999px; /* SYSTEM CONVENTION — no pill radius exists in production */
+
+  /* --- Radii: PRODUCTION-VERIFIED --------------------------
+     The live theme is restrained: small radii on controls, and
+     nothing rounder than 6px on anything interactive.          */
+  --radius-btn:          5px; /* .btn */
+  --radius-btn-elevated: 6px; /* .btn-download / .btn-external */
+  --radius-field:        2px; /* input, select, textarea */
+  --radius-skip-link:    3px; /* .screen-reader-text on focus */
+
+  /* --- Layout widths --------------------------------------- */
+  --container-max:  1240px;
+  --container-prod: 1259px; /* production max-width, verified */
+  --container-text: 720px;  /* readable measure */
+  --gutter:         clamp(1.25rem, 0.5rem + 3vw, 4rem); /* @kind spacing */
+
+  /* --- Control sizing -------------------------------------- */
+  --control-h-sm: 34px;
+  --control-h-md: 44px;  /* default; min hit target */
+  --control-h-lg: 54px;
+  /* Production button box: 15px/30px padding on a 20px line-box = 50px.
+     --control-h-md (44px) is this system's WCAG-floor convention.     */
+  --control-h-prod:   50px;
+  --btn-pad-y:        15px;
+  --btn-pad-x:        30px;
+
+  /* --- Borders --------------------------------------------- */
+  --border-w:       1px;
+  --border-w-thick: 2px;
+}

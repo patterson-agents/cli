@@ -1,0 +1,58 @@
+<!-- @dsCard group="Brand" viewport="900x420" name="Interaction states" subtitle="The real button states — verified, not inferred" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;padding:26px;background:var(--surface-page);font-family:var(--font-sans)}
+  h1{font-size:19px;font-weight:700;color:var(--text-strong);margin:0 0 4px}
+  .sub{font-size:13px;color:var(--text-body);margin:0 0 22px;max-width:780px;line-height:1.5}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:8px}
+  h2{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:var(--ls-caps);color:var(--text-muted);margin:22px 0 10px}
+  .btn{border:0;border-radius:var(--radius-btn);font-family:var(--font-sans);font-size:var(--pt-btn-size);font-weight:var(--pt-btn-weight);line-height:var(--pt-btn-lh);padding:var(--btn-pad-y) var(--btn-pad-x);text-align:center;cursor:pointer}
+  .p{background:var(--btn-primary-bg);color:var(--btn-primary-fg)}
+  .p-h{background:var(--btn-primary-bg-hover);color:var(--btn-primary-fg)}
+  .p-d{background:var(--btn-primary-bg-disabled);color:var(--btn-primary-fg);cursor:not-allowed}
+  .s{background:var(--btn-secondary-bg);color:var(--btn-secondary-fg)}
+  .s-h{background:var(--btn-secondary-bg-hover);color:var(--btn-secondary-fg)}
+  .s-d{background:var(--btn-secondary-bg-disabled);color:var(--btn-secondary-fg);cursor:not-allowed}
+  .cap{font-family:var(--font-mono);font-size:9.5px;color:var(--text-muted);text-align:center;margin-top:6px;line-height:1.4}
+  .cell{display:flex;flex-direction:column}
+  .wrong{background:var(--pat-sky);color:#fff;position:relative}
+  .x{display:block;font-family:var(--font-mono);font-size:9.5px;color:var(--pat-danger);text-align:center;margin-top:6px;font-weight:600;line-height:1.4}
+  .field{width:100%;box-sizing:border-box;border:var(--border-w) solid var(--border-field);border-radius:var(--radius-field);padding:11px 12px;font-family:var(--font-sans);font-size:var(--pt-body-size);color:var(--text-heading)}
+  .note{font-size:12px;line-height:1.5;color:var(--text-body);background:var(--pat-warning-bg);border-left:3px solid var(--pat-warning);padding:10px 12px;max-width:800px;margin-top:20px}
+  .note b{color:var(--text-strong)}
+  code{font-family:var(--font-mono);font-size:11px}
+</style>
+</head>
+<body>
+  <h1>Interaction states</h1>
+  <p class="sub">The two production Patterson buttons and their real states. <strong>Primary hover stays inside navy</strong> — it lightens to <code>#315D83</code>. It does <em>not</em> turn sky. <strong>Secondary is a filled light blue</strong> with a navy label, not an outline.</p>
+
+  <h2>Primary</h2>
+  <div class="grid">
+    <div class="cell"><button class="btn p">Explore solutions</button><span class="cap">default · #003767</span></div>
+    <div class="cell"><button class="btn p-h">Explore solutions</button><span class="cap">hover · #315D83</span></div>
+    <div class="cell"><button class="btn p-d" disabled>Explore solutions</button><span class="cap">disabled · #93A9BC</span></div>
+    <div class="cell"><button class="btn wrong">Explore solutions</button><span class="x">✕ NOT sky on hover</span></div>
+  </div>
+
+  <h2>Secondary</h2>
+  <div class="grid">
+    <div class="cell"><button class="btn s">Learn about support</button><span class="cap">default · #6DCFF6</span></div>
+    <div class="cell"><button class="btn s-h">Learn about support</button><span class="cap">hover · #96DBF6</span></div>
+    <div class="cell"><button class="btn s-d" disabled>Learn about support</button><span class="cap">disabled · #DAEDF5</span></div>
+    <div class="cell"><button class="btn" style="background:transparent;color:var(--pat-navy);border:2px solid var(--pat-navy)">Learn about support</button><span class="x">✕ NOT a navy outline</span></div>
+  </div>
+
+  <h2>Fields — note the warm border</h2>
+  <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+    <div class="cell"><input class="field" placeholder="you@practice.com"><span class="cap">border #AFA593 · radius 2px</span></div>
+    <div class="cell"><input class="field" placeholder="Focused" style="border-color:var(--pat-sky);box-shadow:var(--ring-focus)"><span class="cap">focus ring — system addition</span></div>
+  </div>
+
+  <p class="note"><b><code>#AFA593</code> is a warm taupe</b> — the one non-cool gray in the brand, and production's input border color. Don't "correct" it to a cool gray. The 3px sky focus ring is this system's accessibility addition; production ships no branded focus style.</p>
+</body>
+</html>

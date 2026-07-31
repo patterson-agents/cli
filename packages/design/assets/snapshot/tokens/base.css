@@ -1,0 +1,109 @@
+/* ============================================================
+   Patterson Companies — Base element defaults & helpers
+   Applied globally once tokens are loaded.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  color: var(--text-body);
+  background: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em;
+  font-family: var(--font-display);
+  /* Production sets EVERY heading level to navy — headings are never gray
+     or near-black on a Patterson surface. Verified in theme-styles.min.css. */
+  color: var(--text-strong);
+  line-height: var(--lh-heading);
+  font-weight: var(--fw-bold);
+  /* Production declares no letter-spacing anywhere. */
+  letter-spacing: var(--ls-normal);
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); }
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: var(--fs-h5); }
+
+p { margin: 0 0 1em; text-wrap: pretty; }
+
+a {
+  color: var(--text-link);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+a:hover { color: var(--text-link-hover); }
+
+strong, b { font-weight: var(--fw-bold); }
+
+/* --- Eyebrow / overline -----------------------------------
+   PRODUCTION default: navy, 14px, weight 500, sentence case, NO tracking.
+   "Trusted expertise" / "Unrivaled support" are used verbatim as eyebrows
+   on the live sites. Use .pat-eyebrow--accent for the uppercase sky
+   treatment, which is this design system's own convention.            */
+.pat-eyebrow {
+  font-size: var(--pt-eyebrow-size);
+  line-height: var(--pt-eyebrow-lh);
+  font-weight: var(--pt-eyebrow-weight);
+  letter-spacing: var(--ls-normal);
+  text-transform: none;
+  color: var(--pat-navy);
+}
+
+.pat-eyebrow--accent {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--pat-sky);
+}
+
+/* --- Caption (production) -------------------------------- */
+.pat-caption {
+  font-size: var(--pt-caption-size);
+  line-height: var(--pt-caption-lh);
+  font-weight: var(--pt-caption-weight);
+  color: var(--pat-navy);
+}
+
+/* --- Production type scale (opt-in) ----------------------
+   Add class="pat-production" to a subtree to render the EXACT live
+   Patterson scale: 18px/24px body, 800 at h1/h2, 400 from h3 down,
+   with the real mobile→desktop step. Use when matching the live sites
+   rather than this system's fluid scale.                             */
+.pat-production { font-size: var(--pt-body-size); line-height: var(--pt-body-lh); }
+.pat-production h1 { font-size: var(--pt-h1-size); line-height: var(--pt-h1-lh); font-weight: var(--pt-h1-weight); }
+.pat-production h2 { font-size: var(--pt-h2-size); line-height: var(--pt-h2-lh); font-weight: var(--pt-h2-weight); }
+.pat-production h3 { font-size: var(--pt-h3-size); line-height: var(--pt-h3-lh); font-weight: var(--pt-h3-weight); }
+.pat-production h4 { font-size: var(--pt-h4-size); line-height: var(--pt-h4-lh); font-weight: var(--pt-h4-weight); }
+@media (min-width: 1024px) {
+  .pat-production h1 { font-size: var(--pt-h1-size-lg); line-height: var(--pt-h1-lh-lg); }
+  .pat-production h2 { font-size: var(--pt-h2-size-lg); line-height: var(--pt-h2-lh-lg); }
+  .pat-production h3 { font-size: var(--pt-h3-size-lg); line-height: var(--pt-h3-lh-lg); }
+}
+
+/* --- Utility: readable container ------------------------- */
+.pat-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ring-focus);
+  border-radius: var(--radius-sm);
+}

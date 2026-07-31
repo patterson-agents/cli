@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "name": "mcp-stdio",
+  "mcp": [
+    {
+      "name": "docs",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bunx", "docs-server", "--root", "."],
+          "env": {
+            "PROJECT_DIR": { "kind": "env", "name": "CLAUDE_PROJECT_DIR", "default": "." },
+            "TOKEN": { "kind": "env", "name": "DOCS_TOKEN" },
+            "MODE": "fast"
+          }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "secretive",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "KEY": { "kind": "prompt", "id": "key", "description": "API key" } }
+        }
+      },
+      "scope": "project"
+    }
+  ]
+}

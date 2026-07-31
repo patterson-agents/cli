@@ -1,0 +1,546 @@
+{
+  "$schema": "https://theme-ui.com/theme-spec",
+  "$meta": {
+    "name": "Patterson Companies Design System",
+    "version": "1.1.0",
+    "brand": "Patterson Companies, Inc.",
+    "promise": "Trusted Expertise. Unrivaled Support.",
+    "namespace": "PattersonCompaniesDesignSystem_3534f9",
+    "description": "Canonical, machine-readable record of the Patterson theme. Mirrors the CSS custom properties in tokens/*.css and is the single source the framework adapters in integrations/ are generated from. Shaped to the Theme UI theme spec (https://theme-ui.com/theme-spec) so it can be consumed directly by Theme UI, and mapped verbatim by the Tailwind v4, UnoCSS and shadcn/ui adapters.",
+    "note": "Edit tokens/*.css and this file together so they never drift — every adapter reads from these values. Colors are the exact Patterson brand hexes; do not re-derive or replace them.",
+    "fontLicense": "Typekit kit rul6mjk ships ONLY 400, 400i, 700, 700i. Weights 300/500/600/800/900 are browser-synthesized (faux). 700 is the real bold ceiling.",
+    "verifiedAgainst": "theme-styles.min.css (production Patterson theme), icons.woff (93-glyph official icon font), typekit kit rul6mjk (published 2024-08-01)",
+    "productionScale": {
+      "h1": {
+        "fontSize": "2.75rem",
+        "lineHeight": "3rem",
+        "fontWeight": 800,
+        "desktop": {
+          "fontSize": "4rem",
+          "lineHeight": "4.25rem"
+        }
+      },
+      "h2": {
+        "fontSize": "2.25rem",
+        "lineHeight": "2.5rem",
+        "fontWeight": 800,
+        "desktop": {
+          "fontSize": "2.75rem",
+          "lineHeight": "3rem"
+        }
+      },
+      "h3": {
+        "fontSize": "1.5rem",
+        "lineHeight": "1.75rem",
+        "fontWeight": 400,
+        "desktop": {
+          "fontSize": "2.25rem",
+          "lineHeight": "2.5rem"
+        }
+      },
+      "h4": {
+        "fontSize": "1.5rem",
+        "lineHeight": "1.75rem",
+        "fontWeight": 400
+      },
+      "body": {
+        "fontSize": "1.125rem",
+        "lineHeight": "1.5rem",
+        "fontWeight": 400
+      },
+      "eyebrow": {
+        "fontSize": "0.875rem",
+        "lineHeight": "1.375rem",
+        "fontWeight": 500,
+        "color": "navy",
+        "letterSpacing": "normal"
+      },
+      "caption": {
+        "fontSize": "0.875rem",
+        "lineHeight": "1rem",
+        "fontWeight": 400
+      },
+      "button": {
+        "fontSize": "0.9375rem",
+        "lineHeight": "1.25rem",
+        "fontWeight": 600,
+        "padding": "15px 30px",
+        "borderRadius": "5px"
+      },
+      "letterSpacing": "none anywhere in production"
+    }
+  },
+  "useCustomProperties": true,
+  "useBorderBox": true,
+  "colors": {
+    "text": "#58585B",
+    "background": "#FFFFFF",
+    "primary": "#003767",
+    "secondary": "#00A8E1",
+    "accent": "#00A8E1",
+    "highlight": "#e5f6fc",
+    "muted": "#ECECEC",
+    "heading": "#1d1d20",
+    "textStrong": "#003767",
+    "textMuted": "#7c7c80",
+    "textInverse": "#FFFFFF",
+    "link": "#147EC2",
+    "linkHover": "#003767",
+    "navy": "#003767",
+    "sky": "#00A8E1",
+    "grayBrand": "#58585B",
+    "white": "#FFFFFF",
+    "blue": "#147EC2",
+    "blueLight": "#6DCFF6",
+    "grayLight": "#ECECEC",
+    "green": "#7BC24D",
+    "teal": "#00817D",
+    "purple": "#522E91",
+    "navyTints": {
+      "10": "#e5ebf0",
+      "20": "#ccd7e1",
+      "40": "#99afc2",
+      "60": "#6687a4",
+      "80": "#335f85"
+    },
+    "skyTints": {
+      "10": "#e5f6fc",
+      "20": "#ccedf9",
+      "40": "#99dcf3",
+      "60": "#66caed",
+      "80": "#33b9e7"
+    },
+    "gray": {
+      "50": "#f6f7f8",
+      "100": "#ECECEC",
+      "200": "#e2e2e4",
+      "300": "#c9c9cc",
+      "400": "#a3a3a7",
+      "500": "#7c7c80",
+      "600": "#58585B",
+      "700": "#46464a",
+      "ink": "#1d1d20"
+    },
+    "success": "#00817D",
+    "successBg": "#e5f2f1",
+    "info": "#147EC2",
+    "infoBg": "#e7f1f9",
+    "warning": "#d98a00",
+    "warningBg": "#fbf1df",
+    "danger": "#c0392b",
+    "dangerBg": "#f8eae8",
+    "border": "#e2e2e4",
+    "borderDefault": "#c9c9cc",
+    "borderStrong": "#a3a3a7",
+    "borderBrand": "#00A8E1",
+    "surfacePage": "#FFFFFF",
+    "surfaceSubtle": "#f6f7f8",
+    "surfaceMuted": "#ECECEC",
+    "surfaceBrand": "#003767",
+    "surfaceBrandAlt": "#00A8E1",
+    "primaryHover": "#315D83",
+    "primaryDisabled": "#93A9BC",
+    "secondaryHover": "#96DBF6",
+    "secondaryDisabled": "#DAEDF5",
+    "grayWarm": "#AFA593",
+    "sliderNav": "#D9D9D9",
+    "borderField": "#AFA593"
+  },
+  "fonts": {
+    "body": "'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    "heading": "'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    "display": "'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    "monospace": "'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace"
+  },
+  "fontWeights": {
+    "light": 300,
+    "body": 400,
+    "regular": 400,
+    "medium": 500,
+    "semibold": 600,
+    "bold": 700,
+    "heading": 800,
+    "extra": 800,
+    "black": 900
+  },
+  "fontSizes": {
+    "xs": "0.75rem",
+    "sm": "0.875rem",
+    "body": "1rem",
+    "h5": "1.0625rem",
+    "lead": "1.25rem",
+    "h4": "1.25rem",
+    "h3": "clamp(1.375rem, 1.15rem + 0.8vw, 1.75rem)",
+    "h2": "clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem)",
+    "h1": "clamp(2.25rem, 1.5rem + 2.6vw, 3.25rem)",
+    "display": "clamp(2.75rem, 1.6rem + 4.2vw, 4.5rem)",
+    "stat": "clamp(2.5rem, 1.4rem + 4vw, 4rem)"
+  },
+  "lineHeights": {
+    "tight": 1.05,
+    "snug": 1.2,
+    "heading": 1.15,
+    "body": 1.6,
+    "relaxed": 1.75
+  },
+  "letterSpacings": {
+    "tight": "-0.02em",
+    "snug": "-0.01em",
+    "normal": "0",
+    "wide": "0.04em",
+    "caps": "0.08em"
+  },
+  "space": {
+    "0": "0",
+    "1": "0.25rem",
+    "2": "0.5rem",
+    "3": "0.75rem",
+    "4": "1rem",
+    "5": "1.5rem",
+    "6": "2rem",
+    "7": "2.5rem",
+    "8": "3rem",
+    "9": "4rem",
+    "10": "5rem",
+    "11": "6rem",
+    "12": "8rem"
+  },
+  "sizes": {
+    "containerMax": "1240px",
+    "containerText": "720px",
+    "controlSm": "34px",
+    "controlMd": "44px",
+    "controlLg": "54px"
+  },
+  "radii": {
+    "xs": "2px",
+    "sm": "4px",
+    "md": "6px",
+    "lg": "10px",
+    "xl": "16px",
+    "2xl": "24px",
+    "pill": "999px",
+    "btn": "5px",
+    "btnElevated": "6px",
+    "field": "2px"
+  },
+  "borderWidths": {
+    "hairline": "1px",
+    "thick": "2px"
+  },
+  "shadows": {
+    "xs": "0 1px 2px rgba(0, 55, 103, 0.06)",
+    "sm": "0 1px 3px rgba(0, 55, 103, 0.08), 0 1px 2px rgba(0, 55, 103, 0.06)",
+    "md": "0 4px 12px rgba(0, 55, 103, 0.10), 0 2px 4px rgba(0, 55, 103, 0.06)",
+    "lg": "0 12px 28px rgba(0, 55, 103, 0.12), 0 4px 10px rgba(0, 55, 103, 0.07)",
+    "xl": "0 24px 48px rgba(0, 55, 103, 0.16)",
+    "focus": "0 0 0 3px rgba(0, 168, 225, 0.45)",
+    "error": "0 0 0 3px rgba(192, 57, 43, 0.35)",
+    "download": "0 4px 8px rgba(0,0,0,0.08), 0 0 4px rgba(0,0,0,0.04), 0 1px 1px rgba(0,0,0,0.12)"
+  },
+  "transitions": {
+    "fast": "120ms",
+    "base": "200ms",
+    "slow": "320ms",
+    "easeStandard": "cubic-bezier(0.2, 0, 0.2, 1)",
+    "easeOut": "cubic-bezier(0.16, 1, 0.3, 1)",
+    "production": "0.2s ease-in-out"
+  },
+  "text": {
+    "display": {
+      "fontFamily": "display",
+      "fontSize": "display",
+      "fontWeight": "bold",
+      "lineHeight": "tight",
+      "letterSpacing": "tight",
+      "color": "heading"
+    },
+    "heading": {
+      "fontFamily": "heading",
+      "fontWeight": "bold",
+      "lineHeight": "heading",
+      "letterSpacing": "snug",
+      "color": "heading"
+    },
+    "lead": {
+      "fontSize": "lead",
+      "lineHeight": "relaxed",
+      "color": "text"
+    },
+    "body": {
+      "fontSize": "body",
+      "lineHeight": "body",
+      "color": "text"
+    },
+    "muted": {
+      "color": "textMuted"
+    },
+    "eyebrow": {
+      "fontSize": "xs",
+      "fontWeight": "bold",
+      "letterSpacing": "caps",
+      "textTransform": "uppercase",
+      "color": "sky"
+    },
+    "stat": {
+      "fontFamily": "display",
+      "fontSize": "stat",
+      "fontWeight": "bold",
+      "lineHeight": "tight",
+      "letterSpacing": "tight",
+      "color": "sky"
+    }
+  },
+  "buttons": {
+    "primary": {
+      "color": "white",
+      "bg": "navy",
+      "border": 0,
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontSize": "0.9375rem",
+      "fontWeight": "semibold",
+      "lineHeight": "1.25rem",
+      "px": "30px",
+      "py": "15px",
+      "cursor": "pointer",
+      "transition": "background-color 200ms ease-in-out, color 200ms ease-in-out",
+      "&:hover": {
+        "bg": "primaryHover"
+      },
+      "&:disabled": {
+        "bg": "primaryDisabled",
+        "cursor": "not-allowed"
+      }
+    },
+    "sky": {
+      "color": "white",
+      "bg": "sky",
+      "border": "2px solid",
+      "borderColor": "sky",
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontWeight": "semibold",
+      "cursor": "pointer",
+      "&:hover": {
+        "bg": "navy",
+        "borderColor": "navy"
+      },
+      "$note": "system addition — not a production Patterson button"
+    },
+    "outline": {
+      "color": "navy",
+      "bg": "transparent",
+      "border": "2px solid",
+      "borderColor": "navy",
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontWeight": "semibold",
+      "cursor": "pointer",
+      "&:hover": {
+        "bg": "navy",
+        "color": "white"
+      },
+      "$note": "system addition — not a production Patterson button"
+    },
+    "ghost": {
+      "color": "navy",
+      "bg": "transparent",
+      "border": "2px solid",
+      "borderColor": "transparent",
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontWeight": "semibold",
+      "cursor": "pointer",
+      "&:hover": {
+        "bg": "navyTints.10"
+      },
+      "$note": "system addition — not a production Patterson button"
+    },
+    "onDark": {
+      "color": "navy",
+      "bg": "white",
+      "border": "2px solid",
+      "borderColor": "white",
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontWeight": "semibold",
+      "cursor": "pointer",
+      "&:hover": {
+        "bg": "sky",
+        "color": "white",
+        "borderColor": "sky"
+      },
+      "$note": "system addition — not a production Patterson button"
+    },
+    "secondary": {
+      "color": "navy",
+      "bg": "blueLight",
+      "border": 0,
+      "borderRadius": "btn",
+      "fontFamily": "body",
+      "fontSize": "0.9375rem",
+      "fontWeight": "semibold",
+      "lineHeight": "1.25rem",
+      "px": "30px",
+      "py": "15px",
+      "cursor": "pointer",
+      "transition": "background-color 200ms ease-in-out",
+      "&:hover": {
+        "bg": "secondaryHover"
+      },
+      "&:disabled": {
+        "bg": "secondaryDisabled",
+        "cursor": "not-allowed"
+      }
+    },
+    "$note": "primary and secondary are production-verified. Radius is 5px; production has no pill button."
+  },
+  "cards": {
+    "default": {
+      "bg": "background",
+      "border": "1px solid",
+      "borderColor": "border",
+      "borderRadius": "lg",
+      "boxShadow": "sm",
+      "padding": 5
+    },
+    "interactive": {
+      "bg": "background",
+      "border": "1px solid",
+      "borderColor": "border",
+      "borderRadius": "lg",
+      "boxShadow": "sm",
+      "padding": 5,
+      "transition": "transform 200ms, box-shadow 200ms",
+      "&:hover": {
+        "transform": "translateY(-3px)",
+        "boxShadow": "lg"
+      }
+    }
+  },
+  "badges": {
+    "navy": {
+      "color": "white",
+      "bg": "navy",
+      "borderRadius": "pill"
+    },
+    "sky": {
+      "color": "white",
+      "bg": "sky",
+      "borderRadius": "pill"
+    },
+    "subtle": {
+      "color": "navy",
+      "bg": "navyTints.10",
+      "borderRadius": "pill"
+    },
+    "success": {
+      "color": "success",
+      "bg": "successBg",
+      "borderRadius": "pill"
+    },
+    "info": {
+      "color": "info",
+      "bg": "infoBg",
+      "borderRadius": "pill"
+    },
+    "warning": {
+      "color": "warning",
+      "bg": "warningBg",
+      "borderRadius": "pill"
+    },
+    "danger": {
+      "color": "danger",
+      "bg": "dangerBg",
+      "borderRadius": "pill"
+    }
+  },
+  "forms": {
+    "input": {
+      "fontFamily": "body",
+      "fontSize": "body",
+      "color": "text",
+      "bg": "background",
+      "borderColor": "borderField",
+      "borderRadius": "field",
+      "&:focus": {
+        "borderColor": "sky",
+        "boxShadow": "focus",
+        "outline": "none"
+      }
+    },
+    "label": {
+      "fontSize": "sm",
+      "fontWeight": "semibold",
+      "color": "heading"
+    },
+    "select": {
+      "fontFamily": "body",
+      "borderColor": "borderField",
+      "borderRadius": "field"
+    },
+    "textarea": {
+      "fontFamily": "body",
+      "borderColor": "borderField",
+      "borderRadius": "field"
+    },
+    "$note": "Production input border is the WARM taupe #AFA593 at 2px radius."
+  },
+  "links": {
+    "default": {
+      "color": "link",
+      "textDecoration": "none",
+      "&:hover": {
+        "color": "linkHover"
+      }
+    },
+    "nav": {
+      "color": "heading",
+      "fontWeight": "semibold",
+      "textDecoration": "none",
+      "&:hover": {
+        "color": "sky"
+      }
+    }
+  },
+  "styles": {
+    "root": {
+      "fontFamily": "body",
+      "fontSize": "body",
+      "lineHeight": "body",
+      "color": "text",
+      "bg": "background",
+      "WebkitFontSmoothing": "antialiased",
+      "textRendering": "optimizeLegibility"
+    },
+    "h1": {
+      "variant": "text.heading",
+      "fontSize": "h1"
+    },
+    "h2": {
+      "variant": "text.heading",
+      "fontSize": "h2"
+    },
+    "h3": {
+      "variant": "text.heading",
+      "fontSize": "h3"
+    },
+    "h4": {
+      "variant": "text.heading",
+      "fontSize": "h4"
+    },
+    "h5": {
+      "variant": "text.heading",
+      "fontSize": "h5"
+    },
+    "p": {
+      "marginTop": 0,
+      "marginBottom": 4,
+      "textWrap": "pretty"
+    },
+    "a": {
+      "variant": "links.default"
+    }
+  }
+}

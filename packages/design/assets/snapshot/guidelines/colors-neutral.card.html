@@ -1,0 +1,29 @@
+<!-- @dsCard group="Colors" viewport="700x130" name="Neutral ramp" subtitle="Cool grays for text, borders & surfaces" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body { margin: 0; padding: 20px; background: var(--surface-page); }
+  .swatches { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; }
+  .s { height: 60px; border-radius: var(--radius-sm); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 5px; border: 1px solid var(--border-subtle); }
+  .t { font-family: var(--font-mono); font-size: 9px; }
+  .light { color: rgba(255,255,255,0.9); }
+  .dark { color: rgba(0,0,0,0.5); }
+</style>
+</head>
+<body>
+  <div class="swatches">
+    <div class="s" style="background:var(--pat-ink)"><span class="t light">ink</span></div>
+    <div class="s" style="background:var(--pat-gray-700)"><span class="t light">700</span></div>
+    <div class="s" style="background:var(--pat-gray-600)"><span class="t light">600</span></div>
+    <div class="s" style="background:var(--pat-gray-500)"><span class="t light">500</span></div>
+    <div class="s" style="background:var(--pat-gray-400)"><span class="t dark">400</span></div>
+    <div class="s" style="background:var(--pat-gray-300)"><span class="t dark">300</span></div>
+    <div class="s" style="background:var(--pat-gray-200)"><span class="t dark">200</span></div>
+    <div class="s" style="background:var(--pat-gray-100)"><span class="t dark">100</span></div>
+    <div class="s" style="background:var(--pat-gray-50)"><span class="t dark">50</span></div>
+  </div>
+</body>
+</html>

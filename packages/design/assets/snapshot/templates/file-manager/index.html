@@ -1,0 +1,756 @@
+<!-- @template name="Skill Studio" description="Claude-powered skills & plugins studio — workspace editor, GitHub repo file-tree source selector (pre-approved orgs, cascading checkboxes), reference curator, light/dark themes, and a Claude assistant that plans → searches → customizes. Built on the Patterson component library." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterson — Skill Studio</title>
+<meta name="design_doc_mode" content="prototype">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="./ds-base.js"></script>
+<script src="./app-data.js"></script>
+<script src="./studio.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; background: var(--surface-subtle); }
+  #root { height: 100vh; }
+  a { color: var(--text-link); text-decoration: none; }
+  a:hover { color: var(--text-link-hover); }
+  *::selection { background: var(--pat-sky-20); }
+
+  /* =========================================================
+     DARK THEME — override semantic + tint tokens only.
+     Brand hues (navy/sky) stay intact; the navy topbar reads
+     in both themes. Text that used raw --pat-navy is switched
+     to --text-strong below so it flips automatically.
+     ========================================================= */
+  :root[data-theme="dark"] {
+    --surface-page:    #111a24;
+    --surface-subtle:  #0b1119;
+    --surface-muted:   #1a2531;
+    --surface-card:    #141e29;
+    --text-heading:    #eaf1f8;
+    --text-body:       #b4c2cf;
+    --text-muted:      #83919f;
+    --text-strong:     #5cc0ef;
+    --text-link:       #4db4e6;
+    --text-link-hover: #8ed3f5;
+    --border-subtle:   #1d2a36;
+    --border-default:  #2a3a48;
+    --border-strong:   #3b4d5d;
+    --pat-navy-10:     rgba(255,255,255,0.06);
+    --pat-sky-10:      rgba(0,168,225,0.14);
+    --pat-sky-20:      rgba(0,168,225,0.24);
+    --pat-gray-50:     #0e1720;
+    --pat-ink:         #e6eef6;
+    --shadow-sm:       0 1px 2px rgba(0,0,0,0.5);
+    --shadow-lg:       0 18px 48px rgba(0,0,0,0.6);
+  }
+
+  .fm-shell { display: grid; grid-template-columns: 320px minmax(0,1fr) 360px; grid-template-rows: 56px 1fr; height: 100vh; background: var(--surface-page); }
+  @media (max-width: 1180px) { .fm-shell { grid-template-columns: 272px minmax(0,1fr) 320px; } }
+
+  /* --- Top bar --- */
+  .fm-topbar { grid-column: 1 / -1; display: flex; align-items: center; gap: var(--space-4); padding: 0 var(--space-4); background: var(--pat-navy); color: #fff; }
+  .fm-brand { display: flex; align-items: center; gap: 10px; flex: none; }
+  .fm-brand .studio { font-size: var(--fs-sm); font-weight: var(--fw-bold); letter-spacing: var(--ls-snug); color: #fff; padding-left: 10px; border-left: 1px solid rgba(255,255,255,0.25); }
+  .topsearch { flex: 1; max-width: 520px; display: flex; align-items: center; gap: 9px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.18); border-radius: var(--radius-pill); padding: 8px 16px; color: #fff; }
+  .topsearch:focus-within { background: rgba(255,255,255,0.18); border-color: var(--pat-sky); }
+  .topsearch input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: var(--fs-sm); color: #fff; }
+  .topsearch input::placeholder { color: rgba(255,255,255,0.6); }
+  .fm-topbar-actions { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); flex: none; }
+  .livetoggle { display: flex; align-items: center; gap: 7px; font-size: var(--fs-xs); color: rgba(255,255,255,0.75); cursor: pointer; user-select: none; }
+  .livetoggle .sw { width: 30px; height: 17px; border-radius: 999px; background: rgba(255,255,255,0.25); position: relative; transition: background .15s; flex: none; }
+  .livetoggle .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 13px; height: 13px; border-radius: 50%; background: #fff; transition: transform .15s; }
+  .livetoggle.on .sw { background: var(--pat-sky); }
+  .livetoggle.on .sw::after { transform: translateX(13px); }
+
+  /* --- Panels --- */
+  .fm-pane { min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .fm-left  { background: var(--surface-subtle); border-right: 1px solid var(--border-subtle); }
+  .fm-right { background: var(--surface-subtle); border-left: 1px solid var(--border-subtle); }
+  .fm-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+
+  /* mode switch */
+  .modeswitch { display: flex; gap: 2px; padding: var(--space-3) var(--space-3) var(--space-2); }
+  .modeswitch button { flex: 1; border: 0; background: transparent; padding: 7px 6px; border-radius: var(--radius-md); font: inherit; font-size: var(--fs-xs); font-weight: var(--fw-semibold); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .modeswitch button:hover { background: var(--pat-navy-10); color: var(--text-heading); }
+  .modeswitch button.active { background: var(--pat-navy); color: #fff; }
+  .pane-sub { padding: 0 var(--space-4) var(--space-3); font-size: var(--fs-xs); color: var(--text-muted); }
+
+  /* local search inside a pane (GitHub-spaces style) */
+  .pane-find { margin: 0 var(--space-3) var(--space-2); display: flex; align-items: center; gap: 8px; background: var(--surface-page); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 7px 10px; }
+  .pane-find input { flex: 1; border: 0; outline: 0; background: transparent; font: inherit; font-size: var(--fs-sm); color: var(--text-heading); }
+
+  /* --- File tree (workspace) --- */
+  .tree { padding: var(--space-1) var(--space-2) var(--space-6); }
+  .tree-row { display: flex; align-items: center; gap: 7px; width: 100%; box-sizing: border-box; padding: 6px 8px; border: 0; background: transparent; border-radius: var(--radius-sm); cursor: pointer; font: inherit; font-size: var(--fs-sm); color: var(--text-body); text-align: left; }
+  .tree-row:hover { background: var(--pat-navy-10); }
+  .tree-row.active { background: var(--pat-sky-20); color: var(--text-strong); font-weight: var(--fw-semibold); }
+  .tree-row.dir { color: var(--text-heading); font-weight: var(--fw-medium); }
+  .tree-row .chev { transition: transform .15s ease; color: var(--text-muted); flex: none; }
+  .tree-row .chev.open { transform: rotate(90deg); }
+  .tree-row .ico { flex: none; color: var(--pat-navy-60); }
+  .tree-row.active .ico { color: var(--pat-sky); }
+  .tree-row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tree-children { position: relative; }
+  .tree-children::before { content: ""; position: absolute; left: 15px; top: 0; bottom: 6px; width: 1px; background: var(--border-subtle); }
+
+  /* --- GitHub Spaces-style source selector --- */
+  .gh-tree { padding: 2px 6px 24px; }
+  .gh-row { display: flex; align-items: center; gap: 6px; width: 100%; box-sizing: border-box; padding: 5px 6px; border: 0; background: transparent; border-radius: var(--radius-sm); cursor: pointer; font: inherit; font-size: var(--fs-sm); color: var(--text-body); text-align: left; }
+  .gh-row:hover { background: var(--pat-navy-10); }
+  .gh-row.filesel { color: var(--text-strong); font-weight: var(--fw-semibold); }
+  .gh-chev { flex: none; width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: transform .15s ease; }
+  .gh-chev.open { transform: rotate(90deg); }
+  .gh-chev.leaf { visibility: hidden; }
+  .gh-cb { flex: none; width: 16px; height: 16px; border: 1.5px solid var(--border-strong); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #fff; background: var(--surface-page); transition: background .12s, border-color .12s; }
+  .gh-cb.on, .gh-cb.partial { background: var(--pat-sky); border-color: var(--pat-sky); }
+  .gh-ico { flex: none; display: flex; color: var(--pat-navy-60); }
+  .gh-row.org .gh-ico, .gh-row.repo .gh-ico { color: var(--text-strong); }
+  .gh-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gh-row.org .gh-name { font-weight: var(--fw-bold); color: var(--text-heading); }
+  .gh-row.repo .gh-name { font-weight: var(--fw-semibold); color: var(--text-heading); }
+  .gh-tag { margin-left: 6px; flex: none; }
+  .gh-approved { margin-left: auto; flex: none; }
+
+  .tray { border-top: 1px solid var(--border-subtle); padding: var(--space-3); background: var(--surface-page); display: flex; align-items: center; gap: 10px; }
+  .tray .cnt { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text-heading); }
+  .addcount { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 18px; padding: 0 6px; margin-left: 8px; border-radius: var(--radius-pill); background: rgba(255,255,255,0.22); font-size: 11px; font-weight: var(--fw-bold); }
+
+  /* --- References --- */
+  .refs { padding: var(--space-2) var(--space-3); display: flex; flex-direction: column; gap: 8px; }
+  .ref { display: block; padding: 11px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--surface-page); }
+  .ref:hover { border-color: var(--pat-sky-40); }
+  .ref .rt { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text-heading); }
+  .ref .rn { font-size: var(--fs-xs); color: var(--text-muted); margin-top: 2px; }
+
+  /* --- Editor --- */
+  .fm-editor { background: var(--surface-page); }
+  .ed-tabs { display: flex; align-items: stretch; border-bottom: 1px solid var(--border-subtle); background: var(--surface-subtle); overflow-x: auto; min-height: 40px; }
+  .ed-tab { display: flex; align-items: center; gap: 8px; padding: 0 12px 0 14px; height: 40px; border: 0; border-right: 1px solid var(--border-subtle); background: transparent; cursor: pointer; font: inherit; font-size: var(--fs-sm); color: var(--text-muted); white-space: nowrap; }
+  .ed-tab.active { background: var(--surface-page); color: var(--text-heading); font-weight: var(--fw-semibold); box-shadow: inset 0 2px 0 var(--pat-sky); }
+  .ed-tab .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pat-sky); flex: none; }
+  .ed-tab.gh .gtag { font-family: var(--font-mono); font-size: 10px; color: var(--pat-purple); }
+  .ed-tab .x { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: var(--radius-sm); color: var(--text-muted); }
+  .ed-tab .x:hover { background: var(--pat-navy-10); color: var(--text-heading); }
+  .ed-toolbar { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-4); border-bottom: 1px solid var(--border-subtle); }
+  .ed-meta { margin-left: auto; display: flex; align-items: center; gap: var(--space-4); font-size: var(--fs-xs); color: var(--text-muted); font-family: var(--font-mono); }
+  .ed-body { flex: 1; min-height: 0; overflow: hidden; display: flex; }
+  .code-wrap { flex: 1; min-height: 0; display: flex; overflow: auto; background: var(--surface-page); }
+  .gutter { flex: none; padding: 18px 12px 40vh; text-align: right; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--pat-gray-400); background: var(--pat-gray-50); border-right: 1px solid var(--border-subtle); user-select: none; }
+  .code-ta { flex: 1; min-width: 0; border: 0; outline: 0; resize: none; padding: 18px 20px 40vh; font-family: var(--font-mono); font-size: 13px; line-height: 1.7; color: var(--pat-ink); background: transparent; tab-size: 2; caret-color: var(--pat-sky); }
+
+  .md-preview { flex: 1; min-width: 0; overflow: auto; padding: var(--space-6) var(--space-8) 40vh; color: var(--text-body); line-height: var(--lh-body); }
+  .md-preview h1 { font-size: var(--fs-h2); color: var(--text-heading); margin: 0 0 .5em; letter-spacing: var(--ls-snug); }
+  .md-preview h2 { font-size: var(--fs-h3); color: var(--text-heading); margin: 1.4em 0 .5em; }
+  .md-preview h3 { font-size: var(--fs-h4); color: var(--text-strong); margin: 1.3em 0 .4em; }
+  .md-preview p { margin: 0 0 1em; max-width: 68ch; }
+  .md-preview ul, .md-preview ol { margin: 0 0 1em; padding-left: 1.4em; max-width: 68ch; }
+  .md-preview li { margin: .3em 0; }
+  .md-preview code { font-family: var(--font-mono); font-size: .88em; background: var(--pat-navy-10); color: var(--text-strong); padding: .12em .4em; border-radius: var(--radius-xs); }
+  .md-preview pre.md-code { font-family: var(--font-mono); font-size: 13px; background: var(--pat-navy); color: #dbeafe; padding: 14px 16px; border-radius: var(--radius-md); overflow-x: auto; margin: 0 0 1.2em; max-width: 72ch; }
+  .md-preview .md-fm { background: var(--pat-gray-50); border: 1px solid var(--border-subtle); border-left: 3px solid var(--pat-sky); border-radius: var(--radius-sm); padding: 10px 14px; margin: 0 0 1.4em; max-width: 72ch; }
+  .md-preview .md-fm-tag { font-size: 10px; text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--pat-sky); font-weight: var(--fw-bold); }
+  .md-preview .md-fm pre { font-family: var(--font-mono); font-size: 12.5px; color: var(--text-heading); margin: 6px 0 0; white-space: pre-wrap; }
+  .md-preview blockquote { margin: 1em 0; padding: 4px 0 4px 18px; border-left: 3px solid var(--pat-sky); color: var(--text-heading); font-style: italic; }
+  .md-preview hr { border: 0; border-top: 1px solid var(--border-subtle); margin: 1.8em 0; }
+  .md-preview a { color: var(--text-link); border-bottom: 1px solid var(--pat-sky-40); }
+  .md-preview .md-table { border-collapse: collapse; width: 100%; max-width: 68ch; margin: 0 0 1.2em; font-size: var(--fs-sm); }
+  .md-preview .md-table th { text-align: left; padding: 8px 12px; background: var(--pat-navy); color: #fff; font-weight: var(--fw-semibold); }
+  .md-preview .md-table td { padding: 8px 12px; border-bottom: 1px solid var(--border-subtle); }
+  .md-preview .md-check { font-family: var(--font-mono); color: var(--pat-gray-400); }
+  .md-preview .md-check.done { color: var(--pat-teal); }
+
+  /* --- Chat --- */
+  .chat-scroll { flex: 1; min-height: 0; overflow-y: auto; padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-4); }
+  .msg { display: flex; gap: 10px; max-width: 100%; }
+  .msg .av { flex: none; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: var(--fw-bold); color: #fff; }
+  .msg.assistant .av { background: var(--pat-navy); }
+  .msg.user .av { background: var(--pat-sky); }
+  .msg .bubble { background: var(--surface-page); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 4px 14px; font-size: var(--fs-sm); line-height: 1.55; color: var(--text-body); overflow-x: auto; }
+  .msg.user { flex-direction: row-reverse; }
+  .msg.user .bubble { background: var(--pat-navy); color: #fff; border-color: var(--pat-navy); padding: 10px 14px; }
+  .msg .bubble :first-child { margin-top: 8px; } .msg .bubble :last-child { margin-bottom: 10px; }
+  .msg .bubble h1,.msg .bubble h2,.msg .bubble h3 { font-size: var(--fs-sm); color: var(--text-heading); margin: 12px 0 6px; }
+  .msg .bubble ul,.msg .bubble ol { padding-left: 1.2em; margin: 6px 0; }
+  .msg .bubble code { font-family: var(--font-mono); font-size: .85em; background: var(--pat-navy-10); color: var(--text-strong); padding: .1em .35em; border-radius: var(--radius-xs); }
+  .msg.user .bubble code { background: rgba(255,255,255,0.18); color: #fff; }
+  .typing { display: inline-flex; gap: 4px; padding: 4px 0; }
+  .typing span { width: 6px; height: 6px; border-radius: 50%; background: var(--pat-navy-40); animation: blink 1.2s infinite both; }
+  .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink { 0%,80%,100%{opacity:.25} 40%{opacity:1} }
+  .chat-compose { border-top: 1px solid var(--border-subtle); padding: var(--space-3); background: var(--surface-page); }
+  .chat-inputrow { display: flex; align-items: flex-end; gap: 8px; background: var(--surface-subtle); border: 1px solid var(--border-default); border-radius: var(--radius-lg); padding: 6px 6px 6px 12px; }
+  .chat-inputrow:focus-within { border-color: var(--pat-sky); box-shadow: 0 0 0 3px var(--pat-sky-20); }
+  .chat-ta { flex: 1; border: 0; outline: 0; resize: none; background: transparent; font: inherit; font-size: var(--fs-sm); line-height: 1.5; color: var(--text-heading); padding: 6px 0; max-height: 120px; }
+  .chat-hint { font-size: var(--fs-xs); color: var(--text-muted); margin: 8px 2px 0; text-align: center; }
+  .chip { border: 1px solid var(--border-default); background: var(--surface-page); border-radius: var(--radius-pill); padding: 5px 11px; font-size: var(--fs-xs); font-weight: var(--fw-medium); color: var(--text-body); cursor: pointer; }
+  .chip:hover { border-color: var(--pat-sky); color: var(--text-strong); background: var(--pat-sky-10); }
+  .icon-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0; background: transparent; border-radius: var(--radius-md); color: rgba(255,255,255,0.85); cursor: pointer; }
+  .icon-btn:hover { background: rgba(255,255,255,0.14); color: #fff; }
+
+  /* --- Dialog --- */
+  .dlg-back { position: fixed; inset: 0; background: rgba(2,16,32,0.6); display: grid; place-items: center; z-index: 50; padding: 24px; }
+  .dlg { background: var(--surface-page); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); width: 100%; max-width: 520px; overflow: hidden; }
+  .dlg-head { padding: var(--space-5) var(--space-6) var(--space-3); }
+  .dlg-head h3 { margin: 0; font-size: var(--fs-h4); color: var(--text-heading); }
+  .dlg-head p { margin: 6px 0 0; font-size: var(--fs-sm); color: var(--text-muted); }
+  .dlg-body { padding: 0 var(--space-6) var(--space-5); }
+  .dlg-body label { display: block; font-size: var(--fs-xs); font-weight: var(--fw-bold); text-transform: uppercase; letter-spacing: var(--ls-caps); color: var(--text-muted); margin: 14px 0 6px; }
+  .dlg-body input, .dlg-body textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 10px 12px; font: inherit; font-size: var(--fs-sm); color: var(--text-heading); background: var(--surface-page); }
+  .dlg-body input:focus, .dlg-body textarea:focus { outline: 0; border-color: var(--pat-sky); box-shadow: 0 0 0 3px var(--pat-sky-20); }
+  .dlg-body textarea { resize: vertical; min-height: 88px; }
+  .dlg-foot { display: flex; justify-content: flex-end; gap: 10px; padding: var(--space-4) var(--space-6); border-top: 1px solid var(--border-subtle); background: var(--pat-gray-50); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { useState, useRef, useEffect, useMemo, Fragment } = React;
+
+  const I = {
+    chevron: (p) => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M9 6l6 6-6 6"/></svg>,
+    folder: (p) => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>,
+    file: (p) => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M14 3v5h5"/><path d="M6 3h8l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/></svg>,
+    search: (p) => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>,
+    plus: (p) => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" {...p}><path d="M12 5v14M5 12h14"/></svg>,
+    send: (p) => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 12l16-8-6 16-3-6-7-2z"/></svg>,
+    close: (p) => <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" {...p}><path d="M6 6l12 12M18 6L6 18"/></svg>,
+    check: (p) => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M20 6L9 17l-5-5"/></svg>,
+    dash: (p) => <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" {...p}><path d="M6 12h12"/></svg>,
+    star: (p) => <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2l3 6.5 7 .8-5 4.9 1.3 7L12 18l-6.6 3.2L6.7 14l-5-4.9 7-.8z"/></svg>,
+    spark: (p) => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>,
+    book: (p) => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>,
+    files: (p) => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 4h9l3 3v13H4z"/><path d="M8 4V2h9l3 3v13h-2"/></svg>,
+    gh: (p) => <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>,
+    repo: (p) => <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v16H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v4H6.5A2.5 2.5 0 0 1 4 20.5z"/></svg>,
+    wand: (p) => <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M15 4V2M15 10V8M8 6l-1.5-1.5M22 6l-1.5-1.5M4 22l11-11M12 8l1 1"/></svg>,
+    moon: (p) => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>,
+    sun: (p) => <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>,
+  };
+
+  const kindTone = { skill: 'sky', template: 'teal', example: 'purple', plugin: 'navy' };
+
+  function keyOf(path) { return path.join('/'); }
+
+  // full path key for a catalog file leaf
+  function fullPathFor(item, rel) {
+    return [item.org, item.repo, ...item.path.split('/').filter(Boolean), ...rel.split('/')].join('/');
+  }
+
+  // ---- Build the org→repo→dir→file tree from the catalog ----
+  function buildRepoTree(catalog) {
+    const roots = [];
+    const rootMap = {};
+    const leafIndex = {}; // fullPath -> {itemId, rel}
+    for (const c of catalog) {
+      const base = [c.org, c.repo, ...c.path.split('/').filter(Boolean)];
+      const fileKeys = Object.keys(c.files || {});
+      for (const rel of fileKeys) {
+        const all = [...base, ...rel.split('/')];
+        let level = roots, map = rootMap, acc = [];
+        all.forEach((seg, idx) => {
+          acc.push(seg);
+          const isFile = idx === all.length - 1;
+          const fp = acc.join('/');
+          if (!map[seg]) {
+            const node = { name: seg, fullPath: fp, kind: idx === 0 ? 'org' : idx === 1 ? 'repo' : (isFile ? 'file' : 'dir'), children: [], _map: {} };
+            if (isFile) { node.itemId = c.id; node.rel = rel; leafIndex[fp] = { itemId: c.id, rel }; }
+            map[seg] = node; level.push(node);
+          }
+          if (idx === base.length - 1 && !isFile) map[seg].itemKind = c.kind; // item-root folder badge
+          level = map[seg].children; map = map[seg]._map;
+        });
+      }
+    }
+    return { roots, leafIndex };
+  }
+
+  function collectLeaves(node) {
+    if (node.kind === 'file') return [node.fullPath];
+    return node.children.flatMap(collectLeaves);
+  }
+
+  // ---- Workspace file tree ----
+  function TreeNode({ node, path, depth, openFile, activeKey, toggleDir }) {
+    const k = keyOf([...path, node.name]);
+    if (node.type === 'dir') {
+      return (
+        <div>
+          <button className="tree-row dir" style={{ paddingLeft: 8 + depth * 14 }} onClick={() => toggleDir(k)}>
+            <I.chevron className={"chev" + (node.__open ? " open" : "")} />
+            <I.folder className="ico" style={{ color: node.__open ? 'var(--pat-sky)' : undefined }} />
+            <span className="name">{node.name}</span>
+          </button>
+          {node.__open && (
+            <div className="tree-children">
+              {node.children.map((c) => (
+                <TreeNode key={c.name} node={c} path={[...path, node.name]} depth={depth + 1} openFile={openFile} activeKey={activeKey} toggleDir={toggleDir} />
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+    return (
+      <button className={"tree-row" + (activeKey === k ? " active" : "")} style={{ paddingLeft: 8 + depth * 14 + 6 }} onClick={() => openFile(node, [...path, node.name])}>
+        <span style={{ width: 14, flex: 'none' }} />
+        <I.file className="ico" />
+        <span className="name">{node.name}</span>
+      </button>
+    );
+  }
+
+  function App() {
+    const DS = window.PattersonCompaniesDesignSystem_3534f9;
+    const { Button, IconButton, Badge, Tabs } = DS;
+    const S = window.Studio;
+    const orgMeta = {}; S.ORGS.forEach((o) => { orgMeta[o.login] = o; });
+
+    // ---- theme ----
+    const [theme, setTheme] = useState(() => { try { return localStorage.getItem('skillstudio-theme') || 'light'; } catch (e) { return 'light'; } });
+    useEffect(() => {
+      document.documentElement.setAttribute('data-theme', theme);
+      try { localStorage.setItem('skillstudio-theme', theme); } catch (e) {}
+    }, [theme]);
+
+    // ---- workspace ----
+    const [tree, setTree] = useState(() => {
+      const applyOpen = (nodes) => nodes.map((n) => n.type === 'dir' ? { ...n, __open: !!n.open, children: applyOpen(n.children) } : { ...n });
+      return applyOpen(JSON.parse(JSON.stringify(window.PAT_TREE)));
+    });
+    const [openTabs, setOpenTabs] = useState([]);
+    const [activeKey, setActiveKey] = useState(null);
+    const [contents, setContents] = useState({});
+    const [dirty, setDirty] = useState({});
+    const [mode, setMode] = useState('edit');
+
+    // ---- global UI ----
+    const [query, setQuery] = useState('');
+    const [srcFind, setSrcFind] = useState('');
+    const [leftMode, setLeftMode] = useState('workspace'); // workspace | sources | refs
+    const [live, setLive] = useState(false);
+
+    // ---- sources selector ----
+    const { roots: repoRoots, leafIndex } = useMemo(() => buildRepoTree(S.CATALOG), []);
+    const [openDirs, setOpenDirs] = useState(() => {
+      const o = {}; S.CATALOG.forEach((c) => { o[c.org] = true; o[c.org + '/' + c.repo] = true; }); return o;
+    });
+    const [sel, setSel] = useState({}); // fullPath(file) -> true
+    const selCount = Object.keys(sel).filter((k) => sel[k]).length;
+
+    // ---- agent ----
+    const [messages, setMessages] = useState([
+      { role: 'assistant', text: 'Welcome to **Skill Studio**. Tell me what skill or plugin you need and I\'ll search the pre-approved orgs, surface matching files in **Sources**, and customize the ones you tick for Patterson.\n\nStart with **Plan a skill** below.' },
+    ]);
+    const [draft, setDraft] = useState('');
+    const [busy, setBusy] = useState(false);
+    const [dialog, setDialog] = useState(null);
+    const [lastBrief, setLastBrief] = useState('');
+    const chatEnd = useRef(null);
+    useEffect(() => { if (chatEnd.current) chatEnd.current.parentNode.scrollTop = chatEnd.current.parentNode.scrollHeight; }, [messages, busy]);
+
+    // ---- tree ops ----
+    function toggleDir(k) {
+      const walk = (nodes, p) => nodes.map((n) => {
+        const nk = keyOf([...p, n.name]);
+        if (n.type === 'dir') return { ...n, __open: nk === k ? !n.__open : n.__open, children: walk(n.children, [...p, n.name]) };
+        return n;
+      });
+      setTree((t) => walk(t, []));
+    }
+    function openFile(node, path) {
+      const k = keyOf(path);
+      setOpenTabs((tabs) => tabs.find((t) => t.key === k) ? tabs : [...tabs, { key: k, name: node.name, path }]);
+      setContents((c) => k in c ? c : { ...c, [k]: node.content });
+      setActiveKey(k); setMode('edit');
+    }
+    function openVirtual(key, name, body, gh) {
+      setOpenTabs((tabs) => tabs.find((t) => t.key === key) ? tabs : [...tabs, { key, name, path: key.split('/'), gh }]);
+      setContents((c) => key in c ? c : { ...c, [key]: body });
+      setActiveKey(key); setMode(gh ? 'preview' : 'edit');
+    }
+    function closeTab(k, e) {
+      e.stopPropagation();
+      setOpenTabs((tabs) => {
+        const idx = tabs.findIndex((t) => t.key === k);
+        const next = tabs.filter((t) => t.key !== k);
+        if (activeKey === k) setActiveKey(next.length ? next[Math.max(0, idx - 1)].key : null);
+        return next;
+      });
+    }
+    function insertFile(fullPath, body) {
+      const parts = fullPath.split('/');
+      setTree((t) => {
+        const root = JSON.parse(JSON.stringify(t));
+        let level = root;
+        for (let i = 0; i < parts.length - 1; i++) {
+          let dir = level.find((n) => n.type === 'dir' && n.name === parts[i]);
+          if (!dir) { dir = { type: 'dir', name: parts[i], __open: true, children: [] }; level.push(dir); }
+          dir.__open = true; level = dir.children;
+        }
+        const fname = parts[parts.length - 1];
+        let f = level.find((n) => n.type === 'file' && n.name === fname);
+        if (f) f.content = body; else level.push({ type: 'file', name: fname, content: body });
+        return root;
+      });
+      setContents((c) => ({ ...c, [fullPath]: body }));
+    }
+
+    const activeTab = openTabs.find((t) => t.key === activeKey);
+    const text = activeKey != null ? (contents[activeKey] ?? '') : '';
+    const lineCount = text.split('\n').length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const isMd = activeTab && /\.md$/.test(activeTab.name);
+
+    function edit(v) { setContents((c) => ({ ...c, [activeKey]: v })); setDirty((d) => ({ ...d, [activeKey]: true })); }
+    function save() { setDirty((d) => ({ ...d, [activeKey]: false })); }
+
+    useEffect(() => { openFile({ name: 'README.md', content: window.PAT_TREE[0].children.find((c) => c.name === 'README.md').content }, ['my-skills', 'README.md']); }, []);
+
+    // ---- sources ops ----
+    function toggleOpen(fp) { setOpenDirs((o) => ({ ...o, [fp]: !o[fp] })); }
+    function toggleSelect(node) {
+      const leaves = collectLeaves(node);
+      const on = leaves.filter((p) => sel[p]).length;
+      const target = on < leaves.length; // if not all selected, select all; else clear
+      setSel((s) => { const n = { ...s }; leaves.forEach((p) => { n[p] = target; }); return n; });
+    }
+    async function openLeaf(node) {
+      const item = S.byId(node.itemId); if (!item) return;
+      const body = await S.getFile(item, node.rel, live);
+      openVirtual('gh:' + node.fullPath, node.name, body, true);
+    }
+    function clearSel() { setSel({}); }
+
+    // build {itemId:[rels]} from current selection
+    function selMap() {
+      const m = {};
+      Object.keys(sel).filter((p) => sel[p]).forEach((p) => { const info = leafIndex[p]; if (info) (m[info.itemId] = m[info.itemId] || []).push(info.rel); });
+      return m;
+    }
+
+    // ---- agent flows ----
+    function push(role, textV) { setMessages((m) => [...m, { role, text: textV }]); }
+
+    async function runPlan(brief) {
+      setLastBrief(brief); push('user', brief); setBusy(true);
+      try {
+        const res = await S.planSkill(brief);
+        push('assistant', res.planMd + (res.rec.length ? `\n\n**Found ${res.rec.length} candidate${res.rec.length > 1 ? 's' : ''}** — their files are pre-ticked in **Sources**. Review the tree, adjust the checkboxes, then **Add & customize**.` : '\n\n_No catalog match — browse Sources manually._'));
+        // pre-select all files of recommended items + open their folders
+        const nsel = {}; const nopen = {};
+        res.rec.forEach((id) => {
+          const it = S.byId(id); if (!it) return;
+          Object.keys(it.files || {}).forEach((rel) => {
+            const fp = fullPathFor(it, rel); nsel[fp] = true;
+            const segs = fp.split('/'); for (let i = 1; i < segs.length; i++) nopen[segs.slice(0, i).join('/')] = true;
+          });
+        });
+        setSel(nsel); setOpenDirs((o) => ({ ...o, ...nopen })); setLeftMode('sources');
+      } catch (e) { push('assistant', 'Planning failed: ' + e.message); }
+      setBusy(false);
+    }
+
+    async function runImport(slug, brief) {
+      const m = selMap();
+      const items = Object.keys(m).map((id) => S.byId(id)).filter(Boolean);
+      if (!items.length) return;
+      const fileTotal = Object.values(m).reduce((a, b) => a + b.length, 0);
+      push('assistant', `Importing ${fileTotal} file${fileTotal > 1 ? 's' : ''} from ${items.length} source${items.length > 1 ? 's' : ''} → customizing into \`my-skills/${slug}/\`…`);
+      setBusy(true);
+      try {
+        const res = await S.customize(items, brief, slug, live, m);
+        const paths = Object.keys(res.files);
+        paths.forEach((p) => insertFile(p, res.files[p]));
+        const skillFile = paths.find((p) => /SKILL\.md$/.test(p)) || paths[0];
+        if (skillFile) { const parts = skillFile.split('/'); openFile({ name: parts[parts.length - 1], content: res.files[skillFile] }, parts); }
+        setLeftMode('workspace'); setSel({});
+        push('assistant', `Done — created **${paths.length} file${paths.length > 1 ? 's' : ''}** in \`my-skills/${slug}/\`.\n\n_${res.notes}_\n\nReview \`SKILL.md\` in the editor and tell me what to refine.`);
+      } catch (e) { push('assistant', 'Customize failed: ' + e.message); }
+      setBusy(false);
+    }
+
+    async function sendChat(t) {
+      const val = (t ?? draft).trim(); if (!val || busy) return;
+      setDraft(''); push('user', val); setBusy(true);
+      try {
+        const reply = await S.chat([...messages, { role: 'user', text: val }], { file: activeTab && activeTab.name, fileBody: text });
+        push('assistant', reply);
+      } catch (e) { push('assistant', 'Error: ' + e.message); }
+      setBusy(false);
+    }
+
+    // ---- filtered views ----
+    const shownTree = useMemo(() => {
+      if (!query.trim()) return tree;
+      const q = query.toLowerCase();
+      const filt = (nodes) => nodes.map((n) => {
+        if (n.type === 'file') return n.name.toLowerCase().includes(q) ? n : null;
+        const kids = filt(n.children).filter(Boolean);
+        return (kids.length || n.name.toLowerCase().includes(q)) ? { ...n, __open: true, children: kids } : null;
+      }).filter(Boolean);
+      return filt(tree);
+    }, [tree, query]);
+
+    const shownRoots = useMemo(() => {
+      const q = srcFind.trim().toLowerCase();
+      if (!q) return repoRoots;
+      const filt = (nodes) => nodes.map((n) => {
+        if (n.kind === 'file') return n.name.toLowerCase().includes(q) ? n : null;
+        if (n.name.toLowerCase().includes(q)) return n;
+        const kids = filt(n.children).filter(Boolean);
+        return kids.length ? { ...n, children: kids } : null;
+      }).filter(Boolean);
+      return filt(repoRoots);
+    }, [repoRoots, srcFind]);
+    const findActive = srcFind.trim().length > 0;
+
+    // ---- source tree node renderer ----
+    function GHNode({ node, depth }) {
+      const isDir = node.kind !== 'file';
+      const leaves = collectLeaves(node);
+      const onCount = leaves.filter((p) => sel[p]).length;
+      const state = node.kind === 'file' ? (sel[node.fullPath] ? 'all' : 'none') : (onCount === 0 ? 'none' : onCount === leaves.length ? 'all' : 'partial');
+      const open = findActive ? true : !!openDirs[node.fullPath];
+      const isActive = node.kind === 'file' && activeKey === 'gh:' + node.fullPath;
+      const meta = node.kind === 'org' ? orgMeta[node.name] : null;
+      const ico = node.kind === 'org' ? <I.gh /> : node.kind === 'repo' ? <I.repo /> : isDir ? <I.folder /> : <I.file />;
+      return (
+        <div>
+          <div className={"gh-row " + node.kind + (isActive ? " filesel" : "")} style={{ paddingLeft: 6 + depth * 15 }}
+            onClick={() => isDir ? toggleOpen(node.fullPath) : openLeaf(node)}>
+            <span className={"gh-chev" + (isDir ? '' : ' leaf') + (open ? ' open' : '')}>{isDir && <I.chevron />}</span>
+            <span className={"gh-cb " + (state === 'all' ? 'on' : state === 'partial' ? 'partial' : '')}
+              onClick={(e) => { e.stopPropagation(); toggleSelect(node); }} title="Select">
+              {state === 'all' && <I.check />}{state === 'partial' && <I.dash />}
+            </span>
+            <span className="gh-ico">{ico}</span>
+            <span className="gh-name">{node.name}</span>
+            {node.itemKind && <Badge className="gh-tag" tone={kindTone[node.itemKind] || 'gray'}>{node.itemKind}</Badge>}
+          </div>
+          {isDir && open && node.children.map((c) => <GHNode key={c.fullPath} node={c} depth={depth + 1} />)}
+        </div>
+      );
+    }
+
+    return (
+      <div className="fm-shell">
+        {/* Top bar */}
+        <div className="fm-topbar">
+          <div className="fm-brand">
+            <img src="../../assets/brand/patterson-logo-white.svg" alt="Patterson" style={{ height: 20, width: 'auto', display: 'block' }} />
+            <span className="studio">Skill Studio</span>
+          </div>
+          <label className="topsearch">
+            <I.search style={{ color: 'rgba(255,255,255,0.7)', flex: 'none' }} />
+            <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search workspace files…" />
+            {query && <span onClick={() => setQuery('')} style={{ cursor: 'pointer', display: 'flex' }}><I.close /></span>}
+          </label>
+          <div className="fm-topbar-actions">
+            <button className="icon-btn" title={theme === 'dark' ? 'Switch to light' : 'Switch to dark'} onClick={() => setTheme((t) => t === 'dark' ? 'light' : 'dark')}>
+              {theme === 'dark' ? <I.sun /> : <I.moon />}
+            </button>
+            <div className={"livetoggle" + (live ? " on" : "")} onClick={() => setLive((v) => !v)} title="Fetch live from api.github.com (falls back to catalog)">
+              <span className="sw"></span><span>Live GitHub</span>
+            </div>
+            <Button variant="sky" size="sm" iconLeft={<I.wand />} onClick={() => setDialog({ type: 'plan' })}>Plan a skill</Button>
+            <Button variant="onDark" size="sm" onClick={save}>Save</Button>
+          </div>
+        </div>
+
+        {/* Left pane */}
+        <aside className="fm-pane fm-left">
+          <div className="modeswitch">
+            <button className={leftMode === 'workspace' ? 'active' : ''} onClick={() => setLeftMode('workspace')}><I.files />Workspace</button>
+            <button className={leftMode === 'sources' ? 'active' : ''} onClick={() => setLeftMode('sources')}><I.gh />Sources</button>
+            <button className={leftMode === 'refs' ? 'active' : ''} onClick={() => setLeftMode('refs')}><I.book />Refs</button>
+          </div>
+
+          {leftMode === 'workspace' && (
+            <>
+              <div className="pane-sub">Skills & plugins in progress{query ? ` · filtering “${query}”` : ''}</div>
+              <div className="fm-scroll"><div className="tree">
+                {shownTree.length ? shownTree.map((n) => (
+                  <TreeNode key={n.name} node={n} path={[]} depth={0} openFile={openFile} activeKey={activeKey} toggleDir={toggleDir} />
+                )) : <p style={{ padding: '4px 12px', fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>No workspace files match.</p>}
+              </div></div>
+            </>
+          )}
+
+          {leftMode === 'sources' && (
+            <>
+              <div className="pane-sub">Select folders & files from pre-approved repos {live ? '· live' : '· catalog'}</div>
+              <div className="pane-find">
+                <I.search style={{ color: 'var(--text-muted)', flex: 'none' }} />
+                <input value={srcFind} onChange={(e) => setSrcFind(e.target.value)} placeholder="Search files or folders" />
+                {srcFind && <span onClick={() => setSrcFind('')} style={{ cursor: 'pointer', display: 'flex', color: 'var(--text-muted)' }}><I.close /></span>}
+              </div>
+              <div className="fm-scroll"><div className="gh-tree">
+                {shownRoots.length ? shownRoots.map((n) => <GHNode key={n.fullPath} node={n} depth={0} />)
+                  : <p style={{ padding: '4px 8px', fontSize: 'var(--fs-sm)', color: 'var(--text-muted)' }}>No files or folders match “{srcFind}”.</p>}
+              </div></div>
+              <div className="tray">
+                <span className="cnt">{selCount} file{selCount === 1 ? '' : 's'} selected</span>
+                {selCount > 0 && <Button variant="ghost" size="sm" onClick={clearSel}>Clear</Button>}
+                <Button variant="primary" size="sm" style={{ marginLeft: 'auto' }} disabled={selCount === 0}
+                  onClick={() => setDialog({ type: 'import', slug: (lastBrief ? lastBrief.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 28) : '') || 'custom-skill', brief: lastBrief })}>
+                  Add<span className="addcount">{selCount}</span>
+                </Button>
+              </div>
+            </>
+          )}
+
+          {leftMode === 'refs' && (
+            <>
+              <div className="pane-sub">Curated references</div>
+              <div className="fm-scroll"><div className="refs">
+                {window.STUDIO_REFS.map((r) => (
+                  <a className="ref" key={r.title} href={r.url} target="_blank" rel="noopener">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span className="rt">{r.title}</span>
+                      <Badge tone="sky" style={{ marginLeft: 'auto' }}>{r.kind}</Badge>
+                    </div>
+                    <div className="rn">{r.note}</div>
+                  </a>
+                ))}
+              </div></div>
+            </>
+          )}
+        </aside>
+
+        {/* Center — editor */}
+        <main className="fm-pane fm-editor">
+          <div className="ed-tabs">
+            {openTabs.map((t) => (
+              <div key={t.key} className={"ed-tab" + (t.key === activeKey ? " active" : "") + (t.gh ? " gh" : "")} onClick={() => setActiveKey(t.key)}>
+                {t.gh ? <span className="gtag">gh</span> : (dirty[t.key] ? <span className="dot" /> : <I.file style={{ width: 14, height: 14, color: 'var(--pat-navy-40)' }} />)}
+                <span>{t.name}</span>
+                <span className="x" onClick={(e) => closeTab(t.key, e)}><I.close /></span>
+              </div>
+            ))}
+          </div>
+          {activeTab ? (
+            <>
+              <div className="ed-toolbar">
+                {isMd ? <Tabs tabs={[{ value: 'edit', label: 'Edit' }, { value: 'preview', label: 'Preview' }]} value={mode} onChange={setMode} />
+                  : <Badge tone="gray">{(activeTab.name.split('.').pop() || 'txt').toUpperCase()}</Badge>}
+                {activeTab.gh && <Badge tone="purple">read-only · from GitHub</Badge>}
+                {dirty[activeKey] && <Badge tone="warning">Unsaved</Badge>}
+                <div className="ed-meta"><span>{lineCount} lines</span><span>{words} words</span></div>
+              </div>
+              <div className="ed-body">
+                {isMd && mode === 'preview' ? (
+                  <div className="md-preview" dangerouslySetInnerHTML={{ __html: window.PAT_MD(text) }} />
+                ) : (
+                  <div className="code-wrap">
+                    <div className="gutter">{Array.from({ length: lineCount }, (_, i) => <div key={i}>{i + 1}</div>)}</div>
+                    <textarea className="code-ta" spellCheck={false} value={text} readOnly={activeTab.gh} onChange={(e) => !activeTab.gh && edit(e.target.value)} />
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div style={{ flex: 1, display: 'grid', placeItems: 'center', color: 'var(--text-muted)' }}>
+              <div style={{ textAlign: 'center' }}><I.file style={{ width: 40, height: 40, color: 'var(--pat-navy-40)' }} /><p style={{ marginTop: 12, fontSize: 'var(--fs-sm)' }}>Open a file, or <b>Plan a skill</b> to get started.</p></div>
+            </div>
+          )}
+        </main>
+
+        {/* Right — assistant */}
+        <aside className="fm-pane fm-right">
+          <div className="fm-pane-head" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: 'var(--space-3) var(--space-4)', height: 44, boxSizing: 'border-box' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 26, height: 26, borderRadius: '50%', background: 'var(--pat-navy)', color: '#fff' }}><I.spark /></span>
+            <span style={{ fontSize: 'var(--fs-sm)', fontWeight: 'var(--fw-bold)', color: 'var(--text-heading)' }}>Studio Assistant</span>
+            <Badge tone={S.hasClaude() ? 'green' : 'warning'} style={{ marginLeft: 'auto' }}>{S.hasClaude() ? 'Claude' : 'offline'}</Badge>
+          </div>
+          <div className="chat-scroll">
+            {messages.map((m, i) => (
+              <div key={i} className={"msg " + m.role}>
+                <div className="av">{m.role === 'assistant' ? 'AI' : 'You'}</div>
+                <div style={{ minWidth: 0 }}><div className="bubble" dangerouslySetInnerHTML={{ __html: window.PAT_MD(m.text) }} /></div>
+              </div>
+            ))}
+            {busy && <div className="msg assistant"><div className="av">AI</div><div className="bubble"><div className="typing"><span></span><span></span><span></span></div></div></div>}
+            <div ref={chatEnd} />
+          </div>
+          <div className="chat-compose">
+            <div style={{ display: 'flex', gap: 6, marginBottom: 8, flexWrap: 'wrap' }}>
+              <button className="chip" onClick={() => setDialog({ type: 'plan' })}>✦ Plan a skill</button>
+              <button className="chip" onClick={() => sendChat('Explain how this studio curates skills instead of writing from scratch.')}>How it works</button>
+              {activeTab && <button className="chip" onClick={() => sendChat(`Review the open file ${activeTab.name} and suggest improvements.`)}>Review this file</button>}
+            </div>
+            <div className="chat-inputrow">
+              <textarea className="chat-ta" rows={1} value={draft} placeholder="Ask, or describe a skill to build…"
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); } }} />
+              <IconButton variant="sky" label="Send" onClick={() => sendChat()}><I.send /></IconButton>
+            </div>
+            <p className="chat-hint">Enter to send · Shift+Enter for a new line</p>
+          </div>
+        </aside>
+
+        {dialog && <Dialog dialog={dialog} setDialog={setDialog} runPlan={runPlan} runImport={runImport} selCount={selCount} selMap={selMap} S={S} DS={DS} />}
+      </div>
+    );
+  }
+
+  function Dialog({ dialog, setDialog, runPlan, runImport, selCount, selMap, S, DS }) {
+    const { Button } = DS;
+    const [brief, setBrief] = useState(dialog.brief || '');
+    const [slug, setSlug] = useState(dialog.slug || '');
+    const close = () => setDialog(null);
+    if (dialog.type === 'plan') {
+      return (
+        <div className="dlg-back" onClick={close}>
+          <div className="dlg" onClick={(e) => e.stopPropagation()}>
+            <div className="dlg-head"><h3>Plan a skill</h3><p>Describe what you need. The assistant searches the pre-approved orgs and pre-ticks matching files in the Sources tree.</p></div>
+            <div className="dlg-body">
+              <label>What should this skill do?</label>
+              <textarea autoFocus value={brief} onChange={(e) => setBrief(e.target.value)} placeholder="e.g. Build on-brand Patterson pitch decks from a bullet outline and export to PPTX." />
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 10 }}>
+                {['Generate branded decks from an outline', 'Extract tables from supplier PDFs', 'MCP plugin for the storefront API'].map((s) => (
+                  <button key={s} className="chip" onClick={() => setBrief(s)}>{s}</button>
+                ))}
+              </div>
+            </div>
+            <div className="dlg-foot">
+              <Button variant="ghost" size="sm" onClick={close}>Cancel</Button>
+              <Button variant="primary" size="sm" disabled={!brief.trim()} onClick={() => { close(); runPlan(brief.trim()); }}>Search sources</Button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    const m = selMap();
+    const srcNames = Object.keys(m).map((id) => S.byId(id) && S.byId(id).name).filter(Boolean);
+    return (
+      <div className="dlg-back" onClick={close}>
+        <div className="dlg" onClick={(e) => e.stopPropagation()}>
+          <div className="dlg-head"><h3>Add &amp; customize</h3><p>{selCount} file{selCount === 1 ? '' : 's'} from {srcNames.length} source{srcNames.length === 1 ? '' : 's'} will be copied into your workspace and adapted to Patterson by the assistant.</p></div>
+          <div className="dlg-body">
+            <label>New skill folder (slug)</label>
+            <input value={slug} onChange={(e) => setSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-'))} placeholder="my-skill" />
+            <label>Customization brief</label>
+            <textarea value={brief} onChange={(e) => setBrief(e.target.value)} placeholder="What to change for our brand & use case…" />
+            <div style={{ marginTop: 12, fontSize: 'var(--fs-xs)', color: 'var(--text-muted)' }}>Sources: {srcNames.join(', ')}</div>
+          </div>
+          <div className="dlg-foot">
+            <Button variant="ghost" size="sm" onClick={close}>Cancel</Button>
+            <Button variant="primary" size="sm" disabled={!slug.trim()} onClick={() => { close(); runImport(slug.trim(), brief.trim() || slug); }}>Copy &amp; customize</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function mount() {
+    if (!window.PattersonCompaniesDesignSystem_3534f9 || !window.PAT_TREE || !window.Studio) return void setTimeout(mount, 60);
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  }
+  mount();
+</script>
+</body>
+</html>

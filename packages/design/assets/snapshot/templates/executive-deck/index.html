@@ -1,0 +1,207 @@
+<!-- @template name="Executive Deck" description="Patterson executive briefing on the corporate PowerPoint master — navy cover, icon-rail content slides (takeaways, breakdown, requirements, outputs, benefits) with speaker notes." -->
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterson — Executive Deck</title>
+<script src="./ds-base.js"></script>
+<style>
+  deck-stage:not(:defined){visibility:hidden}
+  html,body{margin:0;background:#0a1c30}
+  deck-stage{background:#0a1c30}
+  /* deck-local pieces layered on the shared master (assets/deck/patterson-slides.css) */
+  .meta-row{display:grid;grid-template-columns:repeat(4,1fr);gap:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,.28)}
+  .meta-row dt{margin:0;font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pat-blue-light)}
+  .meta-row dd{margin:12px 0 0;font-size:28px;font-weight:400;line-height:1.32;color:#fff}
+  .tiles{display:grid;gap:20px}
+  .tile{padding:36px 34px;display:flex;flex-direction:column;color:#fff}
+  .tile .num{font-size:22px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.75}
+  .tile h3{margin:16px 0 0;font-size:40px;font-weight:700;line-height:1.1;text-transform:uppercase;letter-spacing:-.005em;color:#fff}
+  .tile p{margin:20px 0 0;font-size:28px;font-weight:400;line-height:1.36;color:rgba(255,255,255,.9)}
+  .tile ul{margin:20px 0 0;padding:0;list-style:none}
+  .tile ul li{font-size:27px;font-weight:400;line-height:1.5;color:rgba(255,255,255,.9)}
+  .t-navy{background:var(--pat-navy)}.t-blue{background:var(--pat-blue)}.t-sky{background:var(--pat-sky)}.t-cyan{background:#4CB6DA}
+  .tile-light{background:var(--pat-gray-50);border-top:6px solid var(--pat-sky);color:var(--pat-navy)}
+  .tile-light .num{color:var(--pat-sky);opacity:1}
+  .tile-light h3{color:var(--pat-navy)}
+  .tile-light p{color:var(--pat-gray)}
+  .matrix{width:100%;border-collapse:collapse;text-align:left}
+  .matrix th{padding:20px 8px;border-bottom:1px solid var(--pat-gray-300);font-size:24px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pat-gray)}
+  .matrix td{padding:30px 8px;border-bottom:1px solid var(--pat-gray-200);vertical-align:baseline}
+  .matrix .step{font-family:var(--font-display);font-size:44px;font-weight:700;color:var(--pat-sky);line-height:1}
+  .matrix .task{font-size:34px;font-weight:700;text-transform:uppercase;color:var(--pat-blue)}
+  .matrix .why{font-size:30px;font-weight:400;line-height:1.38;color:var(--pat-gray)}
+  .reqs{list-style:none;margin:0;padding:0}
+  .reqs li{display:grid;grid-template-columns:210px 1fr;gap:28px;padding:22px 0;border-bottom:1px solid var(--pat-gray-200)}
+  .reqs li:last-child{border-bottom:0}
+  .reqs .n{font-size:26px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--pat-sky)}
+  .reqs .d{font-size:29px;font-weight:400;line-height:1.36;color:var(--pat-gray)}
+  .toolbox{background:var(--pat-navy);color:#fff;padding:44px 40px}
+  .toolbox li{list-style:none;font-family:var(--font-mono);font-size:27px;line-height:1.9;color:rgba(255,255,255,.9)}
+  .toolbox ul{margin:0;padding:0}
+</style>
+</head>
+<body>
+<deck-stage width="1920" height="1080" thumbnails="true">
+
+<!-- EX / 01 · Title ------------------------------------------------------- -->
+<section data-label="01 Title" data-screen-label="01 Title" class="pslide lay-navy" data-speaker-notes="Speaker notes for the title slide.
+
+What this session is about:
+· One- or two-line summary of the topic.
+· The core idea or framework being introduced.
+· Why this matters now.
+
+Who the session is for:
+· Primary audience group.
+· Secondary audience group.
+· Tertiary audience group.
+
+Why it matters:
+· Problem this addresses.
+· What changes after this session.
+· How it connects to broader goals.">
+  <p class="peyebrow">Executive Briefing</p>
+  <div class="well" style="padding-right:150px;justify-content:space-between">
+    <div>
+      <h1 class="anim" style="margin:0;font-family:var(--font-display);font-size:112px;font-weight:700;line-height:1.04;letter-spacing:-.02em;text-transform:uppercase;color:#fff;max-width:1300px">Presentation title:<br><span class="p-sky">subtitle phrase</span></h1>
+      <p class="anim d1" style="margin:32px 0 0;font-size:38px;font-weight:400;color:rgba(255,255,255,.82)">A short, descriptive one-line tagline goes here</p>
+    </div>
+    <div class="anim d2" style="display:grid;grid-template-columns:1.4fr 1fr;gap:100px">
+      <div>
+        <p style="margin:0;font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pat-blue-light)">Overview</p>
+        <p style="margin:18px 0 0;font-size:30px;font-weight:400;line-height:1.4;color:rgba(255,255,255,.9)">Two to three sentences describing what this presentation covers and the value it delivers. State the central premise plainly and set expectations for what the audience will take away.</p>
+      </div>
+      <div>
+        <p style="margin:0;font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pat-blue-light)">Audience</p>
+        <p style="margin:18px 0 0;font-size:30px;font-weight:400;line-height:1.4;color:rgba(255,255,255,.9)">Primary, Secondary, and Tertiary audience groups</p>
+      </div>
+    </div>
+    <dl class="meta-row anim d3">
+      <div><dt>Presenter</dt><dd data-tweak="speaker">Your Name</dd></div>
+      <div><dt>Format</dt><dd>Format &middot; structure</dd></div>
+      <div><dt>Runtime</dt><dd>00&ndash;00 min &middot; break included</dd></div>
+      <div><dt>Materials</dt><dd>Material One &middot; Material Two &middot; Material Three</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- EX / 02 · Takeaways --------------------------------------------------- -->
+<section data-label="02 Takeaways" data-screen-label="02 Takeaways" class="pslide lay-bar" data-speaker-notes="Speaker notes for the takeaways slide.
+
+Takeaway one:
+· Supporting point.
+· Supporting point.
+
+Takeaway two:
+· Supporting point.
+· Supporting point.
+
+Takeaway three:
+· Supporting point.
+· Supporting point.
+
+Takeaway four:
+· Supporting point.
+· Supporting point.">
+  <div class="well">
+    <h2 class="ptitle anim">Key takeaways</h2>
+    <p class="pbody anim d1" style="margin-top:30px;font-weight:400;color:var(--pat-gray)">By the end of this session, attendees will:</p>
+    <div class="tiles anim d2" style="grid-template-columns:repeat(4,1fr);margin-top:44px;flex:1;min-height:0">
+      <div class="tile t-navy"><span class="num">01</span><h3>Takeaway one</h3><p>Short description of the first key takeaway.</p></div>
+      <div class="tile t-blue"><span class="num">02</span><h3>Takeaway two</h3><p>Short description of the second key takeaway.</p></div>
+      <div class="tile t-sky"><span class="num">03</span><h3>Takeaway three</h3><p>Short description of the third key takeaway.</p></div>
+      <div class="tile t-cyan"><span class="num">04</span><h3>Takeaway four</h3><p>Short description of the fourth key takeaway.</p></div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>2</p>
+</section>
+
+<!-- EX / 03 · Breakdown -------------------------------------------------- -->
+<section data-label="03 Breakdown" data-screen-label="03 Breakdown" class="pslide lay-bar" data-speaker-notes="Speaker notes for the breakdown slide.
+
+Describe how the items below form a deliberate sequence or progression:
+1. Item one — what it covers and why it comes first.
+2. Item two — what it adds.
+3. Item three — what it adds.
+4. Item four — what it adds.
+5. Item five — where it lands.
+
+Tie the arc together with a single sentence the audience should remember.">
+  <div class="well pad-tight">
+    <h2 class="ptitle anim">Progressive learning path</h2>
+    <table class="matrix anim d1" style="margin-top:40px">
+      <thead><tr><th style="width:130px">Item</th><th style="width:380px">Focus</th><th>Outcome</th></tr></thead>
+      <tbody>
+        <tr><td class="step">1</td><td class="task">Module one</td><td class="why">What attendees will be able to do after this module.</td></tr>
+        <tr><td class="step">2</td><td class="task">Module two</td><td class="why">What attendees will be able to do after this module.</td></tr>
+        <tr><td class="step">3</td><td class="task">Module three</td><td class="why">What attendees will be able to do after this module.</td></tr>
+        <tr><td class="step">4</td><td class="task">Module four</td><td class="why">What attendees will be able to do after this module.</td></tr>
+        <tr><td class="step">5</td><td class="task">Module five</td><td class="why">What attendees will be able to do after this module.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>3</p>
+</section>
+
+<!-- EX / 04 · Requirements ----------------------------------------------- -->
+<section data-label="04 Requirements" data-screen-label="04 Requirements" class="pslide lay-bar" data-speaker-notes="Speaker notes for the requirements slide.
+
+Summarize what is needed for this to run and why. List the asks plainly so leadership can approve them.
+
+Restate the key point for leadership in one sentence.">
+  <div class="well pad-tight">
+    <h2 class="ptitle anim">What this needs to run</h2>
+    <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:80px;margin-top:44px;align-items:start">
+      <ul class="reqs anim d1">
+        <li><span class="n">Requirement</span><span class="d">Short description of the first requirement.</span></li>
+        <li><span class="n">Requirement</span><span class="d">A longer description of a requirement, including any sub-items, accounts, licenses, or access needed for attendees to participate fully.</span></li>
+        <li><span class="n">Requirement</span><span class="d">Short description of the third requirement.</span></li>
+        <li><span class="n">Requirement</span><span class="d">Short description of the fourth requirement.</span></li>
+        <li><span class="n">Requirement</span><span class="d">Short description of the fifth requirement.</span></li>
+      </ul>
+      <div class="toolbox anim d2">
+        <p style="margin:0 0 20px;font-size:22px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--pat-blue-light)">Applications &amp; tools</p>
+        <ul><li>tool one</li><li>tool two</li><li>tool three</li><li>tool four</li><li>tool five</li><li>tool six</li></ul>
+      </div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>4</p>
+</section>
+
+<!-- EX / 05 · Outputs ---------------------------------------------------- -->
+<section data-label="05 What We're Building" data-screen-label="05 What We're Building" class="pslide lay-bar" data-speaker-notes="Speaker notes for the build slide.
+
+Walk through the three areas below and what each contains. Make the point that these are concrete, reusable outputs — not abstract concepts.">
+  <div class="well">
+    <h2 class="ptitle anim">Outputs: what we&rsquo;re building</h2>
+    <div class="tiles anim d1" style="grid-template-columns:repeat(3,1fr);margin-top:48px;flex:1;min-height:0">
+      <div class="tile t-navy"><span class="num">01 / Category</span><h3>Area one<br>subtitle</h3><ul><li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li></ul></div>
+      <div class="tile t-blue"><span class="num">02 / Category</span><h3>Area two<br>subtitle</h3><ul><li>Item one</li><li>Item two</li><li>Item three</li></ul></div>
+      <div class="tile t-sky"><span class="num">03 / Category</span><h3>Area three<br>subtitle</h3><ul><li>Item one</li><li>Item two</li><li>Item three</li><li>Item four</li></ul></div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>5</p>
+</section>
+
+<!-- EX / 06 · Benefits --------------------------------------------------- -->
+<section data-label="06 Benefits" data-screen-label="06 Benefits" class="pslide lay-bar" data-speaker-notes="Speaker notes for the benefits slide.
+
+Cover each benefit and why it matters to the organization. Close by inviting questions.">
+  <div class="well">
+    <h2 class="ptitle anim">Organizational benefits</h2>
+    <div class="tiles anim d1" style="grid-template-columns:repeat(3,1fr);margin-top:44px;flex:1;min-height:0">
+      <div class="tile tile-light"><span class="num">01</span><h3>Benefit one</h3><p>Short description of the first organizational benefit.</p></div>
+      <div class="tile tile-light"><span class="num">02</span><h3>Benefit two</h3><p>Short description of the second organizational benefit.</p></div>
+      <div class="tile tile-light"><span class="num">03</span><h3>Benefit three</h3><p>Short description of the third organizational benefit.</p></div>
+      <div class="tile tile-light"><span class="num">04</span><h3>Benefit four</h3><p>Short description of the fourth organizational benefit.</p></div>
+      <div class="tile tile-light"><span class="num">05</span><h3>Benefit five</h3><p>Short description of the fifth organizational benefit.</p></div>
+      <div class="tile t-sky"><span class="num">06</span><h3>Questions</h3><p>Invite questions on scheduling, tailoring, or what it takes to run this for your organization.</p></div>
+    </div>
+  </div>
+  <p class="pfoot">©2026 Patterson Companies<span class="sep">|</span>pattersoncompanies.com<span class="sep">|</span>6</p>
+</section>
+
+</deck-stage>
+<script src="./deck-stage.js"></script>
+</body></html>

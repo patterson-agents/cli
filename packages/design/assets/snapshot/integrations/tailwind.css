@@ -1,0 +1,203 @@
+/* ============================================================
+   Patterson Companies — Tailwind CSS v4 theme
+   ------------------------------------------------------------
+   Tailwind v4 is CSS-first: this file IS the config. Import it as
+   your stylesheet entry (or @import it from yours):
+
+       @import "tailwindcss";
+       @import "@patterson/design-system/integrations/tailwind.css";
+
+   Every value below maps 1:1 to tokens/*.css and theme.json. Utilities
+   are then generated automatically, e.g.
+       bg-navy  text-sky  border-border  rounded-lg  shadow-md
+       font-sans  text-display  tracking-tight  leading-body
+       max-w-container  ease-standard
+
+   NOTE ON SPACING: Tailwind's default spacing unit is 0.25rem (4px), which
+   is exactly Patterson's 4px base grid — so p-4 = 1rem = --space-4, p-6 =
+   1.5rem = --space-5's value, etc. We intentionally do NOT override the
+   spacing scale; the defaults already match the brand grid.
+
+   To also expose the raw Patterson custom properties (var(--pat-navy) …)
+   inside a Tailwind project, additionally link ../styles.css.
+   ============================================================ */
+
+@import "tailwindcss";
+
+@theme {
+  /* --- Fonts --------------------------------------------- */
+  --font-sans: 'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'proxima-nova', 'Figtree', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* --- Brand colors -------------------------------------- */
+  --color-navy: #003767;
+  --color-sky: #00A8E1;
+  --color-gray-brand: #58585B;
+  --color-blue: #147EC2;
+  --color-blue-light: #6DCFF6;
+  --color-green: #7BC24D;
+  --color-teal: #00817D;
+  --color-purple: #522E91;
+
+  /* --- Interaction states (production-verified) ----------
+     Primary hover is a LIGHTER NAVY, not sky. Secondary is a
+     filled light blue. See DESIGN.md → Verification.          */
+  --color-primary-hover: #315D83;
+  --color-primary-disabled: #93A9BC;
+  --color-secondary-hover: #96DBF6;
+  --color-secondary-disabled: #DAEDF5;
+
+  /* Warm taupe — the one non-cool gray in the brand.
+     Production uses it for input/select borders.             */
+  --color-gray-warm: #AFA593;
+  --color-border-field: #AFA593;
+  --color-slider-nav: #D9D9D9;
+
+  /* navy tints */
+  --color-navy-80: #335f85;
+  --color-navy-60: #6687a4;
+  --color-navy-40: #99afc2;
+  --color-navy-20: #ccd7e1;
+  --color-navy-10: #e5ebf0;
+
+  /* sky tints */
+  --color-sky-80: #33b9e7;
+  --color-sky-60: #66caed;
+  --color-sky-40: #99dcf3;
+  --color-sky-20: #ccedf9;
+  --color-sky-10: #e5f6fc;
+
+  /* cool-gray neutral ramp */
+  --color-ink: #1d1d20;
+  --color-gray-700: #46464a;
+  --color-gray-600: #58585B;
+  --color-gray-500: #7c7c80;
+  --color-gray-400: #a3a3a7;
+  --color-gray-300: #c9c9cc;
+  --color-gray-200: #e2e2e4;
+  --color-gray-100: #ECECEC;
+  --color-gray-50: #f6f7f8;
+
+  /* semantic */
+  --color-success: #00817D;
+  --color-success-bg: #e5f2f1;
+  --color-info: #147EC2;
+  --color-info-bg: #e7f1f9;
+  --color-warning: #d98a00;
+  --color-warning-bg: #fbf1df;
+  --color-danger: #c0392b;
+  --color-danger-bg: #f8eae8;
+
+  /* semantic aliases (name the role, not the hue) */
+  --color-heading: #1d1d20;
+  --color-body: #58585B;
+  --color-muted: #7c7c80;
+  --color-link: #147EC2;
+  --color-border: #e2e2e4;
+  --color-border-strong: #a3a3a7;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #f6f7f8;
+  --color-border-field: #AFA593;
+
+  /* --- Type scale (fluid where the brand is fluid) ------- */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-body: 1rem;
+  --text-h5: 1.0625rem;
+  --text-lead: 1.25rem;
+  --text-h4: 1.25rem;
+  --text-h3: clamp(1.375rem, 1.15rem + 0.8vw, 1.75rem);
+  --text-h2: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+  --text-h1: clamp(2.25rem, 1.5rem + 2.6vw, 3.25rem);
+  --text-display: clamp(2.75rem, 1.6rem + 4.2vw, 4.5rem);
+  --text-stat: clamp(2.5rem, 1.4rem + 4vw, 4rem);
+
+  /* --- Weights (brand aliases; standard ones still work) - */
+  --font-weight-light: 300;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extra: 800;
+  --font-weight-black: 900;
+
+  /* --- Line heights & tracking --------------------------- */
+  --leading-tight: 1.05;
+  --leading-snug: 1.2;
+  --leading-heading: 1.15;
+  --leading-body: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-snug: -0.01em;
+  --tracking-wide: 0.04em;
+  --tracking-caps: 0.08em;
+
+  /* --- Radii --------------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-btn: 5px;          /* .btn — production */
+  --radius-btn-elevated: 6px; /* download / external — production */
+  --radius-field: 2px;        /* input / select — production */
+  --radius-pill: 999px;
+
+  /* --- Shadows (navy-tinted elevation) ------------------- */
+  --shadow-xs: 0 1px 2px rgba(0, 55, 103, 0.06);
+  --shadow-sm: 0 1px 3px rgba(0, 55, 103, 0.08), 0 1px 2px rgba(0, 55, 103, 0.06);
+  --shadow-md: 0 4px 12px rgba(0, 55, 103, 0.10), 0 2px 4px rgba(0, 55, 103, 0.06);
+  --shadow-lg: 0 12px 28px rgba(0, 55, 103, 0.12), 0 4px 10px rgba(0, 55, 103, 0.07);
+  --shadow-xl: 0 24px 48px rgba(0, 55, 103, 0.16);
+
+  /* --- Containers / measure ------------------------------ */
+  --container-container: 1240px;
+  --container-text: 720px;
+
+  /* --- Motion -------------------------------------------- */
+  --ease-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Brand focus ring — Tailwind's ring color, matched to the sky token so
+   `focus-visible:ring` reads as Patterson sky without extra config. */
+@theme {
+  --color-ring: #00A8E1;
+}
+
+/* ============================================================
+   Production-accurate component utilities
+   ------------------------------------------------------------
+   The two real Patterson buttons, the official icon font, and the
+   production type scale. Use these when matching the live sites.
+   ============================================================ */
+
+@layer components {
+  .pat-btn { border: 0; border-radius: 5px; padding: 15px 30px; font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; line-height: 1.25rem; text-align: center; cursor: pointer; transition: background-color 200ms ease-in-out, color 200ms ease-in-out; }
+  .pat-btn-primary { background-color: #003767; color: #fff; }
+  .pat-btn-primary:hover { background-color: #315D83; }
+  .pat-btn-primary:disabled { background-color: #93A9BC; cursor: not-allowed; }
+  .pat-btn-secondary { background-color: #6DCFF6; color: #003767; }
+  .pat-btn-secondary:hover { background-color: #96DBF6; }
+  .pat-btn-secondary:disabled { background-color: #DAEDF5; cursor: not-allowed; }
+  .pat-field { border: 1px solid #AFA593; border-radius: 2px; padding: 11px 12px; font-family: var(--font-sans); font-size: 1.125rem; }
+  .pat-field:focus { border-color: #00A8E1; box-shadow: 0 0 0 3px rgba(0,168,225,0.45); outline: none; }
+  /* Production heading scale — navy, 800 at h1/h2 then 400 from h3 */
+  .pat-h1 { color: #003767; font-size: 2.75rem; line-height: 3rem; font-weight: 800; }
+  .pat-h2 { color: #003767; font-size: 2.25rem; line-height: 2.5rem; font-weight: 800; }
+  .pat-h3 { color: #003767; font-size: 1.5rem; line-height: 1.75rem; font-weight: 400; }
+  .pat-h4 { color: #003767; font-size: 1.5rem; line-height: 1.75rem; font-weight: 400; }
+  .pat-body { color: #58585B; font-size: 1.125rem; line-height: 1.5rem; font-weight: 400; }
+  .pat-eyebrow { color: #003767; font-size: 0.875rem; line-height: 1.375rem; font-weight: 500; }
+  .pat-caption { color: #003767; font-size: 0.875rem; line-height: 1rem; font-weight: 400; }
+  @media (min-width: 1024px) {
+    .pat-h1 { font-size: 4rem; line-height: 4.25rem; }
+    .pat-h2 { font-size: 2.75rem; line-height: 3rem; }
+    .pat-h3 { font-size: 2.25rem; line-height: 2.5rem; }
+  }
+}
+
+/* Official Patterson icon font — link ../styles.css (or tokens/icons.css)
+   to register the @font-face and the 93 .pat-i-* glyph classes. */

@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "models.perAgent.ghost",
+    "targetId": "claude-code",
+    "reason": "models.perAgent names agent \"ghost\", but no claude-code-targeted agent with that name exists.",
+    "fallbackApplied": false
+  }
+]

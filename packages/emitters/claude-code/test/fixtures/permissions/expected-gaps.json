@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "hooks.agentHooks[1]",
+    "targetId": "claude-code",
+    "reason": "Hook event \"NotAnEvent\" is not a Claude Code hook event (vendored settings schema: hooks has additionalProperties: false).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "hooks.agentHooks[2]",
+    "targetId": "claude-code",
+    "reason": "Claude Code hookCommand entries have no cwd/env fields (vendored settings schema); express the environment inside the hook script instead.",
+    "fallbackApplied": false
+  }
+]

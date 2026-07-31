@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "agents-dir",
+  "agents": [
+    {
+      "name": "code-reviewer",
+      "description": "Reviews code for defects.",
+      "prompt": "You are a strict code reviewer.\nReport only verified findings.",
+      "tools": ["Read", "Grep"],
+      "model": "sonnet"
+    },
+    { "name": "doc-writer", "description": "Writes documentation.", "prompt": "Write clear docs." }
+  ],
+  "models": { "perAgent": { "code-reviewer": "opus", "ghost": "haiku" } }
+}
