@@ -8,6 +8,7 @@ import { exitCodeFor, type PattersonProjectInput } from "@patterson/core";
 import { renderPattersonConfig } from "../../core/src/scaffold.ts";
 
 import { CheckOutputSchema, makeCheckCommand } from "../src/commands/check.ts";
+import { defaultDeps } from "../src/commands/shared.ts";
 import { makeCtx, makeTempDir, removeDir, stubDeps } from "./helpers.ts";
 
 const dirs: string[] = [];
@@ -48,9 +49,10 @@ describe("check (T025)", () => {
 
     const value = CheckOutputSchema.parse(result.value);
     const ids = value.rows.map((row) => row.entityId);
-    expect(ids).toContain("instruction:style");
-    expect(ids).toContain("agent:helper");
-    expect(ids).toContain("mcp:docs");
+    // Entity ids use the emitters' CoverageGap.entityId naming so gap lookups match.
+    expect(ids).toContain("instructions.style");
+    expect(ids).toContain("agents.helper");
+    expect(ids).toContain("mcp.docs");
     expect(value.rows.every((row) => row.targetId === "claude-code")).toBe(true);
     expect(value.summary.gaps).toBe(0);
     expect(value.summary.covered).toBe(value.rows.length);
@@ -70,6 +72,37 @@ describe("check (T025)", () => {
     expect(copilotRows.length).toBeGreaterThan(0);
     expect(copilotRows.every((row) => row.status === "gap")).toBe(true);
     expect(value.summary.gaps).toBe(copilotRows.length);
+  });
+
+  test("an inexpressible entity yields a gap row through the REAL emitter", async () => {
+    const root = await tempDir();
+    const cfg: PattersonProjectInput = {
+      version: 1,
+      name: "gap-demo",
+      targets: ["claude-code"],
+      mcp: [
+        {
+          name: "loc",
+          // scope "local" is inexpressible: settings.local.json is never-write.
+          transport: { kind: "stdio", exec: { argv: ["bunx", "local-mcp"] } },
+          scope: "local",
+        },
+      ],
+      hooks: {
+        agentHooks: [{ event: "NotAnEvent", exec: { argv: ["echo", "hi"] } }],
+        gitHooks: [],
+      },
+    };
+    await Bun.write(join(root, "patterson.config.ts"), renderPattersonConfig(cfg));
+    const realCheck = makeCheckCommand(defaultDeps);
+    const result = await realCheck.run({}, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    const value = CheckOutputSchema.parse(result.value);
+    const gapIds = value.rows.filter((row) => row.status === "gap").map((row) => row.entityId);
+    expect(gapIds).toContain("mcp.loc");
+    expect(gapIds).toContain("hooks.agentHooks[0]");
+    expect(value.summary.gaps).toBeGreaterThanOrEqual(2);
   });
 
   test("missing config is an error", async () => {

@@ -13,6 +13,7 @@
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 
+import { assertInsideRoot } from "./emit/apply.ts";
 import { assertWritable } from "./emit/never-write.ts";
 import type { PattersonProjectInput } from "./ir/index.ts";
 
@@ -74,6 +75,9 @@ export async function writeScaffoldFiles(
 ): Promise<string[]> {
   const written: string[] = [];
   for (const file of files) {
+    // A substituted template path (e.g. a {{name}} carrying "../") must never
+    // resolve outside the scaffold root.
+    assertInsideRoot(file.path);
     const abs = join(root, file.path);
     assertWritable(file.path, { exists: await Bun.file(abs).exists() });
     await Bun.write(abs, file.content);

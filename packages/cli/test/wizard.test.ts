@@ -29,6 +29,7 @@ import {
   type CommandResult,
 } from "@patterson/core";
 
+import { buildRegistry } from "../src/commands/registry.ts";
 import {
   AGENT_CHOICES,
   agentsStep,
@@ -39,6 +40,7 @@ import {
   nameStep,
   orderSteps,
   runWizard,
+  sanitizeResumedState,
   templateStep,
   validateProjectName,
   WIZARD_STATE_FILE,
@@ -545,6 +547,112 @@ describe("create invocation", () => {
     if (outcome.kind !== "ran") throw new Error("unreachable");
     expect(outcome.result.kind).toBe("conflicts");
     expect(await Bun.file(wizardStatePath(root)).exists()).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Real create descriptor (buildRegistry) integration
+// ---------------------------------------------------------------------------
+
+describe("wizard → real create descriptor", () => {
+  test("completes against the real create from buildRegistry() in an empty dir", async () => {
+    const root = makeRoot();
+    const { prompter } = scriptedPrompter({
+      select: ["skeleton"],
+      text: ["real-deal"],
+      multiselect: [["claude-code"]],
+    });
+
+    // The wizard persists .patterson/wizard.json into cwd after every step;
+    // the real create must not count that as a non-empty directory.
+    const outcome = await runWizard({
+      cwd: root,
+      prompter,
+      registry: buildRegistry(),
+      io: silentIo,
+      flags: { install: false, git: false },
+    });
+
+    expect(outcome.kind).toBe("ran");
+    if (outcome.kind !== "ran") throw new Error("unreachable");
+    expect(outcome.result.kind).toBe("ok");
+    expect(await Bun.file(join(root, "patterson.config.ts")).exists()).toBe(true);
+    expect(await Bun.file(join(root, "package.json")).exists()).toBe(true);
+    // Wizard state cleared after the successful create.
+    expect(await Bun.file(wizardStatePath(root)).exists()).toBe(false);
+  });
+
+  test("resume with semantically-corrupt state degrades: offending step re-runs, no throw", async () => {
+    const root = makeRoot();
+    await Bun.write(
+      join(root, WIZARD_STATE_FILE),
+      JSON.stringify({
+        version: 1,
+        completedSteps: ["template", "name", "agents"],
+        template: "skeleton",
+        name: "tampered",
+        agents: ["garbage-agent"],
+      }),
+    );
+    const { prompter, calls } = scriptedPrompter({ multiselect: [["claude-code"]] });
+    const outcome = await runWizard({
+      cwd: root,
+      prompter,
+      registry: buildRegistry(),
+      io: silentIo,
+      resume: true,
+      flags: { install: false, git: false },
+    });
+
+    // No ZodError escapes; the agents step re-ran and create succeeded.
+    expect(outcome.kind).toBe("ran");
+    if (outcome.kind !== "ran") throw new Error("unreachable");
+    expect(calls.multiselect).toHaveLength(1);
+    expect(outcome.args.targets).toEqual(["claude-code"]);
+    expect(outcome.result.kind).toBe("ok");
+  });
+
+  test("sanitizeResumedState drops invalid answers and their completed marks", async () => {
+    const dirty: WizardState = {
+      version: 1,
+      completedSteps: ["template", "name", "agents"],
+      template: "no-such-template",
+      name: "UPPER CASE",
+      agents: ["claude-code"],
+    };
+    const clean = await sanitizeResumedState(dirty, builtinTemplateSource);
+    expect(clean.template).toBeUndefined();
+    expect(clean.name).toBeUndefined();
+    expect(clean.agents).toEqual(["claude-code"]);
+    expect(clean.completedSteps).toEqual(["agents"]);
+  });
+
+  test("a throwing create descriptor becomes a structured error result, never an escape", async () => {
+    const root = makeRoot();
+    const { prompter } = scriptedPrompter({
+      select: ["skeleton"],
+      text: ["thrower"],
+      multiselect: [["claude-code"]],
+    });
+    const registry = createRegistry();
+    registry.register({
+      id: "create",
+      path: ["create"],
+      summary: "throws",
+      inputSchema: undefined,
+      outputSchema: undefined,
+      annotations: { readOnlyHint: false, destructiveHint: false },
+      async run() {
+        throw new Error("unexpected explosion");
+      },
+    } as unknown as AnyCommandDescriptor);
+
+    const outcome = await runWizard({ cwd: root, prompter, registry, io: silentIo });
+    expect(outcome.kind).toBe("ran");
+    if (outcome.kind !== "ran") throw new Error("unreachable");
+    expect(outcome.result.kind).toBe("error");
+    if (outcome.result.kind !== "error") throw new Error("unreachable");
+    expect(outcome.result.message).toContain("unexpected explosion");
   });
 });
 

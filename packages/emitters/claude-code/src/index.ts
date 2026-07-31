@@ -19,7 +19,7 @@ import { targetsClaude } from "./common.ts";
 import { AGENTS_MD_PATH, buildInstructionOps, CLAUDE_MD_PATH } from "./instructions.ts";
 import { buildMcpOp, MCP_JSON_PATH } from "./mcp.ts";
 import { buildSettingsOp, SETTINGS_PATH } from "./settings.ts";
-import { buildCommandOps, buildSkillOps, canonicalSkillPath } from "./skills.ts";
+import { buildCommandOps, buildSkillOps, canonicalSkillPath, isSafeSkillFileEntry } from "./skills.ts";
 
 export interface CompileOutput {
   ops: FileOp[];
@@ -69,9 +69,22 @@ export function snapshotPaths(ir: PattersonProject): string[] {
   const paths = [SETTINGS_PATH, MCP_JSON_PATH, AGENTS_MD_PATH, CLAUDE_MD_PATH];
   for (const skill of ir.skills) {
     if (!targetsClaude(skill) || skill.linkMode !== "copy") continue;
-    for (const file of skill.files ?? []) paths.push(canonicalSkillPath(skill.name, file));
+    for (const file of skill.files ?? []) {
+      // Unsafe entries (traversal, absolute, backslash) are never read; the
+      // compile pass reports them as CoverageGaps.
+      if (!isSafeSkillFileEntry(file)) continue;
+      paths.push(canonicalSkillPath(skill.name, file));
+    }
   }
   return paths;
+}
+
+/**
+ * Snapshot-aware coverage hook: the gap list for `patterson check` (silent
+ * drops are contract violations — contracts/emitter.md obligation 3).
+ */
+export function coverageGaps(ir: PattersonProject, snapshot: FsSnapshot): CoverageGap[] {
+  return compileClaudeCode(ir, snapshot).gaps;
 }
 
 export { CLAUDE_AGENTS_DIR } from "./agents.ts";
@@ -82,10 +95,12 @@ export {
   HOOK_EVENTS,
   MERGE_SEMANTICS,
   mergeSettingsValue,
+  PERMISSION_DEFAULT_MODES,
+  PERMISSION_RULE_PATTERN,
   semanticsFor,
   SETTINGS_PATH,
   SETTINGS_PERMISSIONS_KEYS,
   SETTINGS_TOP_LEVEL_KEYS,
 } from "./settings.ts";
 export type { MergeSemantics } from "./settings.ts";
-export { AGENTS_SKILLS_DIR, canonicalSkillPath, CLAUDE_SKILLS_DIR } from "./skills.ts";
+export { AGENTS_SKILLS_DIR, canonicalSkillPath, CLAUDE_SKILLS_DIR, isSafeSkillFileEntry } from "./skills.ts";

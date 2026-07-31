@@ -9,6 +9,7 @@
  */
 import { afterAll, describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
+import { lstat, mkdir, readlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
@@ -157,6 +158,86 @@ describe("round-trip drift (emit → hand-edit → re-emit)", () => {
     expect(
       checkAgainstSchema(JSON.parse(finalText), settingsSchema, settingsSchema),
     ).toEqual([]);
+  });
+
+  test("symlink-mode skill: the engine materializes a real symlink at .claude/skills/<name>", async () => {
+    const skillIr = PattersonProjectSchema.parse({
+      version: 1,
+      name: "symlink-roundtrip",
+      targets: ["claude-code"],
+      skills: [
+        {
+          name: "myskill",
+          description: "A symlink-mode skill.",
+          body: "Do the thing.",
+          linkMode: "symlink",
+        },
+      ],
+    } satisfies PattersonProjectInput);
+    const skillIrHash = computeIrHash(skillIr);
+    const emitSkill = async (root: string, acceptGenerated = false): Promise<ApplyResult> => {
+      const snapshot = await captureSnapshot(root, snapshotPaths(skillIr));
+      const { ops } = compileClaudeCode(skillIr, snapshot);
+      return applyFileOps(ops, { root, irHash: skillIrHash, acceptGenerated });
+    };
+
+    const root = makeRoot();
+    const first = await emitSkill(root);
+    expect(first.conflicts).toEqual([]);
+    expect(first.written).toContain(".claude/skills/myskill");
+
+    // S3: the .claude/skills link is MANDATORY — and it must be a real
+    // symlink, not a text file containing the target path.
+    const linkAbs = join(root, ".claude/skills/myskill");
+    expect((await lstat(linkAbs)).isSymbolicLink()).toBe(true);
+    expect(await readlink(linkAbs)).toBe("../../.agents/skills/myskill");
+    // The link resolves to the canonical SKILL.md.
+    expect(await read(root, ".claude/skills/myskill/SKILL.md")).toContain("name: myskill");
+
+    // Idempotent re-emit; link untouched.
+    const second = await emitSkill(root);
+    expect(second.conflicts).toEqual([]);
+    expect((await lstat(linkAbs)).isSymbolicLink()).toBe(true);
+  });
+
+  test("symlink-mode skill: a pre-existing foreign directory at the link path is refused, not overwritten", async () => {
+    const skillIr = PattersonProjectSchema.parse({
+      version: 1,
+      name: "symlink-occupied",
+      targets: ["claude-code"],
+      skills: [
+        {
+          name: "occupied",
+          description: "Collides with a hand-authored dir.",
+          body: "Body.",
+          linkMode: "symlink",
+        },
+      ],
+    } satisfies PattersonProjectInput);
+    const skillIrHash = computeIrHash(skillIr);
+    const emitSkill = async (root: string, acceptGenerated = false): Promise<ApplyResult> => {
+      const snapshot = await captureSnapshot(root, snapshotPaths(skillIr));
+      const { ops } = compileClaudeCode(skillIr, snapshot);
+      return applyFileOps(ops, { root, irHash: skillIrHash, acceptGenerated });
+    };
+
+    const root = makeRoot();
+    const dirAbs = join(root, ".claude/skills/occupied");
+    await mkdir(dirAbs, { recursive: true });
+    await Bun.write(join(dirAbs, "SKILL.md"), "# hand-authored skill\n");
+
+    const result = await emitSkill(root);
+    const conflict = result.conflicts.find((c) => c.path === ".claude/skills/occupied");
+    expect(conflict).toBeDefined();
+    expect(conflict?.reason).toBe("unrecorded");
+    // The hand-authored directory is intact — never replaced by a link.
+    expect((await lstat(dirAbs)).isDirectory()).toBe(true);
+    expect(await read(root, ".claude/skills/occupied/SKILL.md")).toBe("# hand-authored skill\n");
+
+    // Even --accept-generated refuses to destroy a directory.
+    const accepted = await emitSkill(root, true);
+    expect(accepted.conflicts.find((c) => c.path === ".claude/skills/occupied")).toBeDefined();
+    expect((await lstat(dirAbs)).isDirectory()).toBe(true);
   });
 
   test("hand-DELETION is drift: kept + reported with ABSENT_HASH; --accept-generated recreates", async () => {

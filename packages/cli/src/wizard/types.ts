@@ -107,6 +107,10 @@ export interface WizardFlags {
   template?: string;
   name?: string;
   agents?: string[];
+  /** Passed through to create (--no-install). */
+  install?: boolean;
+  /** Passed through to create (--no-git). */
+  git?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -169,4 +173,7 @@ export interface CreateArgs {
   template: string;
   targets: TargetId[];
   yes: true;
+  /** Present only when the caller passed --no-install / --no-git through. */
+  install?: boolean;
+  git?: boolean;
 }

@@ -15,7 +15,8 @@
  * (frontends map to exit 2 / MCP structured conflicts); `acceptGenerated`
  * overwrites after a backup; `adopt` marks pre-existing content foreign.
  */
-import { join } from "node:path";
+import { lstat, mkdir, readlink, rm, symlink } from "node:fs/promises";
+import { dirname, isAbsolute, join, normalize } from "node:path";
 
 import { backupFile, backupName, BACKUP_DIR } from "./backup.ts";
 import { classifyDrift } from "./drift.ts";
@@ -43,6 +44,29 @@ const DEFAULT_SETUP_PATH = "SETUP.md";
  * deletion is kept and reported, never silently reverted (Constitution II).
  */
 export const ABSENT_HASH = "absent" as const;
+
+/**
+ * `currentHash` marker for a non-symlink obstruction: a symlink-mode FileOp
+ * found a real file or directory at the link path. The engine refuses to
+ * replace it (frontends must tolerate this marker like ABSENT_HASH).
+ */
+export const NON_SYMLINK_HASH = "non-symlink" as const;
+
+/**
+ * Root-escape guard: every FileOp path must stay under the project root.
+ * A path that is absolute or normalizes to a `..`-prefixed path (e.g. a
+ * hostile `files` entry concatenated into an op path) is refused before
+ * anything is written.
+ */
+export function assertInsideRoot(relPath: string): void {
+  const posix = relPath.replaceAll("\\", "/");
+  const norm = normalize(posix).replaceAll("\\", "/");
+  if (isAbsolute(posix) || isAbsolute(norm) || norm === ".." || norm.startsWith("../")) {
+    throw new Error(
+      `FileOp path "${relPath}" escapes the project root; refusing to write (Constitution II).`,
+    );
+  }
+}
 
 interface EngineCtx {
   root: string;
@@ -81,6 +105,7 @@ export async function applyFileOps(ops: readonly FileOp[], options: ApplyOptions
   // aborting mid-batch after earlier files were written.
   const touchedInBatch = new Set<string>();
   const preflight = async (relPath: string): Promise<void> => {
+    assertInsideRoot(relPath);
     const exists =
       touchedInBatch.has(relPath) || (await Bun.file(join(ctx.root, relPath)).exists());
     assertWritable(relPath, { exists });
@@ -108,10 +133,49 @@ export async function applyFileOps(ops: readonly FileOp[], options: ApplyOptions
 // ---------------------------------------------------------------------------
 
 async function writeTarget(ctx: EngineCtx, relPath: string, content: string): Promise<void> {
+  assertInsideRoot(relPath);
   const abs = join(ctx.root, relPath);
   assertWritable(relPath, { exists: await Bun.file(abs).exists() });
   if (!ctx.dryRun) await Bun.write(abs, content);
   ctx.result.written.push(relPath);
+}
+
+/**
+ * Materialize a symlink at `relPath` pointing at `target` (the second guarded
+ * write path; symlink creation is engine territory — emitters produce intent).
+ */
+async function writeLink(
+  ctx: EngineCtx,
+  relPath: string,
+  target: string,
+  exists: boolean,
+): Promise<void> {
+  assertInsideRoot(relPath);
+  assertWritable(relPath, { exists });
+  if (!ctx.dryRun) {
+    const abs = join(ctx.root, relPath);
+    await mkdir(dirname(abs), { recursive: true });
+    if (exists) await rm(abs, { force: true });
+    await symlink(target, abs);
+  }
+  ctx.result.written.push(relPath);
+}
+
+type LinkState =
+  | { kind: "missing" }
+  | { kind: "symlink"; target: string }
+  /** A real file or directory occupies the link path. */
+  | { kind: "occupied"; directory: boolean };
+
+/** lstat-based state of a symlink-op path — Bun.file().exists() cannot see links or dirs. */
+async function readLinkState(abs: string): Promise<LinkState> {
+  try {
+    const stats = await lstat(abs);
+    if (stats.isSymbolicLink()) return { kind: "symlink", target: await readlink(abs) };
+    return { kind: "occupied", directory: stats.isDirectory() };
+  } catch {
+    return { kind: "missing" };
+  }
 }
 
 async function backupBeforeOverwrite(ctx: EngineCtx, relPath: string): Promise<void> {
@@ -166,6 +230,7 @@ function addForeign(record: EmissionRecord, key: string): void {
 // ---------------------------------------------------------------------------
 
 async function applyOne(op: FileOp, ctx: EngineCtx): Promise<void> {
+  if (op.mode === "own" && op.linkMode === "symlink") return applySymlink(op, ctx);
   if (op.mode === "own") return applyOwn(op, ctx);
   if (op.sentinelId !== undefined) return applyMarkdownMerge(op, ctx);
   if (op.patch !== undefined) return applyStructuredMerge(op, ctx);
@@ -251,6 +316,110 @@ async function applyOwn(op: FileOp, ctx: EngineCtx): Promise<void> {
     path: op.path,
     reason: state === "drifted" ? "hand-edited" : "unrecorded",
     recordedHash: record?.contentHash,
+    currentHash,
+    resolvingFlag: RESOLVING_FLAG,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// OWN tier — symlink materialization (linkMode "symlink")
+// ---------------------------------------------------------------------------
+
+/**
+ * A symlink-mode own op: `content` is the relative LINK TARGET string. The
+ * drift baseline is the hash of that target string (read back via readlink).
+ * A real file or directory occupying the link path is never replaced — it is
+ * adopted as foreign (init) or reported as a conflict, even under
+ * acceptGenerated (the engine cannot back up a directory faithfully).
+ */
+async function applySymlink(op: FileOp, ctx: EngineCtx): Promise<void> {
+  const desired = op.content;
+  if (desired === undefined) {
+    throw new Error(`symlink FileOp for "${op.path}" requires content (the link target).`);
+  }
+
+  const record = ctx.records.get(op.path);
+  if (record?.foreign?.includes("content")) {
+    ctx.result.foreignSkipped.push(op.path);
+    return;
+  }
+
+  const desiredHash = contentHash(desired);
+  const recordLink = (hash: string): void => {
+    upsertRecord(ctx, op.path, "own", (rec) => {
+      rec.contentHash = hash;
+      rec.linkMode = "symlink";
+    });
+  };
+
+  const state = await readLinkState(join(ctx.root, op.path));
+
+  if (state.kind === "missing") {
+    // Deletion drift: a recorded link that is gone stays gone + is reported;
+    // acceptGenerated recreates it.
+    if (record?.contentHash !== undefined && !ctx.acceptGenerated) {
+      ctx.result.conflicts.push({
+        path: op.path,
+        reason: "hand-edited",
+        recordedHash: record.contentHash,
+        currentHash: ABSENT_HASH,
+        resolvingFlag: RESOLVING_FLAG,
+      });
+      return;
+    }
+    await writeLink(ctx, op.path, desired, false);
+    recordLink(desiredHash);
+    return;
+  }
+
+  if (state.kind === "occupied") {
+    // A real file/dir occupies the link path. Refuse to replace it — adopt as
+    // foreign under init, otherwise conflict (kept even under acceptGenerated).
+    if (ctx.adopt && record === undefined) {
+      upsertRecord(ctx, op.path, "own", (rec) => {
+        addForeign(rec, "content");
+      });
+      ctx.result.foreignSkipped.push(op.path);
+      return;
+    }
+    ctx.result.conflicts.push({
+      path: op.path,
+      reason: record === undefined ? "unrecorded" : "hand-edited",
+      ...(record?.contentHash !== undefined ? { recordedHash: record.contentHash } : {}),
+      currentHash: NON_SYMLINK_HASH,
+      resolvingFlag: RESOLVING_FLAG,
+    });
+    return;
+  }
+
+  // Existing symlink.
+  const currentHash = contentHash(state.target);
+  if (state.target === desired) {
+    recordLink(desiredHash);
+    return;
+  }
+
+  const drift = classifyDrift(record?.contentHash, currentHash);
+  if (drift === "clean" || ctx.acceptGenerated) {
+    await writeLink(ctx, op.path, desired, true);
+    recordLink(desiredHash);
+    return;
+  }
+
+  if (drift === "unrecorded" && ctx.adopt) {
+    upsertRecord(ctx, op.path, "own", (rec) => {
+      rec.contentHash = currentHash;
+      rec.linkMode = "symlink";
+      addForeign(rec, "content");
+    });
+    ctx.result.foreignSkipped.push(op.path);
+    return;
+  }
+
+  ctx.result.conflicts.push({
+    path: op.path,
+    reason: drift === "drifted" ? "hand-edited" : "unrecorded",
+    ...(record?.contentHash !== undefined ? { recordedHash: record.contentHash } : {}),
     currentHash,
     resolvingFlag: RESOLVING_FLAG,
   });

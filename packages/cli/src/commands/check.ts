@@ -8,7 +8,12 @@
  */
 import { z } from "zod";
 
-import { defineCommand, type CommandResult, type PattersonProject } from "@patterson/core";
+import {
+  captureSnapshot,
+  defineCommand,
+  type CommandResult,
+  type PattersonProject,
+} from "@patterson/core";
 
 import { defaultDeps, loadProjectConfig, type CommandDeps } from "./shared.ts";
 
@@ -41,14 +46,21 @@ type CoverageRow = z.infer<typeof RowSchema>;
 // Entity enumeration
 // ---------------------------------------------------------------------------
 
-/** Stable entity ids for the coverage table (sorted per kind, kinds in IR order). */
+/**
+ * Stable entity ids for the coverage table (kinds in IR order). The naming
+ * MUST match the emitters' CoverageGap.entityId convention
+ * (`instructions.<id>`, `skills.<name>`, …, `hooks.agentHooks[<i>]`) so gap
+ * lookups line up — a divergent format here silently reported every gap as
+ * "covered".
+ */
 export function enumerateEntities(ir: PattersonProject): string[] {
   return [
-    ...ir.instructions.map((block) => `instruction:${block.id}`),
-    ...ir.skills.map((skill) => `skill:${skill.name}`),
-    ...ir.agents.map((agent) => `agent:${agent.name}`),
-    ...ir.commands.map((command) => `command:${command.name}`),
-    ...ir.mcp.map((server) => `mcp:${server.name}`),
+    ...ir.instructions.map((block) => `instructions.${block.id}`),
+    ...ir.skills.map((skill) => `skills.${skill.name}`),
+    ...ir.agents.map((agent) => `agents.${agent.name}`),
+    ...ir.commands.map((command) => `commands.${command.name}`),
+    ...ir.mcp.map((server) => `mcp.${server.name}`),
+    ...ir.hooks.agentHooks.map((_hook, index) => `hooks.agentHooks[${index}]`),
   ];
 }
 
@@ -86,16 +98,25 @@ export function makeCheckCommand(deps: CommandDeps = defaultDeps) {
           }
           continue;
         }
-        const gaps = new Map(
-          (resolved.coverageGaps?.(ir) ?? []).map((gap) => [gap.entityId, gap.reason]),
-        );
+        const snapshot = await captureSnapshot(ctx.cwd, resolved.snapshotPaths(ir));
+        const gapList = resolved.coverageGaps?.(ir, snapshot) ?? [];
+        const gaps = new Map(gapList.map((gap) => [gap.entityId, gap.reason]));
+        const consumed = new Set<string>();
         for (const entityId of entities) {
           const reason = gaps.get(entityId);
+          if (reason !== undefined) consumed.add(entityId);
           rows.push(
             reason === undefined
               ? { entityId, targetId: target, status: "covered" }
               : { entityId, targetId: target, status: "gap", reason },
           );
+        }
+        // Sub-entity gaps (e.g. `mcp.<name>.timeoutMs`, `policy.defaultMode`)
+        // are appended as their own rows — a gap the table cannot place is
+        // still never dropped (contracts/emitter.md obligation 3).
+        for (const gap of gapList) {
+          if (consumed.has(gap.entityId)) continue;
+          rows.push({ entityId: gap.entityId, targetId: target, status: "gap", reason: gap.reason });
         }
       }
 

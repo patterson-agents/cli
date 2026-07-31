@@ -28,7 +28,14 @@ afterEach(async () => {
 });
 
 const create = makeCreateCommand(stubDeps());
-const base = { yes: true, force: false, install: false, git: false, template: "skeleton" };
+const base = {
+  yes: true,
+  force: false,
+  install: false,
+  git: false,
+  template: "skeleton",
+  dryRun: false,
+};
 
 describe("create (T024)", () => {
   test("scaffolds a project non-interactively with {{name}} substitution", async () => {

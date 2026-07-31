@@ -19,13 +19,23 @@ const main = defineCommand({
   },
   subCommands: {
     create: async () => {
-      const [{ createCommand }, { cittyCommandFor }] = await Promise.all([
+      const [{ createCommand }, { cittyArgsFor }, { runCreateCli }] = await Promise.all([
         import("./commands/create.ts"),
         import("./commands/frontend.ts"),
+        import("./commands/create-entry.ts"),
       ]);
-      return cittyCommandFor(createCommand, {
-        positionals: ["dir"],
-        aliases: { yes: "y", force: "f" },
+      return defineCommand({
+        meta: { name: "create", description: createCommand.summary },
+        args: {
+          ...cittyArgsFor(createCommand, { positionals: ["dir"], aliases: { yes: "y", force: "f" } }),
+          resume: {
+            type: "boolean",
+            description: "Resume a saved wizard session (.patterson/wizard.json)",
+          },
+        },
+        async run({ args }) {
+          await runCreateCli(args as unknown as Record<string, unknown>);
+        },
       });
     },
     init: async () => {

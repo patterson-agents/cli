@@ -74,6 +74,23 @@
             "matcher": "Edit|Write"
           }
         ]
+      },
+      {
+        "keyPath": [
+          "hooks",
+          "SessionEnd"
+        ],
+        "value": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "/path with spaces/hook.sh",
+                "args": []
+              }
+            ]
+          }
+        ]
       }
     ]
   }

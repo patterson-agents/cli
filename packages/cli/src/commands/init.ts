@@ -10,26 +10,38 @@
  * the generated patterson.config.ts; entries that fail IR validation are
  * skipped and reported, never silently dropped.
  */
+import { rm } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { z } from "zod";
 
 import {
   assertWritable,
+  contentHash,
   defineCommand,
+  formatKeyPath,
   InstructionBlockSchema,
+  loadProvenance,
   McpServerDefSchema,
   PattersonProjectSchema,
   RESOLVING_FLAG,
+  saveProvenance,
+  valueHash,
   type CommandResult,
+  type EmissionRecord,
   type EnvValue,
   type InstructionBlock,
   type McpServerDef,
   type PattersonProjectInput,
 } from "@patterson/core";
-import { PATTERSON_CONFIG_BASENAME, renderPattersonConfig } from "../../../core/src/scaffold.ts";
+import {
+  directoryEntries,
+  PATTERSON_CONFIG_BASENAME,
+  renderPattersonConfig,
+} from "../../../core/src/scaffold.ts";
 
 import {
   defaultDeps,
+  describeGaps,
   runEmitPipeline,
   toCommandConflicts,
   type CommandDeps,
@@ -46,6 +58,8 @@ export const InitInputSchema = z.strictObject({
   import: z.boolean().default(false),
   /** Overwrite an existing patterson.config.ts. */
   force: z.boolean().default(false),
+  /** Plan only: report what adoption would touch/mark, write nothing. */
+  dryRun: z.boolean().default(false),
 });
 
 export const InitOutputSchema = z.strictObject({
@@ -62,6 +76,8 @@ export const InitOutputSchema = z.strictObject({
   /** Files written by the adoption emission. */
   written: z.array(z.string()),
   configPath: z.string(),
+  /** True when the run was a plan only (nothing written). */
+  dryRun: z.boolean(),
 });
 
 export type InitInput = z.infer<typeof InitInputSchema>;
@@ -196,6 +212,115 @@ export function liftInstructionFile(
 }
 
 // ---------------------------------------------------------------------------
+// Foreign adoption post-pass (FR-007 / US2-AS3)
+// ---------------------------------------------------------------------------
+
+/** Marker recorded as irHash for surfaces adopted without an emission. */
+const ADOPTED_IR_HASH = "adopted";
+
+/**
+ * Mark EVERY detected pre-existing surface foreign — not only the keys/regions
+ * the current emission happens to touch. Covers: whole detect files
+ * (CLAUDE.md), every `.mcp.json` mcpServers key, every `.claude/settings.json`
+ * key (at the granularity the emitter patches), and every existing
+ * `.claude/agents/*` / `.claude/skills/*` entry. Surfaces already recorded by
+ * the adoption emission are left alone. Returns the newly-marked labels.
+ */
+export async function adoptForeignSurfaces(root: string, dryRun: boolean): Promise<string[]> {
+  const records = await loadProvenance(root);
+  const marked: string[] = [];
+  const now = new Date().toISOString();
+
+  const addForeign = (rec: EmissionRecord, key: string, label: string): void => {
+    const foreign = rec.foreign ?? [];
+    if (foreign.includes(key)) return;
+    rec.foreign = [...foreign, key];
+    marked.push(label);
+  };
+
+  const markWholeFileForeign = async (rel: string): Promise<void> => {
+    if (records.get(rel) !== undefined) return; // emitted or adopted this run
+    const abs = join(root, rel);
+    const rec: EmissionRecord = { path: rel, mode: "own", emittedAt: now, irHash: ADOPTED_IR_HASH };
+    try {
+      if (await Bun.file(abs).exists()) rec.contentHash = contentHash(await Bun.file(abs).text());
+    } catch {
+      // Directory or unreadable entry: foreign marking needs no baseline hash.
+    }
+    records.set(rel, rec);
+    addForeign(rec, "content", rel);
+  };
+
+  const markStructuredForeign = async (
+    rel: string,
+    pointersOf: (parsed: Record<string, unknown>) => [readonly (string | number)[], unknown][],
+  ): Promise<void> => {
+    const file = Bun.file(join(root, rel));
+    if (!(await file.exists())) return;
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(await file.text());
+    } catch {
+      return; // unparsable JSON cannot be key-adopted; left as-is
+    }
+    if (typeof parsed !== "object" || parsed === null) return;
+    const existing = records.get(rel);
+    const rec: EmissionRecord =
+      existing ?? { path: rel, mode: "merge", emittedAt: now, irHash: ADOPTED_IR_HASH };
+    records.set(rel, rec);
+    for (const [keyPath, value] of pointersOf(parsed as Record<string, unknown>)) {
+      const pointer = formatKeyPath([...keyPath]);
+      if (rec.keyPaths?.some((entry) => entry.path === pointer)) continue; // managed this run
+      rec.keyPaths = [...(rec.keyPaths ?? []), { path: pointer, value, hash: valueHash(value) }];
+      addForeign(rec, pointer, `${rel}#${pointer}`);
+    }
+  };
+
+  await markStructuredForeign(".mcp.json", (parsed) => {
+    const servers = parsed["mcpServers"];
+    if (typeof servers !== "object" || servers === null) return [];
+    return Object.entries(servers).map(([name, value]) => [["mcpServers", name], value]);
+  });
+
+  await markStructuredForeign(".claude/settings.json", (parsed) => {
+    const out: [readonly (string | number)[], unknown][] = [];
+    for (const [key, value] of Object.entries(parsed)) {
+      // Match the emitter's patch granularity so foreign lookups line up.
+      if ((key === "permissions" || key === "hooks") && typeof value === "object" && value !== null) {
+        for (const [sub, subValue] of Object.entries(value as Record<string, unknown>)) {
+          out.push([[key, sub], subValue]);
+        }
+        continue;
+      }
+      out.push([[key], value]);
+    }
+    return out;
+  });
+
+  // CLAUDE.md is an own-tier surface (the @AGENTS.md shim); a pre-existing
+  // hand-written one is hand-owned forever. AGENTS.md is merge-tier by
+  // design — sentinel appends never overwrite hand prose — so it needs no
+  // whole-file mark.
+  if (await Bun.file(join(root, "CLAUDE.md")).exists()) {
+    await markWholeFileForeign("CLAUDE.md");
+  }
+
+  for (const entry of await directoryEntries(join(root, ".claude/agents"))) {
+    await markWholeFileForeign(`.claude/agents/${entry}`);
+  }
+  for (const entry of await directoryEntries(join(root, ".claude/skills"))) {
+    const rel = `.claude/skills/${entry}`;
+    await markWholeFileForeign(rel);
+    if (await Bun.file(join(root, rel, "SKILL.md")).exists()) {
+      await markWholeFileForeign(`${rel}/SKILL.md`);
+    }
+  }
+
+  if (!dryRun && marked.length > 0) await saveProvenance(root, records);
+  return marked;
+}
+
+// ---------------------------------------------------------------------------
 // Descriptor
 // ---------------------------------------------------------------------------
 
@@ -229,6 +354,8 @@ export function makeInitCommand(deps: CommandDeps = defaultDeps) {
       const skipped: string[] = [];
       let mcp: McpServerDef[] = [];
       const instructions: InstructionBlock[] = [];
+      /** Instruction files whose bodies were lifted into the IR. */
+      const importedInstructionFiles: string[] = [];
       if (args.import) {
         const mcpFile = Bun.file(join(root, ".mcp.json"));
         if (await mcpFile.exists()) {
@@ -245,7 +372,10 @@ export function makeInitCommand(deps: CommandDeps = defaultDeps) {
           const file = Bun.file(join(root, path));
           if (!(await file.exists())) continue;
           const block = liftInstructionFile(id, await file.text(), skipped);
-          if (block) instructions.push(block);
+          if (block) {
+            instructions.push(block);
+            importedInstructionFiles.push(path);
+          }
         }
       }
 
@@ -265,11 +395,26 @@ export function makeInitCommand(deps: CommandDeps = defaultDeps) {
         };
       }
 
-      assertWritable(PATTERSON_CONFIG_BASENAME, { exists: await Bun.file(configAbs).exists() });
-      await Bun.write(configAbs, renderPattersonConfig(configInput));
+      if (!args.dryRun) {
+        assertWritable(PATTERSON_CONFIG_BASENAME, { exists: await Bun.file(configAbs).exists() });
+        await Bun.write(configAbs, renderPattersonConfig(configInput));
+
+        // The lifted bodies now live in the IR (patterson.config.ts) and are
+        // re-emitted as sentinel regions. Leaving the originals in place would
+        // duplicate every imported body (original prose + sentinel copy), so
+        // the adopted-in-place originals are removed before emission.
+        for (const path of importedInstructionFiles) {
+          await rm(join(root, path), { force: true });
+        }
+      }
 
       // Adoption emission: pre-existing keys/regions become foreign.
-      const outcome = await runEmitPipeline(parsed.data, root, { adopt: true }, deps);
+      const outcome = await runEmitPipeline(
+        parsed.data,
+        root,
+        { adopt: true, dryRun: args.dryRun },
+        deps,
+      );
       if (outcome.apply.conflicts.length > 0) {
         // Adoption converts unrecorded drift to foreign; recorded drift can
         // still conflict (re-init with --force after emissions). Never clobber.
@@ -280,14 +425,26 @@ export function makeInitCommand(deps: CommandDeps = defaultDeps) {
         };
       }
 
+      // FR-007: EVERY detected pre-existing surface becomes foreign — not only
+      // the keys/regions the emission touched.
+      const adoptedForeign = await adoptForeignSurfaces(root, args.dryRun);
+      const foreign = [...new Set([...outcome.apply.foreignSkipped, ...adoptedForeign])];
+
       const details: string[] = [
         `Detected: ${detected.join(", ") || "(none)"}`,
-        `Foreign (hand-owned, never overwritten): ${outcome.apply.foreignSkipped.join(", ") || "(none)"}`,
+        `Foreign (hand-owned, never overwritten): ${foreign.join(", ") || "(none)"}`,
       ];
       for (const target of outcome.unsupported) {
         details.push(`Target "${target}" has no emitter yet; nothing was emitted for it.`);
       }
       if (skipped.length > 0) details.push(`Skipped imports: ${skipped.join("; ")}`);
+      if (importedInstructionFiles.length > 0) {
+        details.push(
+          `Imported instruction file(s) ${importedInstructionFiles.join(", ")} were lifted into patterson.config.ts and re-emitted (originals replaced, not duplicated).`,
+        );
+      }
+      details.push(...describeGaps(outcome.gaps));
+      if (args.dryRun) details.push("Dry run: nothing was written.");
 
       return {
         kind: "ok",
@@ -295,9 +452,10 @@ export function makeInitCommand(deps: CommandDeps = defaultDeps) {
           detected,
           imported: { mcpServers: mcp.length, instructions: instructions.length },
           skipped,
-          foreign: outcome.apply.foreignSkipped,
+          foreign,
           written: outcome.apply.written,
           configPath: PATTERSON_CONFIG_BASENAME,
+          dryRun: args.dryRun,
         },
         report: {
           summary:

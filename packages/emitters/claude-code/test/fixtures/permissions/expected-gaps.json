@@ -1,5 +1,11 @@
 [
   {
+    "entityId": "policy.allow",
+    "targetId": "claude-code",
+    "reason": "Permission rule \"NotARealTool(x)\" does not match the vendored schema's permissionRule pattern; it was not emitted into .claude/settings.json.",
+    "fallbackApplied": false
+  },
+  {
     "entityId": "hooks.agentHooks[1]",
     "targetId": "claude-code",
     "reason": "Hook event \"NotAnEvent\" is not a Claude Code hook event (vendored settings schema: hooks has additionalProperties: false).",

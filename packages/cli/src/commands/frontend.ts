@@ -144,7 +144,7 @@ function collectRawInput(
 // Result rendering + exit codes
 // ---------------------------------------------------------------------------
 
-function renderResult(result: CommandResult<unknown>, io: CommandIo, json: boolean): void {
+export function renderResult(result: CommandResult<unknown>, io: CommandIo, json: boolean): void {
   switch (result.kind) {
     case "ok": {
       if (json) {
@@ -219,8 +219,14 @@ export async function runDescriptor(
 ): Promise<CommandResult<unknown>> {
   const json = parsedArgs["json"] === true;
   const raw = collectRawInput(descriptor, parsedArgs);
+  // Prompting requires BOTH stdin and stdout to be TTYs — with stdin
+  // redirected (`patterson create < /dev/null`) a prompt would hang/EOF.
   const nonInteractive =
-    json || raw["yes"] === true || !process.stdout.isTTY || process.env["CI"] === "true";
+    json ||
+    raw["yes"] === true ||
+    !process.stdout.isTTY ||
+    !process.stdin.isTTY ||
+    process.env["CI"] === "true";
 
   const schema = descriptor.inputSchema as z.ZodType;
   const ctx: CommandCtx = { cwd: process.cwd(), nonInteractive, io };
@@ -234,8 +240,8 @@ export async function runDescriptor(
       result = await descriptor.run(parsed.data, ctx);
       // Interactive decision loop: every option maps to a flag; prompt, fold
       // the chosen flag back into the args, and re-invoke (bounded).
-      let rounds = 0;
-      while (result.kind === "decision-required" && !nonInteractive && rounds < 5) {
+      let rounds = nonInteractive ? 5 : 0;
+      while (result.kind === "decision-required" && rounds < 5) {
         rounds += 1;
         const choice = await select({
           message: result.decision.question,

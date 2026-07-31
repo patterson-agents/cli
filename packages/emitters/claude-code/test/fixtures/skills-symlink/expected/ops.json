@@ -3,7 +3,7 @@
     "path": ".agents/skills/deploy/SKILL.md",
     "format": "markdown",
     "mode": "own",
-    "content": "---\nname: deploy\ndescription: \"Deploy the app to staging.\"\nallowed-tools: Bash, Read\n---\n\n# Deploy\n\nRun `bun run deploy`.\n"
+    "content": "---\nname: deploy\ndescription: \"Deploy the app to staging.\"\nallowed-tools: \"Bash, Read, Bash(echo a: b)\"\n---\n\n# Deploy\n\nRun `bun run deploy`.\n"
   },
   {
     "path": ".claude/skills/deploy",

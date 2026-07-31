@@ -1,5 +1,11 @@
 [
   {
+    "entityId": "commands.release.args",
+    "targetId": "claude-code",
+    "reason": "Claude Code skills-as-commands have no named-argument surface; args [version] are not rendered — reference them positionally in the template body instead.",
+    "fallbackApplied": true
+  },
+  {
     "entityId": "commands.Bad_Name",
     "targetId": "claude-code",
     "reason": "Command name \"Bad_Name\" is not a valid skill directory name (skills-as-commands requires ^[a-z0-9]([a-z0-9-]*[a-z0-9])?$, ≤64 chars, no \"--\").",

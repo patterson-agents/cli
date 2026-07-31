@@ -3,7 +3,7 @@
     "path": ".claude/agents/code-reviewer.md",
     "format": "markdown",
     "mode": "own",
-    "content": "---\nname: code-reviewer\ndescription: \"Reviews code for defects.\"\ntools: Read, Grep\nmodel: opus\n---\n\nYou are a strict code reviewer.\nReport only verified findings.\n"
+    "content": "---\nname: code-reviewer\ndescription: \"Reviews code for defects.\"\ntools: \"Read, Grep\"\nmodel: opus\n---\n\nYou are a strict code reviewer.\nReport only verified findings.\n"
   },
   {
     "path": ".claude/agents/doc-writer.md",

@@ -11,6 +11,7 @@ export {
   CREATE_COMMAND_ID,
   orderSteps,
   runWizard,
+  sanitizeResumedState,
   type WizardOptions,
   type WizardRunResult,
 } from "./driver.ts";

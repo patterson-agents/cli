@@ -24,9 +24,11 @@ import {
   RESOLVING_FLAG,
   type ApplyResult,
   type CommandDriftConflict,
+  type CoverageGap,
   type DriftConflict,
   type Emitter,
   type FileOp,
+  type FsSnapshot,
   type PattersonProject,
   type TargetId,
 } from "@patterson/core";
@@ -40,8 +42,12 @@ export interface ResolvedEmitter {
   emitter: Emitter;
   /** Root-relative paths captured into the FsSnapshot handed to `compile`. */
   snapshotPaths(ir: PattersonProject): string[];
-  /** Optional coverage-gap hook (duck-typed off the emitter module). */
-  coverageGaps?(ir: PattersonProject): { entityId: string; reason: string }[];
+  /**
+   * Snapshot-aware coverage-gap hook (contracts/emitter.md obligation 3):
+   * entities the emitter cannot express. Same entityId naming as the
+   * emitter's CoverageGap output (`mcp.<name>`, `skills.<name>`, …).
+   */
+  coverageGaps?(ir: PattersonProject, snapshot: FsSnapshot): CoverageGap[];
 }
 
 export type EmitterResolver = (target: TargetId) => Promise<ResolvedEmitter | null>;
@@ -100,8 +106,15 @@ async function loadClaudeCodeEmitter(): Promise<ResolvedEmitter | null> {
   const gapsExport = mod["coverageGaps"];
   const resolved: ResolvedEmitter = { emitter, snapshotPaths };
   if (typeof gapsExport === "function") {
-    resolved.coverageGaps = (ir) =>
-      (gapsExport as (ir: PattersonProject) => { entityId: string; reason: string }[])(ir);
+    resolved.coverageGaps = (ir, snapshot) =>
+      (gapsExport as (ir: PattersonProject, snapshot: FsSnapshot) => CoverageGap[])(ir, snapshot);
+  } else if (typeof mod["compileClaudeCode"] === "function") {
+    // Fallback: derive gaps from the full compile surface.
+    const compile = mod["compileClaudeCode"] as (
+      ir: PattersonProject,
+      snapshot: FsSnapshot,
+    ) => { gaps: CoverageGap[] };
+    resolved.coverageGaps = (ir, snapshot) => compile(ir, snapshot).gaps;
   }
   return resolved;
 }
@@ -187,6 +200,8 @@ export interface EmitPipelineOutcome {
   apply: ApplyResult;
   /** Targets in the IR with no resolvable emitter (reported, never silent). */
   unsupported: TargetId[];
+  /** Coverage gaps reported by the emitters (never silently dropped). */
+  gaps: CoverageGap[];
 }
 
 /** Compile every supported target and apply through the core emit engine. */
@@ -198,6 +213,7 @@ export async function runEmitPipeline(
 ): Promise<EmitPipelineOutcome> {
   const ops: FileOp[] = [];
   const unsupported: TargetId[] = [];
+  const gaps: CoverageGap[] = [];
 
   for (const target of ir.targets) {
     const resolved = await deps.resolveEmitter(target);
@@ -207,6 +223,7 @@ export async function runEmitPipeline(
     }
     const snapshot = await captureSnapshot(root, resolved.snapshotPaths(ir));
     ops.push(...resolved.emitter.compile(ir, snapshot));
+    if (resolved.coverageGaps) gaps.push(...resolved.coverageGaps(ir, snapshot));
   }
 
   if (options.fallbackSetupContent !== undefined && !ops.some((op) => op.mode === "instruct")) {
@@ -220,7 +237,12 @@ export async function runEmitPipeline(
     dryRun: options.dryRun ?? false,
     adopt: options.adopt ?? false,
   });
-  return { ops, apply, unsupported };
+  return { ops, apply, unsupported, gaps };
+}
+
+/** Human-readable one-liners for emitter coverage gaps (report details). */
+export function describeGaps(gaps: readonly CoverageGap[]): string[] {
+  return gaps.map((gap) => `[gap] ${gap.entityId} → ${gap.targetId}: ${gap.reason}`);
 }
 
 // ---------------------------------------------------------------------------

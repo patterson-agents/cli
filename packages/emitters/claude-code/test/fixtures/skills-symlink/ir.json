@@ -6,7 +6,11 @@
       "name": "deploy",
       "description": "Deploy the app to staging.",
       "body": "# Deploy\n\nRun `bun run deploy`.",
-      "allowedTools": ["Bash", "Read"],
+      "allowedTools": [
+        "Bash",
+        "Read",
+        "Bash(echo a: b)"
+      ],
       "linkMode": "symlink"
     }
   ]

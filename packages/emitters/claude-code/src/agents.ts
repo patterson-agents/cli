@@ -32,7 +32,8 @@ export function buildAgentOps(ir: PattersonProject): AgentsOutput {
       ["description", yamlQuote(agent.description)],
     ];
     if (agent.tools !== undefined && agent.tools.length > 0) {
-      frontmatter.push(["tools", agent.tools.join(", ")]);
+      // Quoted: a tool entry containing ": " would break the plain YAML scalar.
+      frontmatter.push(["tools", yamlQuote(agent.tools.join(", "))]);
     }
     if (model !== undefined) frontmatter.push(["model", model]);
 

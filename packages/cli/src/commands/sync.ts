@@ -12,6 +12,7 @@ import { defineCommand, RESOLVING_FLAG, type CommandResult } from "@patterson/co
 
 import {
   defaultDeps,
+  describeGaps,
   loadProjectConfig,
   runEmitPipeline,
   toCommandConflicts,
@@ -80,6 +81,7 @@ export function makeSyncCommand(deps: CommandDeps = defaultDeps) {
           `Foreign (hand-owned) content left untouched: ${outcome.apply.foreignSkipped.join(", ")}`,
         );
       }
+      details.push(...describeGaps(outcome.gaps));
 
       return {
         kind: "ok",

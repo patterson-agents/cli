@@ -77,6 +77,25 @@ const skillNameSchema = z
   });
 
 /**
+ * A skill `files` entry must stay inside the skill directory: relative,
+ * forward-slash, no `.`/`..` segments, no backslashes, not absolute. Emitters
+ * concatenate these into snapshot and FileOp paths, so a traversal entry
+ * (`../../../secret`) would read or write outside the skill tree.
+ */
+export function isSafeRelativeFilePath(value: string): boolean {
+  if (value.length === 0 || value.startsWith("/") || value.includes("\\")) return false;
+  return value.split("/").every((segment) => segment.length > 0 && segment !== "." && segment !== "..");
+}
+
+const skillFileSchema = z
+  .string()
+  .min(1)
+  .refine(isSafeRelativeFilePath, {
+    error:
+      'Skill file entries must be relative paths inside the skill directory (no leading "/", no "\\\\", no "." or ".." segments).',
+  });
+
+/**
  * Note: the `dir name == name` rule (C6) is not representable in the schema —
  * it needs filesystem context, so it is enforced at emit time and by
  * `new skill` validation.
@@ -88,7 +107,7 @@ export const SkillDefSchema = z.strictObject({
     .min(1)
     .max(1024, { error: "Skill descriptions must be at most 1024 characters." }),
   body: z.string(),
-  files: z.array(z.string().min(1)).optional(),
+  files: z.array(skillFileSchema).optional(),
   allowedTools: z.array(z.string().min(1)).optional(),
   linkMode: z.enum(["symlink", "copy"]),
   targets: TargetsSchema.optional(),

@@ -4,7 +4,7 @@
  * Contracts: specs/001-patterson-cli-v1/contracts/emitter.md and
  * data-model.md "Emission layer"; Constitution I–II.
  */
-export { ABSENT_HASH, applyFileOps, RESOLVING_FLAG } from "./apply.ts";
+export { ABSENT_HASH, applyFileOps, assertInsideRoot, NON_SYMLINK_HASH, RESOLVING_FLAG } from "./apply.ts";
 export { backupFile, backupName, BACKUP_DIR } from "./backup.ts";
 export { classifyDrift } from "./drift.ts";
 export type { DriftState } from "./drift.ts";

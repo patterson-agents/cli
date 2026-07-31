@@ -14,7 +14,7 @@ import type {
 } from "@patterson/core";
 
 import { clearWizardState, freshWizardState, loadWizardState, saveWizardState } from "./state.ts";
-import { builtinTemplateSource, WIZARD_STEPS } from "./steps.ts";
+import { AGENT_CHOICES, builtinTemplateSource, validateProjectName, WIZARD_STEPS } from "./steps.ts";
 import {
   WizardCancelledError,
   WizardInputError,
@@ -25,6 +25,7 @@ import {
   type WizardState,
   type WizardStep,
 } from "./types.ts";
+// (sanitizeResumedState uses AGENT_CHOICES/validateProjectName from steps.ts.)
 
 /** Registry id of the create descriptor the wizard invokes (T024). */
 export const CREATE_COMMAND_ID = "create";
@@ -57,8 +58,12 @@ export function orderSteps(steps: readonly WizardStep[]): WizardStep[] {
 /**
  * State → the same non-interactive `create` args a flag-driven invocation
  * would use. Throws WizardInputError when a required answer is missing.
+ * `flags` carries the non-wizard passthroughs (--no-install / --no-git).
  */
-export function assembleCreateArgs(state: Readonly<WizardState>): CreateArgs {
+export function assembleCreateArgs(
+  state: Readonly<WizardState>,
+  flags: Readonly<WizardFlags> = {},
+): CreateArgs {
   const missing: string[] = [];
   if (state.name === undefined) missing.push("name");
   if (state.template === undefined) missing.push("template");
@@ -73,7 +78,50 @@ export function assembleCreateArgs(state: Readonly<WizardState>): CreateArgs {
     template: state.template,
     targets: [...(state.agents ?? [])],
     yes: true,
+    ...(flags.install !== undefined ? { install: flags.install } : {}),
+    ...(flags.git !== undefined ? { git: flags.git } : {}),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Resume sanitization
+// ---------------------------------------------------------------------------
+
+/**
+ * Semantic validation of a resumed state: a stale/tampered wizard.json must
+ * degrade (re-run the offending step), never crash the create funnel with a
+ * schema error. Invalid answers are dropped together with their step's
+ * completed mark.
+ */
+export async function sanitizeResumedState(
+  state: Readonly<WizardState>,
+  templates: TemplateSource,
+): Promise<WizardState> {
+  const invalidSteps = new Set<string>();
+
+  if (state.template !== undefined) {
+    const names = (await templates.list()).map((template) => template.name);
+    if (!names.includes(state.template)) invalidSteps.add("template");
+  }
+  if (state.name !== undefined && validateProjectName(state.name) !== undefined) {
+    invalidSteps.add("name");
+  }
+  if (state.agents !== undefined) {
+    const valid = state.agents.every((agent) =>
+      AGENT_CHOICES.some((choice) => choice.value === agent && choice.disabled !== true),
+    );
+    if (!valid || state.agents.length === 0) invalidSteps.add("agents");
+  }
+
+  if (invalidSteps.size === 0) return { ...state };
+  const next: WizardState = {
+    ...state,
+    completedSteps: state.completedSteps.filter((id) => !invalidSteps.has(id)),
+  };
+  if (invalidSteps.has("template")) delete next.template;
+  if (invalidSteps.has("name")) delete next.name;
+  if (invalidSteps.has("agents")) delete next.agents;
+  return next;
 }
 
 // ---------------------------------------------------------------------------
@@ -127,6 +175,10 @@ export async function runWizard(options: WizardOptions): Promise<WizardRunResult
 
   let state: WizardState =
     (options.resume ? await loadWizardState(options.cwd) : undefined) ?? freshWizardState();
+  if (options.resume) {
+    // A corrupt/stale resume file degrades to re-running the offending steps.
+    state = await sanitizeResumedState(state, templates);
+  }
 
   try {
     for (const step of steps) {
@@ -141,7 +193,7 @@ export async function runWizard(options: WizardOptions): Promise<WizardRunResult
       await saveWizardState(options.cwd, state);
     }
 
-    const args = assembleCreateArgs(state);
+    const args = assembleCreateArgs(state, flags);
     const create = options.registry.resolve(CREATE_COMMAND_ID);
     if (!create) {
       return {
@@ -159,7 +211,15 @@ export async function runWizard(options: WizardOptions): Promise<WizardRunResult
       nonInteractive: true,
       io: options.io ?? consoleIo,
     };
-    const result = (await create.run(args, ctx)) as CommandResult<unknown>;
+    // The descriptor contract returns structured errors; anything thrown here
+    // (e.g. an input-schema rejection) must still not escape runWizard.
+    let result: CommandResult<unknown>;
+    try {
+      result = (await create.run(args, ctx)) as CommandResult<unknown>;
+    } catch (cause) {
+      const message = cause instanceof Error ? cause.message : String(cause);
+      result = { kind: "error", code: "INTERNAL", message };
+    }
     if (result.kind === "ok") await clearWizardState(options.cwd);
     return { kind: "ran", args, result, state };
   } catch (error) {

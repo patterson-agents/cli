@@ -80,6 +80,33 @@ export const HOOK_EVENTS = [
   "DirectoryAdded",
 ] as const;
 
+/**
+ * The schema's `permissions.defaultMode` enum (vendored schema, locked by the
+ * settings-schema oracle test). An off-enum value is a CoverageGap, never
+ * emitted into settings.json.
+ */
+export const PERMISSION_DEFAULT_MODES = [
+  "acceptEdits",
+  "bypassPermissions",
+  "default",
+  "delegate",
+  "dontAsk",
+  "plan",
+  "auto",
+  "manual",
+] as const;
+
+/**
+ * The schema's `$defs.permissionRule.pattern` (vendored schema, locked by the
+ * settings-schema oracle test). Allow/deny/ask entries failing it are
+ * CoverageGaps, never emitted.
+ */
+export const PERMISSION_RULE_PATTERN =
+  "^((Agent|Artifact|Bash|Cd|Edit|EnterWorktree|ExitPlanMode|Glob|Grep|KillShell|LSP|Monitor|MultiEdit|NotebookEdit|PowerShell|Read|ShareOnboardingGuide|Skill|TaskCreate|TaskGet|TaskList|TaskOutput|TaskStop|TaskUpdate|TodoWrite|ToolSearch|WebFetch|WebSearch|Workflow|Write)(\\([^)]+\\))?|mcp__.*)$";
+
+const PERMISSION_RULE_RE = new RegExp(PERMISSION_RULE_PATTERN);
+const DEFAULT_MODES = new Set<string>(PERMISSION_DEFAULT_MODES);
+
 const TOP_LEVEL = new Set<string>(SETTINGS_TOP_LEVEL_KEYS);
 const PERMISSION_KEYS = new Set<string>(SETTINGS_PERMISSIONS_KEYS);
 const EVENTS = new Set<string>(HOOK_EVENTS);
@@ -158,14 +185,17 @@ export function mergeSettingsValue(
 
 interface HookMatcherEntry {
   matcher?: string;
-  hooks: { type: "command"; command: string; args?: string[] }[];
+  hooks: { type: "command"; command: string; args: string[] }[];
 }
 
 function renderHook(hook: AgentHookDef): HookMatcherEntry {
   const [command, ...args] = hook.exec.argv;
   if (command === undefined) throw new Error("Exec.argv is non-empty by schema (C1)."); // unreachable
-  const entry: HookMatcherEntry["hooks"][number] = { type: "command", command };
-  if (args.length > 0) entry.args = args;
+  // `args` is ALWAYS present (empty array for a one-element argv): per the
+  // vendored schema, presence of `args` selects exec form — the command is
+  // spawned directly without shell interpretation. Omitting it would let a
+  // command containing spaces or metacharacters be shell-split (C1).
+  const entry: HookMatcherEntry["hooks"][number] = { type: "command", command, args };
   const rendered: HookMatcherEntry = { hooks: [entry] };
   if (hook.matcher !== undefined) rendered.matcher = hook.matcher;
   return rendered;
@@ -186,14 +216,47 @@ export function buildSettingsOp(ir: PattersonProject, snapshot: FsSnapshot): Set
   const desired: KeyPathPatch[] = [];
 
   const { policy, models } = ir;
-  if (policy.allow.length > 0) desired.push({ keyPath: ["permissions", "allow"], value: policy.allow });
-  if (policy.deny.length > 0) desired.push({ keyPath: ["permissions", "deny"], value: policy.deny });
-  if (policy.ask.length > 0) desired.push({ keyPath: ["permissions", "ask"], value: policy.ask });
+
+  // Permission rules are validated against the schema's permissionRule
+  // pattern; off-pattern rules become CoverageGaps and are never written into
+  // a settings.json the vendored schema would reject.
+  const validRules = (list: readonly string[], listName: "allow" | "deny" | "ask"): string[] => {
+    const valid: string[] = [];
+    for (const rule of list) {
+      if (PERMISSION_RULE_RE.test(rule)) {
+        valid.push(rule);
+        continue;
+      }
+      gaps.push({
+        entityId: `policy.${listName}`,
+        targetId: CLAUDE_TARGET,
+        reason: `Permission rule ${JSON.stringify(rule)} does not match the vendored schema's permissionRule pattern; it was not emitted into .claude/settings.json.`,
+        fallbackApplied: false,
+      });
+    }
+    return valid;
+  };
+
+  const allow = validRules(policy.allow, "allow");
+  const deny = validRules(policy.deny, "deny");
+  const ask = validRules(policy.ask, "ask");
+  if (allow.length > 0) desired.push({ keyPath: ["permissions", "allow"], value: allow });
+  if (deny.length > 0) desired.push({ keyPath: ["permissions", "deny"], value: deny });
+  if (ask.length > 0) desired.push({ keyPath: ["permissions", "ask"], value: ask });
   if (policy.additionalDirectories !== undefined && policy.additionalDirectories.length > 0) {
     desired.push({ keyPath: ["permissions", "additionalDirectories"], value: policy.additionalDirectories });
   }
   if (policy.defaultMode !== undefined) {
-    desired.push({ keyPath: ["permissions", "defaultMode"], value: policy.defaultMode });
+    if (DEFAULT_MODES.has(policy.defaultMode)) {
+      desired.push({ keyPath: ["permissions", "defaultMode"], value: policy.defaultMode });
+    } else {
+      gaps.push({
+        entityId: "policy.defaultMode",
+        targetId: CLAUDE_TARGET,
+        reason: `defaultMode ${JSON.stringify(policy.defaultMode)} is not in the vendored schema's permissions.defaultMode enum [${PERMISSION_DEFAULT_MODES.join(", ")}]; it was not emitted.`,
+        fallbackApplied: false,
+      });
+    }
   }
 
   if (models.default !== undefined) desired.push({ keyPath: ["model"], value: models.default });

@@ -30,13 +30,27 @@ export function canonicalSkillPath(name: string, file: string): string {
   return `${AGENTS_SKILLS_DIR}/${name}/${file}`;
 }
 
+/**
+ * A skill `files` entry must stay inside the skill directory: relative,
+ * forward-slash, no `.`/`..` segments, no backslashes. Anything else could
+ * read or write outside `.agents/skills/<name>/` when concatenated into
+ * snapshot/FileOp paths (defense in depth — the IR schema enforces the same
+ * rule at parse time).
+ */
+export function isSafeSkillFileEntry(file: string): boolean {
+  if (file.length === 0 || file.startsWith("/") || file.includes("\\")) return false;
+  return file.split("/").every((segment) => segment.length > 0 && segment !== "." && segment !== "..");
+}
+
 function renderSkillMd(skill: SkillDef): string {
   const frontmatter: [string, string][] = [
     ["name", skill.name],
     ["description", yamlQuote(skill.description)],
   ];
   if (skill.allowedTools !== undefined && skill.allowedTools.length > 0) {
-    frontmatter.push(["allowed-tools", skill.allowedTools.join(", ")]);
+    // Quoted: a tool entry containing ": " (e.g. Bash(echo a: b)) would
+    // otherwise make the plain scalar unparseable YAML.
+    frontmatter.push(["allowed-tools", yamlQuote(skill.allowedTools.join(", "))]);
   }
   return renderFrontmatterDoc(frontmatter, skill.body);
 }
@@ -83,6 +97,15 @@ export function buildSkillOps(ir: PattersonProject, snapshot: FsSnapshot): Skill
       linkMode: "copy",
     });
     for (const file of skill.files ?? []) {
+      if (!isSafeSkillFileEntry(file)) {
+        gaps.push({
+          entityId: `skills.${skill.name}`,
+          targetId: CLAUDE_TARGET,
+          reason: `Skill file entry "${file}" is not a safe relative path (no absolute paths, backslashes, or "."/".." segments); it was not copied.`,
+          fallbackApplied: false,
+        });
+        continue;
+      }
       const source = canonicalSkillPath(skill.name, file);
       const content = snapshot.read(source);
       if (content === null) {
@@ -135,6 +158,19 @@ export function buildCommandOps(ir: PattersonProject): SkillsOutput {
         fallbackApplied: false,
       });
       continue;
+    }
+
+    if (command.args !== undefined && command.args.length > 0) {
+      // Skills-as-commands has no named-argument surface; dropping args
+      // silently would violate obligation 3 (mirrors the mcp timeoutMs gap).
+      gaps.push({
+        entityId: `${entityId}.args`,
+        targetId: CLAUDE_TARGET,
+        reason:
+          `Claude Code skills-as-commands have no named-argument surface; args [${command.args.join(", ")}] ` +
+          "are not rendered — reference them positionally in the template body instead.",
+        fallbackApplied: true,
+      });
     }
 
     const frontmatter: [string, string][] = [

@@ -17,6 +17,8 @@ import {
   HOOK_EVENTS,
   MERGE_SEMANTICS,
   mergeSettingsValue,
+  PERMISSION_DEFAULT_MODES,
+  PERMISSION_RULE_PATTERN,
   semanticsFor,
   SETTINGS_PERMISSIONS_KEYS,
   SETTINGS_TOP_LEVEL_KEYS,
@@ -51,6 +53,66 @@ describe("settings whitelist against the vendored schema (S2 oracle)", () => {
   test("HOOK_EVENTS is exactly the schema's hooks.properties key set", () => {
     const events = Object.keys(schema.properties?.hooks?.properties ?? {});
     expect(([...HOOK_EVENTS] as string[]).toSorted()).toEqual(events.toSorted());
+  });
+
+  test("PERMISSION_DEFAULT_MODES is exactly the schema's defaultMode enum", () => {
+    const enumValues = (
+      schema.properties?.permissions?.properties?.["defaultMode"] as { enum?: string[] } | undefined
+    )?.enum;
+    expect(([...PERMISSION_DEFAULT_MODES] as string[]).toSorted()).toEqual(
+      (enumValues ?? []).toSorted(),
+    );
+  });
+
+  test("PERMISSION_RULE_PATTERN is exactly the schema's permissionRule pattern", () => {
+    const defs = (schema as unknown as { $defs?: Record<string, { pattern?: string }> }).$defs;
+    expect(PERMISSION_RULE_PATTERN).toBe(defs?.["permissionRule"]?.pattern ?? "");
+  });
+
+  test("off-enum defaultMode and off-pattern rules become gaps, never emitted", async () => {
+    const ir = parse({
+      version: 1,
+      name: "invalid-policy",
+      policy: {
+        allow: ["Read", "NotARealTool(x)"],
+        deny: [],
+        ask: [],
+        defaultMode: "yolo",
+      },
+    });
+    const { op, gaps } = buildSettingsOp(ir, await emptySnapshot());
+    const gapIds = gaps.map((gap) => gap.entityId);
+    expect(gapIds).toContain("policy.defaultMode");
+    expect(gapIds).toContain("policy.allow");
+    const settings = materializePatch(op?.patch ?? []);
+    expect(settings).toEqual({ permissions: { allow: ["Read"] } });
+    expect(checkAgainstSchema(settings, schema, schema)).toEqual([]);
+  });
+
+  test("a single-element-argv hook always renders exec form (args: [])", async () => {
+    const ir = parse({
+      version: 1,
+      name: "single-argv-hook",
+      hooks: {
+        agentHooks: [
+          { event: "SessionEnd", exec: { argv: ["/path with spaces/hook.sh"] } },
+        ],
+        gitHooks: [],
+      },
+    });
+    const { op, gaps } = buildSettingsOp(ir, await emptySnapshot());
+    expect(gaps).toEqual([]);
+    const settings = materializePatch(op?.patch ?? []) as {
+      hooks: { SessionEnd: { hooks: { command: string; args: string[] }[] }[] };
+    };
+    // `args` must be present even when empty: per the vendored schema, its
+    // presence selects exec form (no shell interpretation of the command).
+    expect(settings.hooks.SessionEnd[0]?.hooks[0]).toEqual({
+      type: "command",
+      command: "/path with spaces/hook.sh",
+      args: [],
+    } as unknown as { command: string; args: string[] });
+    expect(checkAgainstSchema(settings, schema, schema)).toEqual([]);
   });
 
   test("assertWhitelistedKeyPath rejects non-schema keys", () => {
