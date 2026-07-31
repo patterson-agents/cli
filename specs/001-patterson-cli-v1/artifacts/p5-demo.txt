@@ -1,0 +1,54 @@
+P5 GENERATORS DEMO TRANSCRIPT
+generated: 2026-07-31T15:52:09Z
+==============================================================================
+
+### 1. patterson new skill review-helper
+Scaffolded skill "review-helper": 1 file(s).
+  - wrote .agents/skills/review-helper/SKILL.md
+  - Canonical home: .agents/skills/review-helper/ (D6). Link it for Claude Code:
+  -   ln -s ../../.agents/skills/review-helper .claude/skills/review-helper
+  - opencode needs `skills.paths: [".agents/skills"]` (patterson sync emits it).
+  => exit code 0
+
+### 2. patterson new mcp-server docs-server --plan (FR-011 plan-first)
+Plan written to SPEC-mcp-server-docs-server.md — fill it in, then re-run without --plan.
+  => exit code 0
+--- SPEC excerpt ---
+  # SPEC — mcp-server "docs-server"
+  
+  > Plan-first mode (`--plan`): answer the sections below, then re-run
+  > `patterson new mcp-server docs-server` (without `--plan`) to scaffold.
+  > An AI agent connected over `patterson mcp serve` can fill this in with you.
+  
+  ## Tools
+  - Which tools should docs-server expose (name, inputs, read-only or destructive)?
+  
+  ## Data sources
+  - What does it read/write; which credentials (as env SecretRefs, never inline)?
+  
+
+### 3. patterson new mcp-server docs-server (scaffold)
+Scaffolded mcp-server "docs-server": 4 file(s).
+  - wrote docs-server/package.json
+  - wrote docs-server/src/index.ts
+  - wrote docs-server/test/handshake.test.ts
+  - wrote docs-server/README.md
+  - cd docs-server && bun install && bun test — the handshake self-test must pass.
+  => exit code 0
+
+### 4. patterson new marketplace dental-tools
+Scaffolded marketplace "dental-tools": 1 file(s).
+  - wrote .github/plugin/marketplace.json
+  - In-repo marketplace (research: prefer .github/plugin/marketplace.json over
+  - floating collection repos). Consumers add it with:
+  -   /plugin marketplace add <owner>/<this-repo>
+  => exit code 0
+
+--- generated tree ---
+  ./.agents/skills/review-helper/SKILL.md
+  ./docs-server/package.json
+  ./docs-server/README.md
+  ./docs-server/src/index.ts
+  ./docs-server/test/handshake.test.ts
+  ./.github/plugin/marketplace.json
+  ./SPEC-mcp-server-docs-server.md

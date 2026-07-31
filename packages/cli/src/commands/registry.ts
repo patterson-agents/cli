@@ -8,6 +8,7 @@ import { createRegistry, type CommandRegistry } from "@patterson/core";
 import { makeCheckCommand } from "./check.ts";
 import { makeCreateCommand } from "./create.ts";
 import { designRefreshCommand, designTemplatesCommand, designTokensCommand } from "./design.ts";
+import { newCommands } from "./new.ts";
 import { marketplaceListCommand } from "./plugins.ts";
 import { makeSkillsAddCommand, makeSkillsRemoveCommand, skillsListCommand, defaultSkillsDeps, type SkillsDeps } from "./skills.ts";
 import { makeDoctorCommand } from "./doctor.ts";
@@ -33,5 +34,6 @@ export function buildRegistry(
   registry.register(makeSkillsAddCommand(skillsDeps));
   registry.register(makeSkillsRemoveCommand(skillsDeps));
   registry.register(marketplaceListCommand);
+  for (const command of newCommands) registry.register(command);
   return registry;
 }

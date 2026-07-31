@@ -66,6 +66,21 @@ const main = defineCommand({
       ]);
       return cittyCommandFor(checkCommand);
     },
+    new: async () => {
+      const [{ newCommands }, { cittyCommandFor }] = await Promise.all([
+        import("./commands/new.ts"),
+        import("./commands/frontend.ts"),
+      ]);
+      const subCommands: Record<string, ReturnType<typeof cittyCommandFor>> = {};
+      for (const command of newCommands) {
+        const kind = command.path[1] as string;
+        subCommands[kind] = cittyCommandFor(command, { positionals: ["name"] });
+      }
+      return defineCommand({
+        meta: { name: "new", description: "Generate skills, MCP servers, plugins, marketplaces, commands" },
+        subCommands,
+      });
+    },
     skills: async () => {
       const [{ skillsListCommand, skillsAddCommand, skillsRemoveCommand }, { cittyCommandFor }] =
         await Promise.all([import("./commands/skills.ts"), import("./commands/frontend.ts")]);

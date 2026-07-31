@@ -2,6 +2,7 @@ export * from "./ir/index.ts";
 export * from "./emit/index.ts";
 export * from "./checks/index.ts";
 export * from "./plugin.ts";
+export * from "./scaffold.ts";
 
 // Command registry (Constitution III: the CLI and MCP frontends consume this
 // surface from the package barrel — no deep relative imports across packages).

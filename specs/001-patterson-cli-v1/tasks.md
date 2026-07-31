@@ -200,7 +200,7 @@ hand-edit then sync --yes preserves + exits 2.
 - [X] E-P4 [US3,US4] Skills (pinned skills@1.5.21 wrapper, backup guard, marketplace
       registry @SHA), plugins, `mcp serve` (S1 diagnostics, non-interactive assertion,
       wizard steps for skills/MCP)
-- [ ] E-P5 [US5] Generators ×6 + post-scaffold validations; shared JSON-RPC handshake
+- [X] E-P5 [US5] Generators ×6 + post-scaffold validations; shared JSON-RPC handshake
       validator; `--plan` AI-assisted plan-first interview mode (FR-011)
 - [ ] E-P6 [US1,US2] devcontainer(+codespaces) + github-actions emitters with
       `patterson ci`/`editor` consumers; S7-gated release scaffolds; doctor --fix

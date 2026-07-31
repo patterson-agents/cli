@@ -32,6 +32,7 @@
         "@patterson/emitter-opencode": "workspace:*",
         "@patterson/emitter-vscode": "workspace:*",
         "@patterson/emitter-zed": "workspace:*",
+        "@patterson/generators": "workspace:*",
         "@patterson/mcp": "workspace:*",
         "@patterson/skills": "workspace:*",
         "citty": "0.2.2",
