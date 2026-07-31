@@ -9,7 +9,7 @@ function WhatWeDoScreen({ onNavigate }) {
       id: 'service', eyebrow: 'Service', icon: IconUsers,
       title: 'A personal touch, backed by generations of expertise',
       body: 'Generations of quality customer service define our business operations and our personal interactions. Our representatives know their customers and their markets — guiding practices of every size as an indispensable partner.',
-      points: ['Dedicated territory representatives', 'Practice-management software &amp; training', 'Equipment service &amp; technology support'],
+      points: ['Dedicated territory representatives', 'Practice-management software & training', 'Equipment service & technology support'],
     },
     {
       id: 'logistics', eyebrow: 'Logistics', icon: IconTruck,
@@ -21,7 +21,7 @@ function WhatWeDoScreen({ onNavigate }) {
       id: 'products', eyebrow: 'Products', icon: IconTooth,
       title: 'Everything a practice needs to run productively',
       body: 'From consumable essentials to advanced equipment and software, we provide the technology, products, expertise and solutions needed to deliver exceptional care and drive profitability.',
-      points: ['Everyday consumables &amp; essentials', 'Diagnostic &amp; imaging technology', 'Business &amp; clinical software'],
+      points: ['Everyday consumables & essentials', 'Diagnostic & imaging technology', 'Business & clinical software'],
     },
   ];
 

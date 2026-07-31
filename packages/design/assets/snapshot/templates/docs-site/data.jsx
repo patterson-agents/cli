@@ -47,11 +47,11 @@ window.DOCS_SIDEBARS = {
     { text: 'Copilot CLI for Beginners', items: [
       { text: '00 · Quick Start', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/00-quick-start/' },
       { text: '01 · First Steps', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/01-setup-and-first-steps/' },
-      { text: '02 · Context &amp; Conversations', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/02-context-and-conversations/' },
+      { text: '02 · Context & Conversations', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/02-context-and-conversations/' },
       { text: '03 · Development Workflows', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/03-development-workflows/' },
       { text: '04 · Specialized AI Assistants', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/04-agents-and-custom-instructions/' },
       { text: '05 · Automate Repetitive Tasks', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/05-skills/' },
-      { text: '06 · Connect to APIs &amp; DBs', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/06-mcp-servers/' },
+      { text: '06 · Connect to APIs & DBs', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/06-mcp-servers/' },
       { text: '07 · Putting It All Together', href: 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/07-putting-it-all-together/' },
     ]},
     { text: 'Ecosystem tutorials', items: [
@@ -65,7 +65,7 @@ window.DOCS_SIDEBARS = {
     { text: 'How-to guides', items: [
       { text: 'About how-to guides', id: 'how-to' },
     ]},
-    { text: 'Install &amp; set up', items: [
+    { text: 'Install & set up', items: [
       { text: 'Use Claude Code in VS Code', id: 'ht-vscode', badge: 'Linux' },
       { text: 'Development containers', id: 'ht-devcontainer' },
       { text: 'Advanced setup', href: 'https://code.claude.com/docs/en/setup.md' },
@@ -83,7 +83,7 @@ window.DOCS_SIDEBARS = {
       { text: 'Building custom agents', href: 'https://awesome-copilot.github.com/learning-hub/building-custom-agents/' },
       { text: 'Creating effective skills', href: 'https://awesome-copilot.github.com/learning-hub/creating-effective-skills/' },
       { text: 'Defining custom instructions', href: 'https://awesome-copilot.github.com/learning-hub/defining-custom-instructions/' },
-      { text: 'Installing &amp; using plugins', href: 'https://awesome-copilot.github.com/learning-hub/installing-and-using-plugins/' },
+      { text: 'Installing & using plugins', href: 'https://awesome-copilot.github.com/learning-hub/installing-and-using-plugins/' },
       { text: 'Automating with hooks', href: 'https://awesome-copilot.github.com/learning-hub/automating-with-hooks/' },
       { text: 'Using the Copilot coding agent', href: 'https://awesome-copilot.github.com/learning-hub/using-copilot-coding-agent/' },
     ]},
@@ -109,7 +109,7 @@ window.DOCS_SIDEBARS = {
       { text: 'Plugins reference', id: 'ref-plugins', badge: 'imported' },
       { text: 'Create plugins', href: 'https://code.claude.com/docs/en/plugins.md' },
       { text: 'Plugin marketplaces', href: 'https://code.claude.com/docs/en/plugin-marketplaces.md' },
-      { text: 'Discover &amp; install plugins', href: 'https://code.claude.com/docs/en/discover-plugins.md' },
+      { text: 'Discover & install plugins', href: 'https://code.claude.com/docs/en/discover-plugins.md' },
     ]},
     { text: 'Claude Code · reference', items: [
       { text: 'Prompt library', id: 'ref-prompt-library', badge: 'imported' },
@@ -128,7 +128,7 @@ window.DOCS_SIDEBARS = {
       { text: 'Python', href: 'https://code.claude.com/docs/en/agent-sdk/python.md' },
       { text: 'Overview', href: 'https://code.claude.com/docs/en/agent-sdk/overview.md' },
     ]},
-    { text: 'Agent Skills &amp; MCP Apps', items: [
+    { text: 'Agent Skills & MCP Apps', items: [
       { text: 'Agent Skills — Specification', href: 'https://agentskills.io/specification.md' },
       { text: 'MCP Apps — Specification (2026-01-26)', href: 'https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx' },
       { text: 'MCP Apps — API Docs', href: 'https://apps.extensions.modelcontextprotocol.io/api/' },
@@ -161,13 +161,13 @@ window.DOCS_SIDEBARS = {
       { text: 'Security', href: 'https://code.claude.com/docs/en/security.md' },
     ]},
     { text: 'Concepts — Copilot', items: [
-      { text: 'What are agents, skills &amp; instructions', href: 'https://awesome-copilot.github.com/learning-hub/what-are-agents-skills-instructions/' },
+      { text: 'What are agents, skills & instructions', href: 'https://awesome-copilot.github.com/learning-hub/what-are-agents-skills-instructions/' },
       { text: 'Understanding Copilot context', href: 'https://awesome-copilot.github.com/learning-hub/understanding-copilot-context/' },
       { text: 'Understanding MCP servers', href: 'https://awesome-copilot.github.com/learning-hub/understanding-mcp-servers/' },
       { text: 'Agentic workflows', href: 'https://awesome-copilot.github.com/learning-hub/agentic-workflows/' },
       { text: 'Agents and subagents', href: 'https://awesome-copilot.github.com/learning-hub/agents-and-subagents/' },
     ]},
-    { text: 'Concepts — Skills &amp; MCP Apps', items: [
+    { text: 'Concepts — Skills & MCP Apps', items: [
       { text: 'Agent Skills — Overview', href: 'https://agentskills.io/home.md' },
       { text: 'Best practices for skill creators', href: 'https://agentskills.io/skill-creation/best-practices.md' },
       { text: 'Evaluating skill output quality', href: 'https://agentskills.io/skill-creation/evaluating-skills.md' },

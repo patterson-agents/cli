@@ -84,11 +84,11 @@ Object.assign(window.DOCS_PAGES, {
     ['links', 'GitHub Copilot CLI for Beginners', 'A source-faithful mirror of the companion course — eight chapters from install to capstone.', [
       ['00 · Quick Start', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/00-quick-start/'],
       ['01 · First Steps', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/01-setup-and-first-steps/'],
-      ['02 · Context &amp; Conversations', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/02-context-and-conversations/'],
+      ['02 · Context & Conversations', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/02-context-and-conversations/'],
       ['03 · Development Workflows', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/03-development-workflows/'],
       ['04 · Specialized AI Assistants', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/04-agents-and-custom-instructions/'],
       ['05 · Automate Repetitive Tasks', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/05-skills/'],
-      ['06 · Connect to APIs &amp; DBs', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/06-mcp-servers/'],
+      ['06 · Connect to APIs & DBs', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/06-mcp-servers/'],
       ['07 · Putting It All Together', 'https://awesome-copilot.github.com/learning-hub/cli-for-beginners/07-putting-it-all-together/'],
     ]],
     ['links', 'Ecosystem', 'First lessons for the wider agentic ecosystem.', [
@@ -134,7 +134,7 @@ claude --version`],
   blocks: [
     ['compass', 'Task-oriented · the user is **applying** the craft · the documentation **informs action**.'],
     ['p', 'How-to guides are goal-oriented recipes. Unlike a tutorial, they assume some competence and can leave things out. They answer the question "how do I…?". Two guides are fully written on this site; the rest link to the canonical source.'],
-    ['links', 'Install &amp; set up', null, [
+    ['links', 'Install & set up', null, [
       ['Use Claude Code in VS Code (Linux)', '#/ht-vscode', 'Install the extension and configure it on Linux.'],
       ['Development containers', '#/ht-devcontainer', 'Run Claude Code in a consistent, isolated container.'],
       ['Advanced setup', 'https://code.claude.com/docs/en/setup.md'],
@@ -151,7 +151,7 @@ claude --version`],
       ['Building custom agents', 'https://awesome-copilot.github.com/learning-hub/building-custom-agents/'],
       ['Creating effective skills', 'https://awesome-copilot.github.com/learning-hub/creating-effective-skills/'],
       ['Defining custom instructions', 'https://awesome-copilot.github.com/learning-hub/defining-custom-instructions/'],
-      ['Installing &amp; using plugins', 'https://awesome-copilot.github.com/learning-hub/installing-and-using-plugins/'],
+      ['Installing & using plugins', 'https://awesome-copilot.github.com/learning-hub/installing-and-using-plugins/'],
     ]],
     ['links', 'Build MCP Apps', 'Let your coding agent scaffold an app with one of the four bundled skills.', [
       ['create-mcp-app', 'https://github.com/modelcontextprotocol/ext-apps/blob/main/plugins/mcp-apps/skills/create-mcp-app/SKILL.md'],

@@ -22,13 +22,13 @@ Object.assign(window.DOCS_PAGES, {
       ['Hooks reference', 'https://code.claude.com/docs/en/hooks.md'],
       ['Tools reference', 'https://code.claude.com/docs/en/tools-reference.md'],
     ]],
-    ['links', 'Agent Skills &amp; MCP Apps', null, [
+    ['links', 'Agent Skills & MCP Apps', null, [
       ['Agent Skills — Specification', 'https://agentskills.io/specification.md'],
       ['MCP Apps — Specification (2026-01-26)', 'https://github.com/modelcontextprotocol/ext-apps/blob/main/specification/2026-01-26/apps.mdx'],
       ['MCP Apps — API Docs', 'https://apps.extensions.modelcontextprotocol.io/api/'],
       ['ext-apps — SDK packages', '#/ref-mcp-sdk'],
     ]],
-    ['links', 'GitHub APIs &amp; Copilot catalogs', null, [
+    ['links', 'GitHub APIs & Copilot catalogs', null, [
       ['REST API', 'https://docs.github.com/en/rest'],
       ['GraphQL API', 'https://docs.github.com/en/graphql'],
       ['Custom agents catalog', '#/ref-copilot-agents'],
@@ -75,7 +75,7 @@ Object.assign(window.DOCS_PAGES, {
     { "name": "security-guidance", "source": "github:anthropics/security" }
   ]
 }`],
-    ['h2', 'Component paths &amp; variables'],
+    ['h2', 'Component paths & variables'],
     ['table', ['Variable', 'Resolves to'],
       [['`${CLAUDE_PLUGIN_ROOT}`', 'Absolute path to the installed plugin directory.'],
        ['`${CLAUDE_PROJECT_DIR}`', 'The user’s current project root.']]],
@@ -92,7 +92,7 @@ Object.assign(window.DOCS_PAGES, {
     ['links', 'Related', null, [
       ['Plugins reference (source)', 'https://code.claude.com/docs/en/plugins-reference.md'],
       ['Create plugins', 'https://code.claude.com/docs/en/plugins.md'],
-      ['Create &amp; distribute a marketplace', 'https://code.claude.com/docs/en/plugin-marketplaces.md'],
+      ['Create & distribute a marketplace', 'https://code.claude.com/docs/en/plugin-marketplaces.md'],
       ['Constrain plugin dependency versions', 'https://code.claude.com/docs/en/plugin-dependencies.md'],
     ]],
   ],
@@ -156,12 +156,12 @@ Object.assign(window.DOCS_PAGES, {
       ['Best practices', 'https://code.claude.com/docs/en/best-practices.md'],
     ]],
     ['links', 'Concepts — Copilot', null, [
-      ['What are agents, skills &amp; instructions', 'https://awesome-copilot.github.com/learning-hub/what-are-agents-skills-instructions/'],
+      ['What are agents, skills & instructions', 'https://awesome-copilot.github.com/learning-hub/what-are-agents-skills-instructions/'],
       ['Understanding Copilot context', 'https://awesome-copilot.github.com/learning-hub/understanding-copilot-context/'],
       ['Understanding MCP servers', 'https://awesome-copilot.github.com/learning-hub/understanding-mcp-servers/'],
       ['Agentic workflows', 'https://awesome-copilot.github.com/learning-hub/agentic-workflows/'],
     ]],
-    ['links', 'Concepts — Skills &amp; MCP Apps', null, [
+    ['links', 'Concepts — Skills & MCP Apps', null, [
       ['Why MCP Apps?', '#/exp-mcp-apps', 'What problem interactive UIs solve.'],
       ['Agent Skills — Overview', 'https://agentskills.io/home.md'],
       ['Best practices for skill creators', 'https://agentskills.io/skill-creation/best-practices.md'],

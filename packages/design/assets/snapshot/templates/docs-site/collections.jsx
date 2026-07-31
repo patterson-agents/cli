@@ -12,7 +12,7 @@ window.DOCS_COLLECTIONS = {
     source: 'https://awesome-copilot.github.com/llms.txt',
     note: 'Custom GitHub Copilot agents. A representative catalog imported from the Awesome Copilot llms.txt — 150+ agents are published; see the source index for the complete list.',
     groups: [
-      { heading: 'Architecture &amp; planning', items: [
+      { heading: 'Architecture & planning', items: [
         ['.NET Self-Learning Architect', RAW + '/agents/dotnet-self-learning-architect.agent.md'],
         ['API Architect', RAW + '/agents/api-architect.agent.md'],
         ['Senior Cloud Architect', RAW + '/agents/arch.agent.md'],
@@ -22,7 +22,7 @@ window.DOCS_COLLECTIONS = {
         ['Implementation Plan Generation', RAW + '/agents/implementation-plan.agent.md'],
         ['Principal Software Engineer', RAW + '/agents/principal-software-engineer.agent.md'],
       ]},
-      { heading: 'Cloud &amp; infrastructure', items: [
+      { heading: 'Cloud & infrastructure', items: [
         ['AWS Cloud Expert', RAW + '/agents/aws-cloud-expert.agent.md'],
         ['Azure Principal Architect', RAW + '/agents/azure-principal-architect.agent.md'],
         ['Azure SaaS Architect', RAW + '/agents/azure-saas-architect.agent.md'],
@@ -52,7 +52,7 @@ window.DOCS_COLLECTIONS = {
         ['Kotlin MCP Server Expert', RAW + '/agents/kotlin-mcp-expert.agent.md'],
         ['Swift MCP Expert', RAW + '/agents/swift-mcp-expert.agent.md'],
       ]},
-      { heading: 'Quality, testing &amp; security', items: [
+      { heading: 'Quality, testing & security', items: [
         ['Accessibility Expert', RAW + '/agents/accessibility.agent.md'],
         ['Playwright Tester Mode', RAW + '/agents/playwright-tester.agent.md'],
         ['Quality Playbook', RAW + '/agents/quality-playbook.agent.md'],
@@ -62,7 +62,7 @@ window.DOCS_COLLECTIONS = {
         ['Critical Thinking Mode', RAW + '/agents/critical-thinking.agent.md'],
         ['Doublecheck', RAW + '/agents/doublecheck.agent.md'],
       ]},
-      { heading: 'Docs &amp; product', items: [
+      { heading: 'Docs & product', items: [
         ['SE: Tech Writer', RAW + '/agents/se-technical-writer.agent.md'],
         ['SE: Product Manager', RAW + '/agents/se-product-manager-advisor.agent.md'],
         ['SE: UX Designer', RAW + '/agents/se-ux-ui-designer.agent.md'],
@@ -83,7 +83,7 @@ window.DOCS_COLLECTIONS = {
         ['C#', RAW + '/instructions/csharp.instructions.md'],
         ['Go', RAW + '/instructions/go.instructions.md'],
         ['Rust', RAW + '/instructions/rust.instructions.md'],
-        ['Dart &amp; Flutter', RAW + '/instructions/dart-n-flutter.instructions.md'],
+        ['Dart & Flutter', RAW + '/instructions/dart-n-flutter.instructions.md'],
         ['Ruby on Rails', RAW + '/instructions/ruby-on-rails.instructions.md'],
         ['PowerShell', RAW + '/instructions/powershell.instructions.md'],
         ['Shell', RAW + '/instructions/shell.instructions.md'],
@@ -99,7 +99,7 @@ window.DOCS_COLLECTIONS = {
         ['Quarkus', RAW + '/instructions/quarkus.instructions.md'],
         ['Astro', RAW + '/instructions/astro.instructions.md'],
       ]},
-      { heading: 'DevOps &amp; cloud', items: [
+      { heading: 'DevOps & cloud', items: [
         ['Docker best practices', RAW + '/instructions/containerization-docker-best-practices.instructions.md'],
         ['Kubernetes deployment', RAW + '/instructions/kubernetes-deployment-best-practices.instructions.md'],
         ['GitHub Actions CI/CD', RAW + '/instructions/github-actions-ci-cd-best-practices.instructions.md'],
@@ -109,8 +109,8 @@ window.DOCS_COLLECTIONS = {
         ['Ansible', RAW + '/instructions/ansible.instructions.md'],
         ['Makefile', RAW + '/instructions/makefile.instructions.md'],
       ]},
-      { heading: 'Quality &amp; docs', items: [
-        ['Security &amp; OWASP', RAW + '/instructions/security-and-owasp.instructions.md'],
+      { heading: 'Quality & docs', items: [
+        ['Security & OWASP', RAW + '/instructions/security-and-owasp.instructions.md'],
         ['Accessibility (a11y)', RAW + '/instructions/a11y.instructions.md'],
         ['Performance optimization', RAW + '/instructions/performance-optimization.instructions.md'],
         ['QA engineering best practices', RAW + '/instructions/qa-engineering-best-practices.instructions.md'],
@@ -130,7 +130,7 @@ window.DOCS_COLLECTIONS = {
         ['@modelcontextprotocol/ext-apps — build interactive Views', 'https://apps.extensions.modelcontextprotocol.io/api/modules/app.html'],
         ['/react — React hooks (useApp, useHostStyles)', 'https://apps.extensions.modelcontextprotocol.io/api/modules/_modelcontextprotocol_ext-apps_react.html'],
         ['/app-bridge — embed Views in a chat client', 'https://apps.extensions.modelcontextprotocol.io/api/modules/app-bridge.html'],
-        ['/server — register tools &amp; resources', 'https://apps.extensions.modelcontextprotocol.io/api/modules/server.html'],
+        ['/server — register tools & resources', 'https://apps.extensions.modelcontextprotocol.io/api/modules/server.html'],
       ]},
       { heading: 'Example servers', items: [
         ['Map (CesiumJS globe)', 'https://github.com/modelcontextprotocol/ext-apps/tree/main/examples/map-server'],

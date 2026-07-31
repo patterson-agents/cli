@@ -1,0 +1,579 @@
+<!-- @template name="TutorialKit Shell" description="Patterson-branded interactive-tutorial platform — top bar, breadcrumbs, lesson content with all five callouts, file tree, editor and terminal. Four live themes." -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterson — TutorialKit Theme Preview</title>
+
+<!-- Single source of truth: the canonical Patterson TutorialKit theme.
+     This preview renders the TutorialKit shell entirely from its --tk-* vars. -->
+<link rel="stylesheet" href="theme.css">
+
+<style>
+  /* The preview's own chrome CSS — every color is a --tk-* variable, so what
+     you see here is exactly what the real TutorialKit app renders. */
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--tk-background-secondary);
+    color: var(--tk-elements-content-textColor);
+    font-family: var(--tk-font-sans);
+  }
+  .app {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    background: var(--tk-elements-app-backgroundColor);
+  }
+
+  /* --- Top bar --------------------------------------------------------- */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px; padding: 0 20px;
+    background: var(--tk-elements-topBar-backgroundColor);
+  }
+  .topbar img { height: 22px; display: block; }
+  .topbar .right { display: flex; align-items: center; gap: 10px; }
+  .iconbtn {
+    width: 34px; height: 34px; border: 0; border-radius: 8px; cursor: pointer;
+    display: grid; place-items: center;
+    background: var(--tk-elements-topBar-iconButton-backgroundColor);
+    color: var(--tk-elements-topBar-iconButton-iconColor);
+  }
+  .iconbtn:hover {
+    background: var(--tk-elements-topBar-iconButton-backgroundColorHover);
+    color: var(--tk-elements-topBar-iconButton-iconColorHover);
+  }
+  .switcher {
+    display: flex; align-items: center; gap: 8px;
+    color: #fff; font-size: 13px; font-weight: 600;
+  }
+  .switcher select {
+    font: inherit; font-weight: 600; padding: 7px 12px; border-radius: 999px;
+    background: rgba(255,255,255,0.12); color: #fff;
+    border: 1px solid rgba(255,255,255,0.28); cursor: pointer;
+  }
+  .switcher select option { color: #1d1d20; }
+
+  /* --- Breadcrumb bar -------------------------------------------------- */
+  .breadcrumbs {
+    display: flex; align-items: center; gap: 10px;
+    height: 44px; padding: 0 20px;
+    background: var(--tk-elements-panel-header-backgroundColor);
+    border-bottom: 1px solid var(--tk-elements-app-borderColor);
+    font-size: 13px;
+  }
+  .crumb-toggle {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--tk-elements-breadcrumbs-toggleButton-borderColorSelected);
+    background: var(--tk-elements-breadcrumbs-toggleButton-backgroundColorSelected);
+    color: var(--tk-elements-breadcrumbs-toggleButton-textColorSelected);
+    font-weight: 600;
+  }
+  .crumb-divider { color: var(--tk-elements-breadcrumbs-toggleButton-textDividerColorSelected); }
+  .crumb-toggle .dot { color: var(--tk-elements-breadcrumbs-toggleButton-iconColorSelected); }
+
+  /* --- Main split ------------------------------------------------------ */
+  .main { display: grid; grid-template-columns: 1fr 1fr; min-height: 0; }
+  .content {
+    padding: 30px 34px; overflow: auto;
+    background: var(--tk-elements-panel-backgroundColor);
+    border-right: 1px solid var(--tk-elements-app-borderColor);
+  }
+  .content h1 {
+    margin: 0 0 14px; font-size: 27px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--tk-elements-content-headingTextColor);
+  }
+  .content p { line-height: 1.6; margin: 0 0 16px; color: var(--tk-elements-content-textColor); }
+  .content a { color: var(--tk-elements-link-primaryColor); text-decoration: none; font-weight: 600; }
+  .content a:hover { color: var(--tk-elements-link-primaryColorHover); }
+  .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--tk-background-accent); margin-bottom: 8px;
+  }
+
+  /* Callouts */
+  .callout {
+    border-left: 3px solid; border-radius: 8px; padding: 12px 16px; margin: 0 0 14px;
+    font-size: 14px; line-height: 1.55;
+  }
+  .callout .title { font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+  .callout code { padding: 1px 6px; border-radius: 4px; font-family: var(--tk-font-mono); font-size: 12px; }
+  .callout.tip {
+    background: var(--tk-elements-callouts-tip-backgroundColor); color: var(--tk-elements-callouts-tip-textColor);
+    border-color: var(--tk-elements-callouts-tip-borderColor);
+  }
+  .callout.tip .title { color: var(--tk-elements-callouts-tip-titleTextColor); }
+  .callout.tip .ico { color: var(--tk-elements-callouts-tip-iconColor); }
+  .callout.tip code { color: var(--tk-elements-callouts-tip-codeColor); background: var(--tk-elements-callouts-tip-codeBackgroundColor); }
+  .callout.info {
+    background: var(--tk-elements-callouts-info-backgroundColor); color: var(--tk-elements-callouts-info-textColor);
+    border-color: var(--tk-elements-callouts-info-borderColor);
+  }
+  .callout.info .title { color: var(--tk-elements-callouts-info-titleTextColor); }
+  .callout.info .ico { color: var(--tk-elements-callouts-info-iconColor); }
+  .callout.warning {
+    background: var(--tk-elements-callouts-warning-backgroundColor); color: var(--tk-elements-callouts-warning-textColor);
+    border-color: var(--tk-elements-callouts-warning-borderColor);
+  }
+  .callout.warning .title { color: var(--tk-elements-callouts-warning-titleTextColor); }
+  .callout.warning .ico { color: var(--tk-elements-callouts-warning-iconColor); }
+  .callout.danger {
+    background: var(--tk-elements-callouts-danger-backgroundColor); color: var(--tk-elements-callouts-danger-textColor);
+    border-color: var(--tk-elements-callouts-danger-borderColor);
+  }
+  .callout.danger .title { color: var(--tk-elements-callouts-danger-titleTextColor); }
+  .callout.danger .ico { color: var(--tk-elements-callouts-danger-iconColor); }
+  .callout.success {
+    background: var(--tk-elements-callouts-success-backgroundColor); color: var(--tk-elements-callouts-success-textColor);
+    border-color: var(--tk-elements-callouts-success-borderColor);
+  }
+  .callout.success .title { color: var(--tk-elements-callouts-success-titleTextColor); }
+  .callout.success .ico { color: var(--tk-elements-callouts-success-iconColor); }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 12px; margin: 18px 0 22px; }
+  .btn {
+    font: inherit; font-weight: 600; font-size: 14px; padding: 10px 22px;
+    border-radius: 999px; cursor: pointer; border: 1px solid transparent;
+    transition: background 160ms cubic-bezier(0.2,0,0.2,1), color 160ms;
+  }
+  .btn.primary {
+    background: var(--tk-elements-primaryButton-backgroundColor);
+    color: var(--tk-elements-primaryButton-textColor);
+  }
+  .btn.primary:hover { background: var(--tk-elements-primaryButton-backgroundColorHover); color: var(--tk-elements-primaryButton-textColorHover); }
+  .btn.secondary {
+    background: var(--tk-elements-secondaryButton-backgroundColor);
+    color: var(--tk-elements-secondaryButton-textColor);
+    border-color: var(--tk-border-secondary);
+  }
+  .btn.secondary:hover { background: var(--tk-elements-secondaryButton-backgroundColorHover); color: var(--tk-elements-secondaryButton-textColorHover); }
+
+  /* Nav card */
+  .navcard {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 18px; border-radius: 10px; cursor: pointer; margin-top: 8px;
+    background: var(--tk-elements-navCard-backgroundColor);
+    color: var(--tk-elements-navCard-textColor);
+    border: 1px solid var(--tk-elements-navCard-borderColor);
+  }
+  .navcard:hover { background: var(--tk-elements-navCard-backgroundColorHover); border-color: var(--tk-elements-navCard-borderColorHover); }
+  .navcard .lbl { font-size: 12px; color: var(--tk-text-secondary); }
+  .navcard .ttl { font-weight: 700; }
+  .navcard .arrow { color: var(--tk-elements-navCard-iconColor); font-size: 20px; }
+  .navcard:hover .arrow { color: var(--tk-elements-navCard-iconColorHover); }
+
+  /* --- Workspace (editor + terminal) ----------------------------------- */
+  .workspace { display: grid; grid-template-rows: auto 1fr auto; min-height: 0; background: var(--tk-elements-panel-backgroundColor); }
+  .tabs { display: flex; background: var(--tk-elements-panel-header-backgroundColor); border-bottom: 1px solid var(--tk-elements-app-borderColor); }
+  .tab {
+    padding: 11px 18px; font-size: 13px; font-weight: 600; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    color: var(--tk-elements-panel-headerTab-textColor);
+    background: var(--tk-elements-panel-headerTab-backgroundColor);
+  }
+  .tab.active {
+    color: var(--tk-elements-panel-headerTab-textColorActive);
+    background: var(--tk-elements-panel-headerTab-backgroundColorActive);
+    border-bottom-color: var(--tk-elements-panel-headerTab-borderColorActive);
+  }
+  .tab:not(.active):hover { color: var(--tk-elements-panel-headerTab-textColorHover); background: var(--tk-elements-panel-headerTab-backgroundColorHover); }
+
+  .editorRow { display: grid; grid-template-columns: 190px 1fr; min-height: 0; }
+  .filetree {
+    padding: 10px 8px; font-size: 13px; overflow: auto;
+    background: var(--tk-elements-fileTree-backgroundColor);
+    border-right: 1px solid var(--tk-elements-app-borderColor);
+  }
+  .ft-item { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 6px; cursor: pointer; color: var(--tk-elements-fileTree-file-textColor); }
+  .ft-item .ico { color: var(--tk-elements-fileTree-file-iconColor); }
+  .ft-item.folder .ico { color: var(--tk-elements-fileTree-folder-iconColor); }
+  .ft-item:hover { background: var(--tk-elements-fileTree-file-backgroundColorHover); color: var(--tk-elements-fileTree-file-textColorHover); }
+  .ft-item.selected { background: var(--tk-elements-fileTree-file-backgroundColorSelected); color: var(--tk-elements-fileTree-file-textColorSelected); }
+  .ft-item.selected .ico { color: var(--tk-elements-fileTree-file-iconColorSelected); }
+  .ft-item.indent { padding-left: 20px; }
+
+  .editor {
+    display: grid; grid-template-columns: 44px 1fr; overflow: auto;
+    background: var(--tk-elements-editor-backgroundColor);
+    color: var(--tk-elements-editor-textColor);
+    font-family: var(--tk-font-mono); font-size: 13px; line-height: 1.65;
+  }
+  .gutter { text-align: right; padding: 12px 8px; user-select: none; color: var(--tk-elements-editor-gutter-textColor); background: var(--tk-elements-editor-gutter-backgroundColor); }
+  .gutter .active { color: var(--tk-elements-editor-gutter-activeLineTextColor); font-weight: 700; }
+  .code { padding: 12px 14px; white-space: pre; }
+  .code .active-line {
+    display: block; margin: 0 -14px; padding: 0 14px;
+    background: var(--tk-elements-editor-activeLineBackgroundColor);
+    border-left: 2px solid var(--tk-elements-editor-cursorColor);
+  }
+  .sel { background: color-mix(in srgb, var(--tk-elements-editor-selection-backgroundColor) 22%, transparent); border-radius: 2px; }
+  .tok-prop { color: var(--tk-elements-editor-token-propertyColor); }
+  .tok-val { color: var(--tk-elements-editor-token-valueColor); }
+  .tok-com  { color: var(--tk-elements-editor-token-commentColor); font-style: italic; }
+  .tok-punc { color: var(--tk-elements-editor-textColor); }
+
+  .terminal {
+    height: 168px; overflow: auto; padding: 12px 16px; white-space: pre-wrap;
+    background: var(--tk-elements-terminal-backgroundColor);
+    color: var(--tk-elements-terminal-textColor);
+    font-family: var(--tk-font-mono); font-size: 12.5px; line-height: 1.6;
+    border-top: 1px solid var(--tk-elements-app-borderColor);
+  }
+  .terminal .ok  { color: var(--tk-elements-terminal-color-green); }
+  .terminal .bad { color: var(--tk-elements-terminal-color-red); }
+  .terminal .accent { color: var(--tk-elements-terminal-color-cyan); }
+  .terminal .dim { color: var(--tk-elements-terminal-color-brightBlack); }
+  .term-header { padding: 8px 16px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--tk-elements-panel-header-textColor); background: var(--tk-elements-panel-header-backgroundColor);
+    border-top: 1px solid var(--tk-elements-app-borderColor); }
+
+  /* --- Preview pane (Preview tab) -------------------------------------- */
+  .previewPane {
+    display: none; overflow: auto; padding: 26px;
+    background: var(--tk-elements-panel-backgroundColor);
+  }
+  .previewPane.active { display: block; }
+  .editorRow.hidden { display: none; }
+  .filetree.collapsed { display: none; }
+  .editorRow.treeless { grid-template-columns: 1fr; }
+  .swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 520px; }
+  .swatch { border: 1px solid var(--tk-elements-app-borderColor); border-radius: 10px; overflow: hidden; }
+  .swatch .chip { height: 74px; }
+  .swatch .info { padding: 10px 12px; font-size: 12px; }
+  .swatch .info b { display: block; font-family: var(--tk-font-mono); font-weight: 500; color: var(--tk-elements-content-headingTextColor); margin-bottom: 2px; }
+  .previewNote { margin-top: 18px; font-size: 13px; color: var(--tk-text-secondary); max-width: 520px; line-height: 1.6; }
+
+  /* --- Toast ------------------------------------------------------------ */
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 12px);
+    background: var(--tk-elements-topBar-backgroundColor); color: #fff;
+    font-size: 13px; font-weight: 600; padding: 11px 20px; border-radius: 999px;
+    box-shadow: 0 10px 28px rgba(0,55,103,0.35); opacity: 0; pointer-events: none;
+    transition: opacity 200ms, transform 200ms cubic-bezier(0.2,0,0.2,1);
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <img src="../../assets/brand/patterson-logo-white.svg" alt="Patterson">
+    <div class="right">
+      <div class="switcher">
+        <span>Theme</span>
+        <select id="theme" aria-label="Theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark (Navy)</option>
+          <option value="dental">Dental</option>
+          <option value="veterinary">Veterinary</option>
+        </select>
+      </div>
+      <button class="iconbtn" id="btnMenu" title="Toggle file tree">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Breadcrumbs -->
+  <div class="breadcrumbs">
+    <div class="crumb-toggle">
+      <span class="dot">●</span> Foundations
+      <span class="crumb-divider">/</span> Design Tokens
+      <span class="crumb-divider">/</span> Define the Patterson brand tokens
+    </div>
+  </div>
+
+  <!-- Main split: lesson content | workspace -->
+  <div class="main">
+
+    <!-- Lesson content -->
+    <div class="content">
+      <div class="eyebrow">Foundations · Lesson 1</div>
+      <h1>Define the Patterson brand tokens</h1>
+      <p>A design system starts with <strong>tokens</strong> — named values that stand in
+        for raw hex, pixel, and font values. Patterson's palette is carried by navy
+        <a href="#">#003767</a> and sky <a href="#">#00A8E1</a>, with a cool gray for text.</p>
+
+      <div class="callout info">
+        <div class="title"><span class="ico">ⓘ</span> What you'll build</div>
+        A <code>brand-tokens.css</code> declaring the brand primitives plus one semantic alias.
+        The terminal runs <code>node validate.mjs</code> to lint it.
+      </div>
+
+      <div class="callout warning">
+        <div class="title"><span class="ico">▲</span> Watch out</div>
+        <code>--accent: #00A8E1;</code> looks identical but is rejected — aliases must point at a
+        primitive with <code>var(--pat-sky)</code> so one edit re-themes everything.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn primary" id="btnRun">Run validator</button>
+        <button class="btn secondary" id="btnReset">Reset</button>
+        <button class="btn secondary" id="btnSolve">Solve</button>
+      </div>
+
+      <div class="callout success">
+        <div class="title"><span class="ico">✓</span> Success looks like</div>
+        Every line reads ✓ and the terminal prints <strong>PASS — on brand!</strong>
+      </div>
+
+      <div class="callout danger">
+        <div class="title"><span class="ico">✕</span> If it fails</div>
+        A missing primitive prints a red ✗ with the token name — add it and re-run.
+      </div>
+
+      <div class="callout tip">
+        <div class="title"><span class="ico">✦</span> Tip</div>
+        Stuck? Press <strong>Solve</strong> to reveal the <code>_solution/</code> file, then compare.
+      </div>
+
+      <div class="navcard" id="navNext" data-comment-anchor="7d7820a2d3-div">
+        <div>
+          <div class="lbl">Next lesson</div>
+          <div class="ttl">Semantic aliases &amp; theming</div>
+        </div>
+        <div class="arrow">→</div>
+      </div>
+    </div>
+
+    <!-- Workspace -->
+    <div class="workspace">
+      <div class="tabs">
+        <div class="tab active" data-tab="editor">Editor</div>
+        <div class="tab" data-tab="preview">Preview</div>
+      </div>
+
+      <div class="previewPane" id="previewPane">
+        <div class="swatches">
+          <div class="swatch"><div class="chip" style="background:#003767"></div><div class="info"><b>--pat-navy</b>#003767 · primary</div></div>
+          <div class="swatch"><div class="chip" style="background:#00A8E1"></div><div class="info"><b>--pat-sky</b>#00A8E1 · accent</div></div>
+          <div class="swatch"><div class="chip" style="background:#58585B"></div><div class="info"><b>--pat-gray</b>#58585B · text</div></div>
+        </div>
+        <p class="previewNote">Rendered from <span style="font-family:var(--tk-font-mono)">brand-tokens.css</span>. The <span style="font-family:var(--tk-font-mono)">--accent</span> alias resolves through <span style="font-family:var(--tk-font-mono)">var(--pat-sky)</span>, so re-pointing one primitive re-themes every component.</p>
+      </div>
+
+      <div class="editorRow" id="editorRow">
+        <div class="filetree" id="filetree">
+          <div class="ft-item folder"><span class="ico">▸</span> _files</div>
+          <div class="ft-item selected indent" data-file="tokens"><span class="ico">◆</span> brand-tokens.css</div>
+          <div class="ft-item indent" data-file="validate"><span class="ico">◇</span> validate.mjs</div>
+        </div>
+
+        <div class="editor">
+          <div class="gutter" id="gutter">1<br>2<br><span class="active">3</span><br>4<br>5<br>6<br>7<br>8<br>9</div>
+          <div class="code" id="code"><span class="tok-punc">:root {</span>
+  <span class="tok-com">/* Patterson brand primitives */</span>
+<span class="active-line">  <span class="tok-prop">--pat-navy</span><span class="tok-punc">:</span> <span class="tok-val">#003767</span><span class="tok-punc">;</span></span>
+  <span class="tok-prop">--pat-sky</span><span class="tok-punc">:</span> <span class="sel tok-val">#00A8E1</span><span class="tok-punc">;</span>
+  <span class="tok-prop">--pat-gray</span><span class="tok-punc">:</span> <span class="tok-val">#58585B</span><span class="tok-punc">;</span>
+
+  <span class="tok-com">/* Semantic aliases — reference the primitives above */</span>
+  <span class="tok-prop">--accent</span><span class="tok-punc">:</span> <span class="tok-val">var(--pat-sky)</span><span class="tok-punc">;</span>
+<span class="tok-punc">}</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="term-header">Terminal</div>
+        <div class="terminal" id="term"><span class="dim">~/tutorial $</span> node validate.mjs
+
+Validating brand-tokens.css
+
+  <span class="ok">✓</span> Tokens are declared inside a :root { } block
+  <span class="ok">✓</span> Defines <span class="accent">--pat-navy</span>  — brand value #003767
+  <span class="ok">✓</span> Defines <span class="accent">--pat-sky</span>   — brand value #00A8E1
+  <span class="ok">✓</span> Defines <span class="accent">--pat-gray</span>  — brand value #58585B
+  <span class="ok">✓</span> All --pat-* primitives are valid 6-digit hex
+  <span class="ok">✓</span> --accent references a primitive via var(--pat-…)
+
+<span class="ok">✓ PASS — on brand!</span>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const html = document.documentElement;
+
+  /* ---------- Theme switcher ---------- */
+  $('theme').addEventListener('change', (e) => { html.dataset.theme = e.target.value; });
+
+  /* ---------- Toast ---------- */
+  let toastTimer;
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  /* ---------- Editor state: two files, starter vs solution ---------- */
+  const P = (s) => '<span class="tok-punc">' + s + '</span>';
+  const PR = (s) => '<span class="tok-prop">' + s + '</span>';
+  const V = (s) => '<span class="tok-val">' + s + '</span>';
+  const C = (s) => '<span class="tok-com">' + s + '</span>';
+
+  const tokensSolution =
+    P(':root {') + '\n' +
+    '  ' + C('/* Patterson brand primitives */') + '\n' +
+    '<span class="active-line">  ' + PR('--pat-navy') + P(':') + ' ' + V('#003767') + P(';') + '</span>\n' +
+    '  ' + PR('--pat-sky') + P(':') + ' <span class="sel">' + V('#00A8E1') + '</span>' + P(';') + '\n' +
+    '  ' + PR('--pat-gray') + P(':') + ' ' + V('#58585B') + P(';') + '\n\n' +
+    '  ' + C('/* Semantic aliases — reference the primitives above */') + '\n' +
+    '  ' + PR('--accent') + P(':') + ' ' + V('var(--pat-sky)') + P(';') + '\n' +
+    P('}');
+
+  const tokensStarter =
+    P(':root {') + '\n' +
+    '  ' + C('/* Patterson brand primitives */') + '\n' +
+    '<span class="active-line">  ' + PR('--pat-navy') + P(':') + ' ' + V('#003767') + P(';') + '</span>\n' +
+    '  ' + PR('--pat-sky') + P(':') + ' ' + V('#00A8E1') + P(';') + '\n' +
+    '  ' + PR('--pat-gray') + P(':') + ' ' + V('#58585B') + P(';') + '\n\n' +
+    '  ' + C('/* TODO: alias must reference a primitive, not repeat the hex */') + '\n' +
+    '  ' + PR('--accent') + P(':') + ' ' + V('#00A8E1') + P(';') + '\n' +
+    P('}');
+
+  const validateSrc =
+    C('// validate.mjs — lints brand-tokens.css') + '\n' +
+    P('import') + ' ' + V('{ readFile }') + ' ' + P('from') + ' ' + V("'node:fs/promises'") + P(';') + '\n\n' +
+    P('const') + ' ' + PR('css') + ' ' + P('=') + ' ' + P('await') + ' readFile(' + V("'brand-tokens.css'") + P(',') + ' ' + V("'utf8'") + ')' + P(';') + '\n' +
+    P('const') + ' ' + PR('checks') + ' ' + P('=') + ' ' + P('[') + '\n' +
+    '  [' + V('/:root\\s*{/') + P(',') + '  ' + V("'Tokens are declared inside :root'") + '],\n' +
+    '  [' + V('/--pat-navy:\\s*#003767/') + P(',') + ' ' + V("'--pat-navy'") + '],\n' +
+    '  [' + V('/--accent:\\s*var\\(--pat-/') + P(',') + ' ' + V("'--accent references a primitive'") + '],\n' +
+    P('];') + '\n' +
+    P('for') + ' (' + P('const') + ' [re, label] ' + P('of') + ' checks) console.log(re.test(css) ? ' + V("'\u2713'") + ' : ' + V("'\u2717'") + ', label)' + P(';');
+
+  const gutter9 = '1<br>2<br><span class="active">3</span><br>4<br>5<br>6<br>7<br>8<br>9';
+  const gutter8 = '1<br>2<br>3<br>4<br>5<br>6<br>7<br>8';
+
+  let solved = true;          // page loads in the solved state
+  let currentFile = 'tokens';
+
+  function renderEditor() {
+    if (currentFile === 'tokens') {
+      $('code').innerHTML = solved ? tokensSolution : tokensStarter;
+      $('gutter').innerHTML = gutter9;
+    } else {
+      $('code').innerHTML = validateSrc;
+      $('gutter').innerHTML = gutter8;
+    }
+  }
+
+  /* ---------- File tree ---------- */
+  document.querySelectorAll('.ft-item[data-file]').forEach((item) => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.ft-item[data-file]').forEach((i) => i.classList.remove('selected'));
+      item.classList.add('selected');
+      currentFile = item.dataset.file;
+      renderEditor();
+    });
+  });
+
+  /* ---------- Tabs ---------- */
+  document.querySelectorAll('.tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const preview = tab.dataset.tab === 'preview';
+      $('previewPane').classList.toggle('active', preview);
+      $('editorRow').classList.toggle('hidden', preview);
+    });
+  });
+
+  /* ---------- Menu: toggle file tree ---------- */
+  $('btnMenu').addEventListener('click', () => {
+    $('filetree').classList.toggle('collapsed');
+    $('editorRow').classList.toggle('treeless');
+  });
+
+  /* ---------- Terminal ---------- */
+  const PROMPT = '<span class="dim">~/tutorial $</span> ';
+  let runSeq = 0;
+  function termLines(lines, done) {
+    const my = ++runSeq;
+    const term = $('term');
+    term.innerHTML = PROMPT + 'node validate.mjs\n';
+    $('btnRun').disabled = true;
+    let i = 0;
+    (function next() {
+      if (my !== runSeq) return;
+      if (i >= lines.length) { $('btnRun').disabled = false; if (done) done(); return; }
+      term.innerHTML += lines[i] + '\n';
+      term.scrollTop = term.scrollHeight;
+      i += 1;
+      setTimeout(next, 170);
+    })();
+  }
+  const OK = (s) => '  <span class="ok">\u2713</span> ' + s;
+  const BAD = (s) => '  <span class="bad">\u2717</span> ' + s;
+  const ACC = (s) => '<span class="accent">' + s + '</span>';
+
+  function runValidator() {
+    const common = [
+      '',
+      'Validating brand-tokens.css',
+      '',
+      OK('Tokens are declared inside a :root { } block'),
+      OK('Defines ' + ACC('--pat-navy') + '  \u2014 brand value #003767'),
+      OK('Defines ' + ACC('--pat-sky') + '   \u2014 brand value #00A8E1'),
+      OK('Defines ' + ACC('--pat-gray') + '  \u2014 brand value #58585B'),
+      OK('All --pat-* primitives are valid 6-digit hex'),
+    ];
+    if (solved) {
+      termLines(common.concat([
+        OK('--accent references a primitive via var(--pat-\u2026)'),
+        '',
+        '<span class="ok">\u2713 PASS \u2014 on brand!</span>',
+      ]));
+    } else {
+      termLines(common.concat([
+        BAD('--accent repeats the raw hex ' + ACC('#00A8E1') + ' \u2014 alias it with var(--pat-sky)'),
+        '',
+        '<span class="bad">\u2717 FAIL \u2014 1 problem. Fix brand-tokens.css and re-run (or press Solve).</span>',
+      ]));
+    }
+  }
+
+  $('btnRun').addEventListener('click', runValidator);
+
+  $('btnReset').addEventListener('click', () => {
+    solved = false;
+    currentFile = 'tokens';
+    document.querySelectorAll('.ft-item[data-file]').forEach((i) =>
+      i.classList.toggle('selected', i.dataset.file === 'tokens'));
+    renderEditor();
+    runSeq += 1;                 // cancel any in-flight stream
+    $('btnRun').disabled = false;
+    $('term').innerHTML = PROMPT;
+    toast('Reset to the starter file \u2014 run the validator to see it fail');
+  });
+
+  $('btnSolve').addEventListener('click', () => {
+    solved = true;
+    currentFile = 'tokens';
+    document.querySelectorAll('.ft-item[data-file]').forEach((i) =>
+      i.classList.toggle('selected', i.dataset.file === 'tokens'));
+    renderEditor();
+    toast('Solution restored \u2014 --accent now aliases var(--pat-sky)');
+  });
+
+  /* ---------- Nav card ---------- */
+  $('navNext').addEventListener('click', () => {
+    toast('Next lesson ships with the runnable starter \u2014 templates/tutorialkit/');
+  });
+</script>
+</body>
+</html>

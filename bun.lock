@@ -25,7 +25,9 @@
       "dependencies": {
         "@clack/prompts": "1.7.0",
         "@patterson/core": "workspace:*",
+        "@patterson/emitter-claude-code": "workspace:*",
         "citty": "0.2.2",
+        "zod": "4.4.3",
       },
     },
     "packages/core": {

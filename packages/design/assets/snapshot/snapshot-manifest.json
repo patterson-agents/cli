@@ -1,0 +1,822 @@
+{
+  "pulledAt": "2026-07-31",
+  "projectId": "3534f94f-a7e6-4612-81d4-6e830716f07d",
+  "files": [
+    {
+      "path": "CLAUDE.md",
+      "bytes": 668,
+      "etag": "1784745883017173"
+    },
+    {
+      "path": "DESIGN.md",
+      "bytes": 60002,
+      "etag": "1785461283263129"
+    },
+    {
+      "path": "SKILL.md",
+      "bytes": 3620,
+      "etag": "1785469793668946"
+    },
+    {
+      "path": "_adherence.oxlintrc.json",
+      "bytes": 21013,
+      "etag": "1785469829080693"
+    },
+    {
+      "path": "_ds_manifest.json",
+      "bytes": 32028,
+      "etag": "1785469829080693"
+    },
+    {
+      "path": "assets/README.md",
+      "bytes": 1631,
+      "etag": "1785461151912852"
+    },
+    {
+      "path": "assets/brand/README.md",
+      "bytes": 1543,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "assets/brand/deck/README.md",
+      "bytes": 1150,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "assets/deck/README.md",
+      "bytes": 641,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "assets/deck/patterson-slides.css",
+      "bytes": 10150,
+      "etag": "1785457790941485"
+    },
+    {
+      "path": "assets/deck/slide-layouts.html",
+      "bytes": 5833,
+      "etag": "1785457464108327"
+    },
+    {
+      "path": "assets/fonts/README.md",
+      "bytes": 1439,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "components/README.md",
+      "bytes": 1398,
+      "etag": "1785461151912852"
+    },
+    {
+      "path": "components/core/Badge.d.ts",
+      "bytes": 435,
+      "etag": "1784745886127773"
+    },
+    {
+      "path": "components/core/Badge.jsx",
+      "bytes": 1558,
+      "etag": "1784745886137789"
+    },
+    {
+      "path": "components/core/Badge.prompt.md",
+      "bytes": 313,
+      "etag": "1784745886114081"
+    },
+    {
+      "path": "components/core/Button.d.ts",
+      "bytes": 1398,
+      "etag": "1785439860757816"
+    },
+    {
+      "path": "components/core/Button.jsx",
+      "bytes": 3915,
+      "etag": "1785439833275926"
+    },
+    {
+      "path": "components/core/Button.prompt.md",
+      "bytes": 651,
+      "etag": "1784745886145248"
+    },
+    {
+      "path": "components/core/Card.d.ts",
+      "bytes": 790,
+      "etag": "1784745886150599"
+    },
+    {
+      "path": "components/core/Card.jsx",
+      "bytes": 1546,
+      "etag": "1784745886802095"
+    },
+    {
+      "path": "components/core/Card.prompt.md",
+      "bytes": 445,
+      "etag": "1784745886811042"
+    },
+    {
+      "path": "components/core/Icon.d.ts",
+      "bytes": 829,
+      "etag": "1785439846892366"
+    },
+    {
+      "path": "components/core/Icon.jsx",
+      "bytes": 2216,
+      "etag": "1785440349851577"
+    },
+    {
+      "path": "components/core/IconButton.d.ts",
+      "bytes": 558,
+      "etag": "1784745886775343"
+    },
+    {
+      "path": "components/core/IconButton.jsx",
+      "bytes": 1558,
+      "etag": "1784745886828522"
+    },
+    {
+      "path": "components/core/IconButton.prompt.md",
+      "bytes": 371,
+      "etag": "1784745886827252"
+    },
+    {
+      "path": "components/core/README.md",
+      "bytes": 1358,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "components/core/Stat.d.ts",
+      "bytes": 496,
+      "etag": "1784745886770205"
+    },
+    {
+      "path": "components/core/Stat.jsx",
+      "bytes": 1011,
+      "etag": "1784745886806316"
+    },
+    {
+      "path": "components/core/Stat.prompt.md",
+      "bytes": 343,
+      "etag": "1784745886837052"
+    },
+    {
+      "path": "components/core/core.card.html",
+      "bytes": 4713,
+      "etag": "1785439938130338"
+    },
+    {
+      "path": "components/feedback/Alert.d.ts",
+      "bytes": 466,
+      "etag": "1784745886843362"
+    },
+    {
+      "path": "components/feedback/Alert.jsx",
+      "bytes": 1909,
+      "etag": "1784745887116675"
+    },
+    {
+      "path": "components/feedback/Alert.prompt.md",
+      "bytes": 400,
+      "etag": "1784745887126417"
+    },
+    {
+      "path": "components/feedback/README.md",
+      "bytes": 583,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "components/feedback/Tabs.d.ts",
+      "bytes": 414,
+      "etag": "1784745887137812"
+    },
+    {
+      "path": "components/feedback/Tabs.jsx",
+      "bytes": 1904,
+      "etag": "1784745887119718"
+    },
+    {
+      "path": "components/feedback/Tabs.prompt.md",
+      "bytes": 272,
+      "etag": "1784745887136666"
+    },
+    {
+      "path": "components/feedback/feedback.card.html",
+      "bytes": 2442,
+      "etag": "1784745938520805"
+    },
+    {
+      "path": "components/forms/Checkbox.d.ts",
+      "bytes": 396,
+      "etag": "1784745887135082"
+    },
+    {
+      "path": "components/forms/Checkbox.jsx",
+      "bytes": 1769,
+      "etag": "1784745887124116"
+    },
+    {
+      "path": "components/forms/Checkbox.prompt.md",
+      "bytes": 259,
+      "etag": "1784745887126978"
+    },
+    {
+      "path": "components/forms/Input.d.ts",
+      "bytes": 543,
+      "etag": "1784745887424654"
+    },
+    {
+      "path": "components/forms/Input.jsx",
+      "bytes": 2438,
+      "etag": "1784745887468856"
+    },
+    {
+      "path": "components/forms/Input.prompt.md",
+      "bytes": 355,
+      "etag": "1784745887412672"
+    },
+    {
+      "path": "components/forms/README.md",
+      "bytes": 861,
+      "etag": "1785461360355237"
+    },
+    {
+      "path": "components/forms/Radio.d.ts",
+      "bytes": 668,
+      "etag": "1784745887418888"
+    },
+    {
+      "path": "components/forms/Radio.jsx",
+      "bytes": 1956,
+      "etag": "1784745887406711"
+    },
+    {
+      "path": "components/forms/Radio.prompt.md",
+      "bytes": 293,
+      "etag": "1784745887421090"
+    },
+    {
+      "path": "components/forms/Select.d.ts",
+      "bytes": 546,
+      "etag": "1784745887409810"
+    },
+    {
+      "path": "components/forms/Select.jsx",
+      "bytes": 2380,
+      "etag": "1784745887430462"
+    },
+    {
+      "path": "components/forms/Select.prompt.md",
+      "bytes": 335,
+      "etag": "1784745887456475"
+    },
+    {
+      "path": "components/forms/Switch.d.ts",
+      "bytes": 376,
+      "etag": "1784745887409831"
+    },
+    {
+      "path": "components/forms/Switch.jsx",
+      "bytes": 1768,
+      "etag": "1784745887788970"
+    },
+    {
+      "path": "components/forms/Switch.prompt.md",
+      "bytes": 191,
+      "etag": "1784745887734103"
+    },
+    {
+      "path": "components/forms/forms.card.html",
+      "bytes": 3052,
+      "etag": "1784745938520805"
+    },
+    {
+      "path": "guidelines/README.md",
+      "bytes": 1858,
+      "etag": "1785461151912852"
+    },
+    {
+      "path": "guidelines/brand-icons.card.html",
+      "bytes": 3722,
+      "etag": "1785440349851577"
+    },
+    {
+      "path": "guidelines/brand-interaction-states.card.html",
+      "bytes": 4630,
+      "etag": "1785439961055640"
+    },
+    {
+      "path": "guidelines/brand-logo.card.html",
+      "bytes": 1812,
+      "etag": "1784745887746040"
+    },
+    {
+      "path": "guidelines/brand-palette.card.html",
+      "bytes": 535,
+      "etag": "1784745887724249"
+    },
+    {
+      "path": "guidelines/brand-voice.card.html",
+      "bytes": 1446,
+      "etag": "1784745887753247"
+    },
+    {
+      "path": "guidelines/colors-neutral.card.html",
+      "bytes": 1638,
+      "etag": "1784745887752962"
+    },
+    {
+      "path": "guidelines/colors-primary.card.html",
+      "bytes": 1825,
+      "etag": "1784745887742009"
+    },
+    {
+      "path": "guidelines/colors-secondary.card.html",
+      "bytes": 1645,
+      "etag": "1784745887742019"
+    },
+    {
+      "path": "guidelines/colors-semantic.card.html",
+      "bytes": 2064,
+      "etag": "1784745887768936"
+    },
+    {
+      "path": "guidelines/colors-tertiary.card.html",
+      "bytes": 1557,
+      "etag": "1784745887842226"
+    },
+    {
+      "path": "guidelines/colors-tints.card.html",
+      "bytes": 2356,
+      "etag": "1784745888088521"
+    },
+    {
+      "path": "guidelines/integrations.card.html",
+      "bytes": 2993,
+      "etag": "1784745888093871"
+    },
+    {
+      "path": "guidelines/radii.card.html",
+      "bytes": 3169,
+      "etag": "1785439938130338"
+    },
+    {
+      "path": "guidelines/shadows.card.html",
+      "bytes": 1317,
+      "etag": "1784745888083710"
+    },
+    {
+      "path": "guidelines/spacing-scale.card.html",
+      "bytes": 2116,
+      "etag": "1784745888102601"
+    },
+    {
+      "path": "guidelines/type-body.card.html",
+      "bytes": 1381,
+      "etag": "1784745888093975"
+    },
+    {
+      "path": "guidelines/type-display.card.html",
+      "bytes": 1525,
+      "etag": "1784745888168132"
+    },
+    {
+      "path": "guidelines/type-eyebrow-stat.card.html",
+      "bytes": 1463,
+      "etag": "1784745888099333"
+    },
+    {
+      "path": "guidelines/type-family.card.html",
+      "bytes": 1151,
+      "etag": "1784745888128354"
+    },
+    {
+      "path": "guidelines/type-production-scale.card.html",
+      "bytes": 3982,
+      "etag": "1785439908910467"
+    },
+    {
+      "path": "guidelines/type-weights.card.html",
+      "bytes": 2345,
+      "etag": "1785439871295980"
+    },
+    {
+      "path": "integrations/README.md",
+      "bytes": 6059,
+      "etag": "1785461283263129"
+    },
+    {
+      "path": "integrations/shadcn-theme.css",
+      "bytes": 5532,
+      "etag": "1785440026841825"
+    },
+    {
+      "path": "integrations/tailwind.config.js",
+      "bytes": 4580,
+      "etag": "1785440026841825"
+    },
+    {
+      "path": "integrations/tailwind.css",
+      "bytes": 8260,
+      "etag": "1785440026841825"
+    },
+    {
+      "path": "integrations/theme-ui.js",
+      "bytes": 1494,
+      "etag": "1784745888439777"
+    },
+    {
+      "path": "integrations/uno.config.js",
+      "bytes": 5406,
+      "etag": "1785440026841825"
+    },
+    {
+      "path": "readme.md",
+      "bytes": 22446,
+      "etag": "1785469793668946"
+    },
+    {
+      "path": "styles.css",
+      "bytes": 519,
+      "etag": "1785439748656747"
+    },
+    {
+      "path": "templates/README.md",
+      "bytes": 2500,
+      "etag": "1785469793668946"
+    },
+    {
+      "path": "templates/canvas/Canvas.dc.html",
+      "bytes": 13420,
+      "etag": "1785470002462178"
+    },
+    {
+      "path": "templates/canvas/README.md",
+      "bytes": 2546,
+      "etag": "1785469793668946"
+    },
+    {
+      "path": "templates/canvas/ds-base.js",
+      "bytes": 1046,
+      "etag": "1785466596389095"
+    },
+    {
+      "path": "templates/canvas/support.js",
+      "bytes": 69150,
+      "etag": "1785466596389095"
+    },
+    {
+      "path": "templates/corporate-page/README.md",
+      "bytes": 742,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/corporate-page/ds-base.js",
+      "bytes": 792,
+      "etag": "1784745910217073"
+    },
+    {
+      "path": "templates/corporate-page/index.html",
+      "bytes": 5610,
+      "etag": "1785440105404840"
+    },
+    {
+      "path": "templates/corporate-website/Footer.jsx",
+      "bytes": 3286,
+      "etag": "1785440577664081"
+    },
+    {
+      "path": "templates/corporate-website/Header.jsx",
+      "bytes": 3183,
+      "etag": "1785440577754549"
+    },
+    {
+      "path": "templates/corporate-website/HomeScreen.jsx",
+      "bytes": 10241,
+      "etag": "1785440577842399"
+    },
+    {
+      "path": "templates/corporate-website/NewsroomScreen.jsx",
+      "bytes": 4748,
+      "etag": "1785440577922841"
+    },
+    {
+      "path": "templates/corporate-website/README.md",
+      "bytes": 1564,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/corporate-website/WhatWeDoScreen.jsx",
+      "bytes": 5084,
+      "etag": "1785440578092208"
+    },
+    {
+      "path": "templates/corporate-website/icons.jsx",
+      "bytes": 2582,
+      "etag": "1785440578178760"
+    },
+    {
+      "path": "templates/corporate-website/index.html",
+      "bytes": 3758,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/deck/README.md",
+      "bytes": 1047,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/deck/deck-stage.js",
+      "bytes": 81605,
+      "etag": "1784745910214162"
+    },
+    {
+      "path": "templates/deck/ds-base.js",
+      "bytes": 1005,
+      "etag": "1785457275880504"
+    },
+    {
+      "path": "templates/deck/index.html",
+      "bytes": 12321,
+      "etag": "1785457265766922"
+    },
+    {
+      "path": "templates/deck/scratchpad.md",
+      "bytes": 2284,
+      "etag": "1784745910299331"
+    },
+    {
+      "path": "templates/docs-site/README.md",
+      "bytes": 795,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/docs-site/app.jsx",
+      "bytes": 19793,
+      "etag": "1785440577664536"
+    },
+    {
+      "path": "templates/docs-site/collections.jsx",
+      "bytes": 10602,
+      "etag": "1785440577742970"
+    },
+    {
+      "path": "templates/docs-site/data.jsx",
+      "bytes": 13250,
+      "etag": "1785440577831289"
+    },
+    {
+      "path": "templates/docs-site/index.html",
+      "bytes": 17350,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/docs-site/pages1.jsx",
+      "bytes": 18845,
+      "etag": "1785440577997875"
+    },
+    {
+      "path": "templates/docs-site/pages2.jsx",
+      "bytes": 12890,
+      "etag": "1785440578087645"
+    },
+    {
+      "path": "templates/executive-deck/README.md",
+      "bytes": 663,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/executive-deck/deck-stage.js",
+      "bytes": 81605,
+      "etag": "1784745910221667"
+    },
+    {
+      "path": "templates/executive-deck/ds-base.js",
+      "bytes": 1005,
+      "etag": "1785457275880504"
+    },
+    {
+      "path": "templates/executive-deck/index.html",
+      "bytes": 13787,
+      "etag": "1785457413264876"
+    },
+    {
+      "path": "templates/file-manager/README.md",
+      "bytes": 708,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/file-manager/app-data.js",
+      "bytes": 23950,
+      "etag": "1784745910616216"
+    },
+    {
+      "path": "templates/file-manager/ds-base.js",
+      "bytes": 790,
+      "etag": "1784745910595144"
+    },
+    {
+      "path": "templates/file-manager/index.html",
+      "bytes": 52414,
+      "etag": "1784745938520805"
+    },
+    {
+      "path": "templates/file-manager/studio.js",
+      "bytes": 8762,
+      "etag": "1784745910604122"
+    },
+    {
+      "path": "templates/patterson-docs/PattersonDocs.dc.html",
+      "bytes": 27255,
+      "etag": "1784745910580297"
+    },
+    {
+      "path": "templates/patterson-docs/README.md",
+      "bytes": 744,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/patterson-docs/ds-base.js",
+      "bytes": 1027,
+      "etag": "1784745910575234"
+    },
+    {
+      "path": "templates/patterson-docs/support.js",
+      "bytes": 64222,
+      "etag": "1784745967555524"
+    },
+    {
+      "path": "templates/purpose-vision-values/README.md",
+      "bytes": 753,
+      "etag": "1785461200157529"
+    },
+    {
+      "path": "templates/purpose-vision-values/ds-base.js",
+      "bytes": 826,
+      "etag": "1785457012730064"
+    },
+    {
+      "path": "templates/purpose-vision-values/index.html",
+      "bytes": 16409,
+      "etag": "1785457799200496"
+    },
+    {
+      "path": "templates/storefront/README.md",
+      "bytes": 2037,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/storefront/StoreFooter.jsx",
+      "bytes": 2857,
+      "etag": "1785440577597670"
+    },
+    {
+      "path": "templates/storefront/StoreHeader.jsx",
+      "bytes": 6310,
+      "etag": "1785440577686661"
+    },
+    {
+      "path": "templates/storefront/StoreHome.jsx",
+      "bytes": 12633,
+      "etag": "1785440577804799"
+    },
+    {
+      "path": "templates/storefront/brands.js",
+      "bytes": 4485,
+      "etag": "1785440577892183"
+    },
+    {
+      "path": "templates/storefront/icons.jsx",
+      "bytes": 2072,
+      "etag": "1785440577971088"
+    },
+    {
+      "path": "templates/storefront/index.html",
+      "bytes": 4052,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/tutorialkit/README.md",
+      "bytes": 1736,
+      "etag": "1785440600537933"
+    },
+    {
+      "path": "templates/tutorialkit/index.html",
+      "bytes": 27985,
+      "etag": "1785440757311096"
+    },
+    {
+      "path": "templates/tutorialkit/theme.css",
+      "bytes": 15674,
+      "etag": "1785440752916544"
+    },
+    {
+      "path": "theme.json",
+      "bytes": 14133,
+      "etag": "1785439986864822"
+    },
+    {
+      "path": "tokens/README.md",
+      "bytes": 2225,
+      "etag": "1785461151912852"
+    },
+    {
+      "path": "tokens/base.css",
+      "bytes": 3905,
+      "etag": "1785440129786462"
+    },
+    {
+      "path": "tokens/colors.css",
+      "bytes": 6047,
+      "etag": "1785439798945411"
+    },
+    {
+      "path": "tokens/effects.css",
+      "bytes": 2232,
+      "etag": "1785439798945411"
+    },
+    {
+      "path": "tokens/fonts.css",
+      "bytes": 2882,
+      "etag": "1785439748656747"
+    },
+    {
+      "path": "tokens/icons.css",
+      "bytes": 5670,
+      "etag": "1785439748656747"
+    },
+    {
+      "path": "tokens/spacing.css",
+      "bytes": 2273,
+      "etag": "1785439798945411"
+    },
+    {
+      "path": "tokens/typography.css",
+      "bytes": 5229,
+      "etag": "1785440044162486"
+    }
+  ],
+  "skipped": [
+    {
+      "path": ".thumbnail",
+      "reason": "binary"
+    },
+    {
+      "path": "thumbnail.html",
+      "reason": "excluded"
+    },
+    {
+      "path": "index.dc.html",
+      "reason": "excluded"
+    },
+    {
+      "path": "_ds_bundle.js",
+      "reason": "excluded"
+    },
+    {
+      "path": "support.js",
+      "reason": "excluded"
+    },
+    {
+      "path": "site/**",
+      "reason": "excluded"
+    },
+    {
+      "path": "scraps/**",
+      "reason": "excluded"
+    },
+    {
+      "path": "uploads/**",
+      "reason": "excluded"
+    },
+    {
+      "path": "assets/brand/*.png",
+      "reason": "binary"
+    },
+    {
+      "path": "assets/brand/*.svg",
+      "reason": "binary"
+    },
+    {
+      "path": "assets/brand/deck/*.png",
+      "reason": "binary"
+    },
+    {
+      "path": "assets/fonts/patterson-icons.*",
+      "reason": "binary"
+    },
+    {
+      "path": "assets/fonts/proxima-nova-*.woff2",
+      "reason": "binary"
+    },
+    {
+      "path": "assets/fonts/typekit-rul6mjk.css",
+      "reason": "excluded"
+    },
+    {
+      "path": "templates/*/.thumbnail",
+      "reason": "binary"
+    },
+    {
+      "path": "templates/purpose-vision-values/deck-stage.js",
+      "reason": "large, fetch-on-sync"
+    }
+  ]
+}
