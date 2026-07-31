@@ -206,7 +206,7 @@ hand-edit then sync --yes preserves + exits 2.
       `patterson ci`/`editor` consumers; S7-gated release scaffolds; doctor --fix
 - [X] E-P7 [US6] Tutor: engine over check registry, 4 tracks from the 42 researched
       candidates, license tiers enforced in lesson frontmatter, cert-prep link-outs
-- [ ] E-P8 Polish: S4 + plugin loading/out-of-process fallback, --json sweep,
+- [X] E-P8 Polish: S4 + plugin loading/out-of-process fallback, --json sweep,
       bun build --compile binary, README, end-to-end demo
 
 ## Dependencies

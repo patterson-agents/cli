@@ -198,6 +198,16 @@ and the spike registry. Full evidence: session task outputs
     fails silently — `patterson doctor` must validate emitted Zed settings
     against the project-scope whitelist itself.
 
+- **S4 RESOLVED (2026-07-31, P8)**: **a `bun build --compile` binary CAN
+  dynamically `import()` arbitrary external files at runtime** — verified
+  empirically with a compiled probe importing plugin modules by absolute and
+  relative path, both `.ts` and `.js` (the embedded Bun runtime transpiles
+  TypeScript at import time). Consequence: an in-process plugin loader is
+  technically viable even for the distributed binary; the out-of-process
+  `bunx patterson-plugin-<name>` discovery (scaffolded by the cli-plugin
+  generator) remains the v1 surface for ISOLATION reasons, not feasibility.
+  In-process loading (discovery, config, sandboxing policy) is post-v1 work.
+
 - **S7 RESOLVED-FOR-BUN (2026-07-31, P6)**: `bun pm pack` on
   `packages/create-patterson` (carries `"@patterson/cli": "workspace:*"`)
   rewrites the dependency to the concrete version (`"0.0.1"`) in the packed

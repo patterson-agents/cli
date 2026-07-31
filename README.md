@@ -22,7 +22,7 @@ CI standards, and a built-in AI-fluency tutor.
 [![TypeScript](https://img.shields.io/badge/lang-TypeScript-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![MCP](https://img.shields.io/badge/protocol-MCP-003767)](https://modelcontextprotocol.io)
 [![Spec-driven](https://img.shields.io/badge/workflow-spec--kit-00A8E1)](specs/001-patterson-cli-v1/spec.md)
-[![Status](https://img.shields.io/badge/status-walking%20skeleton-d98a00)](#roadmap)
+[![Status](https://img.shields.io/badge/status-v1%20feature%20complete-2ea043)](#roadmap)
 
 <br>
 
@@ -185,16 +185,19 @@ Spec-driven build (see [`specs/001-patterson-cli-v1/`](specs/001-patterson-cli-v
 constitution, spec, plan, research, contracts, tasks):
 
 - [x] **Stage 0** — speckit spec tree, constitution v1.0.0
-- [x] **P0** — Bun-workspaces monorepo (15 packages)
-- [ ] **P1** — core: IR · command registry · emit engine · checks *(in flight)*
-- [ ] **P2a** — walking skeleton: Claude Code end-to-end
-- [ ] **P2b** — Copilot · opencode · Zed · VS Code emitters
-- [ ] **P3** — design templates + the full create wizard
-- [ ] **P4** — skills · marketplaces · `mcp serve`
-- [ ] **P5** — generators (`patterson new …`)
-- [ ] **P6** — CI standards · `doctor --fix`
-- [ ] **P7** — tutor
-- [ ] **P8** — polish · compiled binaries
+- [x] **P0** — Bun-workspaces monorepo (16 packages)
+- [x] **P1** — core: IR · command registry · emit engine · checks
+- [x] **P2a** — walking skeleton: Claude Code end-to-end
+- [x] **P2b** — Copilot · opencode · Zed · VS Code emitters + C7 chain guard
+- [x] **P3** — design templates (11 vendored) + create wizard + `create-patterson`
+- [x] **P4** — skills wrapper · marketplaces · `mcp serve`
+- [x] **P5** — generators (`patterson new …`) + shared MCP handshake validator
+- [x] **P6** — devcontainer/Codespaces + GitHub Actions emitters · `doctor --fix`
+- [x] **P7** — tutor (5 tracks, locally-validated lessons)
+- [x] **P8** — polish · `--json` sweep · compiled binary
+
+Post-v1: npm publish (license decision pending), in-process plugin loading
+(S4 verified feasible), vscode.dev instruct-mode target.
 
 ## Contributing
 

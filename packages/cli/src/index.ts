@@ -137,8 +137,11 @@ const main = defineCommand({
                 cwd: process.cwd(),
               });
               await mcp.serveStdio(server);
-              // Keep serving until the client closes stdio.
-              await new Promise(() => {});
+              // Serve until the client closes stdio (transport close).
+              await new Promise<void>((resolve) => {
+                // oxlint-disable-next-line prefer-add-event-listener -- SDK Server uses property-assignment callbacks, not EventTarget
+                server.server.onclose = () => resolve();
+              });
             },
           }),
         },

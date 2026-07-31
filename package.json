@@ -58,6 +58,7 @@
     "docs:dev": "bun run --cwd docs dev",
     "docs:build": "bun run --cwd docs build",
     "docs:preview": "bun run --cwd docs preview",
+    "build:binary": "bun build --compile packages/cli/src/index.ts --outfile dist/patterson",
     "demo": "bun run packages/cli/src/index.ts create /tmp/patterson-demo --yes --template skeleton --agents claude-code --no-install --no-git --force",
     "skills:list": "bunx skills@1.5.21 list",
     "skills:add": "bunx skills@1.5.21 add",

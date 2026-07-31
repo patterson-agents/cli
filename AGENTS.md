@@ -39,7 +39,8 @@ packages/core         # IR schema, config loader, command registry, emit engine,
 packages/emitters/*   # one package per target surface + cross (chain guard, coverage)
 packages/design       # vendored design-system snapshot + materializer
 packages/skills       # pinned skills-CLI wrapper (bunx skills@1.5.21), lockfile READER
-packages/generators   # patterson new …
+packages/generators   # patterson new … (6 generators) + shared MCP handshake validator
+packages/tutor        # AI-fluency tutor: lesson engine, 5 tracks, local validation
 packages/mcp          # stdio MCP server over core registry (no prompt code in graph)
 packages/cli          # citty tree + @clack wizard (step registry)
 packages/create-patterson  # npm shim

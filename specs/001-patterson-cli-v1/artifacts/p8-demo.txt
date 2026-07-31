@@ -1,0 +1,52 @@
+P8 END-TO-END DEMO TRANSCRIPT (v1 feature-complete)
+generated: 2026-07-31T16:08:07Z
+==============================================================================
+
+### 1. Full-surface scaffold: docs-site design template, ALL agents + envs + CI
+Scaffolded "demo" in /tmp/patterson-p8-demo-pDOYc9/demo: 10 template file(s), 2 emitted file(s).
+  - Skipped bun install (--no-install).
+  - Skipped git init (--no-git).
+  => exit code 0
+
+### 2. sync: ONE config → every surface
+Sync complete: 16 file(s) written, 0 conflicts.
+  - [gap] mcp.docs → zed: DOCS_TOKEN: SecretRef kind "env" is inexpressible in .zed/settings.json — Zed has no verified environment interpolation for project-scope context servers; configure the secret out of band (shell wrapper or user-machine environment).
+  => exit code 0
+--- files ---
+  ./AGENTS.md
+  ./app.jsx
+  ./.claude/agents/reviewer.md
+  ./CLAUDE.md
+  ./collections.jsx
+  ./commitlint.config.js
+  ./data.jsx
+  ./design-system/DESIGN.md
+  ./design-system/styles.css
+  ./.devcontainer/devcontainer.json
+  ./.github/agents/reviewer.agent.md
+  ./.github/copilot-instructions.md
+  ./.github/workflows/patterson-ci.yml
+  ./.github/workflows/patterson-security.yml
+  ./index.html
+  ./lefthook.yml
+  ./.mcp.json
+  ./opencode.json
+  ./pages1.jsx
+  ./pages2.jsx
+  ./patterson.config.ts
+  ./.patterson/emitted.json
+  ./README.md
+  ./SETUP.md
+  ./.vscode/extensions.json
+  ./.vscode/mcp.json
+  ./.vscode/tasks.json
+
+### 3. doctor: zero drift (verification 3)
+doctor: 0 drift conflicts, 0 warning(s).
+  - [info] Config valid: project "demo", targets [claude-code, copilot, opencode, zed, vscode, devcontainer, codespaces, github-actions].
+  - [info] Zed reads ".github/copilot-instructions.md", not AGENTS.md, but every managed instruction block is folded behind a patterson sentinel there — all blocks reach Zed.
+  => exit code 0
+
+### 4. compiled binary: --help + MCP initialize (verification 11)
+  --help => exit code 0
+  initialize => {"result":{"protocolVersion":"2025-11-25","capabilities":{"tools":{"listChanged":true}},"serverInfo":{"name":"patterson"
