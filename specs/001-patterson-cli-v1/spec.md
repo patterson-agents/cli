@@ -277,6 +277,10 @@ demo project; verify its validation passes and progress persists.
 - v1 agent scope is exactly Claude Code, GitHub Copilot, opencode; editor scope is
   VS Code, Zed, devcontainer, Codespaces. vscode.dev is deferred (verified-limited
   platform support) and revisited post-v1.
+- FR-003's VS Code and Zed support carries a sanctioned contingency cut line: if
+  forced by schedule, those two editor targets may ship in v1.1 instead of v1
+  (Constitution VII); exercising it reduces FR-003 scope accordingly and must be
+  reported, not silent.
 - The design-system snapshot bundled at publish time is acceptable staleness for
   unauthenticated users; live refresh requires an authenticated session.
 - The upstream skills CLI (pinned) is the sole writer of its lockfiles; patterson

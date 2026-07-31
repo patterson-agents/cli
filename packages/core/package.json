@@ -1,0 +1,11 @@
+{
+  "name": "@patterson/core",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "module": "src/index.ts",
+  "dependencies": {
+    "zod": "4.4.3",
+    "jsonc-parser": "3.3.1"
+  }
+}

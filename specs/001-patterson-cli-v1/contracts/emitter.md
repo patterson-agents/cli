@@ -4,12 +4,16 @@ Every emitter package implements:
 
 ```ts
 interface Emitter {
-  id: TargetId | "cross";
+  targets: TargetId[] | "cross";   // devcontainer emitter: ["devcontainer","codespaces"]
   compile(ir: PattersonProject, snapshot: FsSnapshot): FileOp[];
   // FsSnapshot = read-only view of current target files (for merge computation).
   // Emitters MUST NOT read anything else (Constitution I) and MUST NOT write.
 }
 ```
+
+This is the concrete form of the constitution's `compile(ir, target) → FileOp[]`:
+the target binding lives in emitter identity (`targets`), and the engine passes the
+merge snapshot; determinism obligations are unchanged.
 
 The core emit engine (not the emitter) owns: provenance recording, drift comparison,
 sentinel management, key-path surgery, `instruct` rendering into SETUP.md, backups,
@@ -19,9 +23,11 @@ and the never-write guard. Emitters produce *intent*; the engine applies it safe
 
 1. **Determinism**: same IR + snapshot ⇒ byte-identical FileOps (sorted keys, stable
    ordering, no timestamps in content — timestamps live in EmissionRecord only).
-2. **Tier honesty**: each FileOp declares own/merge/instruct truthfully per the
-   verified config matrix (research corpus §1). A merge-tier path emitted as "own" is
-   a contract violation caught by fixture tests.
+2. **Tier honesty**: each FileOp declares own/merge/instruct truthfully. Every
+   per-surface tier claim MUST cite a primary source (doc URL, vendored schema, or
+   fixture derived from the real tool) or a named spike — the research corpus is an
+   *index* to those sources, not itself a source (Constitution V). A merge-tier path
+   emitted as "own" is a contract violation caught by fixture tests.
 3. **Reachability**: an emitter receiving an entity it cannot express MUST return a
    `CoverageGap {entityId, targetId, reason, fallbackApplied}` (engine aggregates into
    `patterson check`). Silent drops are contract violations.

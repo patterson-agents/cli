@@ -30,9 +30,11 @@ time): `zod` v4 (IR schema + registry input schemas), `citty` (command tree),
 `@modelcontextprotocol/sdk@^1.30` (legacy line — S1 verifies), `skills@1.5.21`
 (devDependency, invoked via `bunx`, never imported)
 
-**Storage**: files only — `patterson.config.ts|.jsonc` (IR), `.patterson/emitted.json`
-(provenance sidecar), `.patterson/tutor-progress.json`, `.patterson/backup/`
-(pre-shell-out lockfile backups), vendored design-system snapshot in package assets
+**Storage**: files only — `patterson.config.ts` or `patterson.config.jsonc` (IR; this
+exact filename pair), `.patterson/emitted.json` (provenance sidecar),
+`.patterson/wizard.json` (persisted wizard state, `--resume`),
+`.patterson/tutor-progress.json`, `.patterson/backup/` (pre-shell-out lockfile
+backups), vendored design-system snapshot in package assets
 
 **Testing**: `bun test` — golden/fixture tests for emitters (model in → files out),
 round-trip drift tests, JSON-RPC handshake harness for MCP, corrupted-lockfile fixture,
@@ -151,13 +153,16 @@ spec-tree pointers instead.
 
 ## Phasing (delivery contract)
 
-P0 reset → P1 core+S1 → **P2a walking skeleton (claude-code emitter, create→emit→
-sync→doctor end-to-end; S2, S3 first)** → P2b remaining emitters (S6; C7 guard incl.
-pre-existing `.cursorrules`; coverage reporter) → P3 design+create wizard (S5; offline
-defaults; SETUP.md) → P4 skills/plugins/mcp serve (emitters own MCP files; P4 adds
-wizard steps + registry data + serve) → P5 generators (handshake validator shared) →
-P6 ci+doctor --fix (S7-gated release scaffolds) → P7 tutor → P8 polish (S4, binary,
---json sweep). Cut lines: zed/vscode → v1.1; tutor cuttable clean.
+P0 reset → P1 core+S1 → **P2a walking skeleton (claude-code emitter, create/init→
+emit→sync→doctor end-to-end; S2, S3 first)** → P2b agent/editor emitters: copilot,
+opencode, zed (S6), vscode + cross (C7 guard incl. pre-existing `.cursorrules`;
+coverage reporter) → P3 design+create wizard (S5; offline defaults; SETUP.md;
+`design refresh`) → P4 skills/plugins/mcp serve (emitters own MCP files; P4 adds
+wizard steps + registry data + serve) → P5 generators (handshake validator shared;
+`--plan` interview) → P6 devcontainer(+codespaces) + github-actions emitters with
+their consumers, ci + doctor --fix (S7-gated release scaffolds) → P7 tutor →
+P8 polish (S4, binary, --json sweep). Cut lines: zed/vscode → v1.1; tutor cuttable
+clean. (Emitter placement matches tasks.md: E-P2b vs E-P6.)
 
 ## Complexity Tracking
 

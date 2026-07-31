@@ -140,8 +140,10 @@ full suite and asserts these paths were never opened for write.
 
 ## Tutor extension (P7 module-local, not core IR)
 
-Lesson: `{ id, title, track, requires?: ("git"|"agent:claude-code"|…)[], sources:
-{url, license, use: "adapted"|"linked"}[], steps: {narrative, action, validate:
-CheckRef, flagResolvable?}[] }`
+Track: `{ id, title, description, lessons: string[] (ordered lesson ids),
+certPrep?: { credential, url }[] }`
+Lesson: `{ id, title, track: TrackId, requires?: ("git"|"agent:claude-code"|…)[],
+sources: {url, license, use: "adapted"|"linked"}[], steps: {narrative, action,
+validate: CheckRef, flagResolvable?}[] }`
 Progress: `{ lessonId, stepIndex, completedAt? }[]` in `.patterson/tutor-progress.json`.
 CheckRef points into the core check registry — the tutor owns no validators.

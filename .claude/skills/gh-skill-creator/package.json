@@ -1,0 +1,27 @@
+{
+  "name": "gh-skill-creator",
+  "private": true,
+  "description": "Bun TypeScript tooling for the gh-skill-creator skill: eval runner, description optimizer, report generation, benchmarking, validation, and packaging.",
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run lint && bun run fmt:check && bun run typecheck",
+    "validate": "bun scripts/quick_validate.ts",
+    "package": "bun scripts/package_skill.ts"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0"
+  },
+  "peerDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

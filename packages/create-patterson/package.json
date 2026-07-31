@@ -1,0 +1,13 @@
+{
+  "name": "create-patterson",
+  "version": "0.0.1",
+  "private": false,
+  "type": "module",
+  "module": "src/index.ts",
+  "bin": {
+    "create-patterson": "src/index.ts"
+  },
+  "dependencies": {
+    "@patterson/cli": "workspace:*"
+  }
+}

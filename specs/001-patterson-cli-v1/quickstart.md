@@ -11,8 +11,8 @@ bunx oxlint .               # lint
 
 ```sh
 bun run packages/cli/src/index.ts create /tmp/demo --yes \
-  --template docs-site --agents claude-code
-cd /tmp/demo && bun run patterson doctor   # expect: zero drift
+  --template skeleton --agents claude-code     # docs-site becomes available post-P3
+cd /tmp/demo && bun run patterson doctor       # script written by create (T024)
 ```
 
 ## MCP smoke test (post-P4)

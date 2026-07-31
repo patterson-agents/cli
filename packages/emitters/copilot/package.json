@@ -1,0 +1,10 @@
+{
+  "name": "@patterson/emitter-copilot",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "module": "src/index.ts",
+  "dependencies": {
+    "@patterson/core": "workspace:*"
+  }
+}

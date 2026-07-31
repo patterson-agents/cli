@@ -53,8 +53,8 @@ precede implementation within each unit.
       CommandDef, McpServerDef, PolicyDef, ModelDef, hooks, MarketplaceRef,
       ExtensionRec, EnvironmentDef, DevopsDef, EmitPolicy (zod v4 + inferred types)
 - [ ] T011 Config loader in packages/core/src/config.ts: patterson.config.ts (Bun
-      import) + patterson.jsonc (jsonc-parser) → validated IR; error reporting with
-      path context; tests in packages/core/test/config.test.ts
+      import) + patterson.config.jsonc (jsonc-parser) → validated IR; error reporting
+      with path context; tests in packages/core/test/config.test.ts
 
 **Command registry:**
 
@@ -124,13 +124,21 @@ hand-edit then sync --yes preserves + exits 2.
 
 - [ ] T024 [US1] `create` skeleton in packages/cli/src/commands/create.ts +
       packages/core/src/scaffold.ts: non-interactive only (--yes + flags), template =
-      plain directory copy from templates/skeleton/ (design snapshot arrives P3),
-      writes patterson.config.ts, runs emit, renders SETUP.md, refuses non-empty dir
-      without --force (lists what would be touched), bun install + git init
+      plain directory copy from templates/skeleton/ (CREATED BY THIS TASK; design
+      snapshot arrives P3 — P2a demo uses `--template skeleton`, docs-site becomes
+      available post-P3), writes patterson.config.ts + a `patterson` script into the
+      scaffolded package.json, runs emit, renders SETUP.md, refuses non-empty dir
+      without --force (lists what would be touched), bun install + git init.
+      NOTE: packages/tutor is deliberately NOT created until E-P7 (clean cut line).
 - [ ] T025 [US2] `sync` + `doctor` + `check` descriptors in
       packages/cli/src/commands/{sync,doctor,check}.ts over core emit/check: sync
       re-emits with drift protocol; doctor = drift + validity findings; check =
       coverage table (claude-code only for now); exit codes per contract
+- [ ] T025b [US2] `init` (adoption) descriptor in packages/cli/src/commands/init.ts:
+      running in a repo with pre-existing claude-code config marks pre-existing
+      keys/regions `foreign` in emitted.json (never overwritten — FR-007, US2-AS3);
+      `--import` lifts recognizable claude-code config (mcp servers, instructions)
+      into patterson.config; fixture test with a pre-populated repo
 - [ ] T026 [US1] Wizard STEP REGISTRY shell in packages/cli/src/wizard/: ordered step
       interface {id, applicable(ir), run(ctx)→irPatch}, @clack driver, persisted
       state .patterson/wizard.json + --resume; only steps: template-dir, name,
@@ -151,12 +159,14 @@ hand-edit then sync --yes preserves + exits 2.
 - [ ] E-P3 [US1] Design + create: vendored DS snapshot build (manifest/theme/
       thumbnails/templates), materializer, full wizard steps (template picker w/
       thumbnail fallback), create-patterson shim, S5, offline-safe network steps,
-      SETUP.md polish
+      SETUP.md polish, `design refresh` command (authenticated refresh; unauthenticated
+      → exit 0 + snapshot-age warning per FR-014; named `refresh` to avoid colliding
+      with top-level `sync`)
 - [ ] E-P4 [US3,US4] Skills (pinned skills@1.5.21 wrapper, backup guard, marketplace
       registry @SHA), plugins, `mcp serve` (S1 diagnostics, non-interactive assertion,
       wizard steps for skills/MCP)
 - [ ] E-P5 [US5] Generators ×6 + post-scaffold validations; shared JSON-RPC handshake
-      validator
+      validator; `--plan` AI-assisted plan-first interview mode (FR-011)
 - [ ] E-P6 [US1,US2] devcontainer(+codespaces) + github-actions emitters with
       `patterson ci`/`editor` consumers; S7-gated release scaffolds; doctor --fix
 - [ ] E-P7 [US6] Tutor: engine over check registry, 4 tracks from the 42 researched
