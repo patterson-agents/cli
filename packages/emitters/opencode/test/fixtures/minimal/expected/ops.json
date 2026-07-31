@@ -1,0 +1,24 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      }
+    ]
+  }
+]

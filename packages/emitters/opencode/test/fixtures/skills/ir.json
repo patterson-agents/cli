@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "name": "skills",
+  "targets": ["opencode"],
+  "skills": [
+    {
+      "name": "deploy",
+      "description": "Deploy the app.",
+      "body": "Run the deploy steps.",
+      "linkMode": "symlink",
+      "allowedTools": ["Bash(bun run deploy:*)", "Read"]
+    },
+    {
+      "name": "review-notes",
+      "description": "Review notes.",
+      "body": "Notes body.\n",
+      "linkMode": "copy",
+      "files": ["notes.md"]
+    }
+  ]
+}

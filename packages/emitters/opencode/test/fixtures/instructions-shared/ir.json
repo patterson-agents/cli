@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "name": "instructions-shared",
+  "targets": ["claude-code", "opencode"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.\n", "reach": "universal" },
+    {
+      "id": "oc-style",
+      "body": "Opencode-specific style notes.",
+      "reach": "universal",
+      "targets": ["opencode"]
+    },
+    {
+      "id": "claude-tail",
+      "body": "Claude only.",
+      "reach": "universal",
+      "targets": ["claude-code"]
+    },
+    { "id": "bad id!", "body": "Unusable id.", "reach": "universal" }
+  ]
+}

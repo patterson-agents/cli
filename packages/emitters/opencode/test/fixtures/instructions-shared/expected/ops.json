@@ -1,0 +1,45 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      },
+      {
+        "keyPath": [
+          "instructions"
+        ],
+        "value": [
+          ".agents/instructions/oc-style.md"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "AGENTS.md",
+    "format": "markdown",
+    "mode": "merge",
+    "sentinelId": "instruction:core",
+    "content": "Always run tests before committing."
+  },
+  {
+    "path": ".agents/instructions/oc-style.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "Opencode-specific style notes.\n"
+  }
+]

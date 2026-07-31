@@ -1,0 +1,26 @@
+[
+  {
+    "entityId": "policy.allow",
+    "targetId": "opencode",
+    "reason": "Claude-style permission rules (e.g. \"Bash(bun test:*)\") have no mechanical translation into opencode's permission object (different pattern grammar and tool vocabulary); provide the native object via policy.opencode.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "policy.deny",
+    "targetId": "opencode",
+    "reason": "Claude-style permission rules (e.g. \"Bash(bun test:*)\") have no mechanical translation into opencode's permission object (different pattern grammar and tool vocabulary); provide the native object via policy.opencode.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "policy.ask",
+    "targetId": "opencode",
+    "reason": "Claude-style permission rules (e.g. \"Bash(bun test:*)\") have no mechanical translation into opencode's permission object (different pattern grammar and tool vocabulary); provide the native object via policy.opencode.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "policy.defaultMode",
+    "targetId": "opencode",
+    "reason": "Claude's permissions.defaultMode has no opencode equivalent; provide the native permission object via policy.opencode.",
+    "fallbackApplied": false
+  }
+]

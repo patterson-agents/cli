@@ -10,6 +10,11 @@
   "dependencies": {
     "@patterson/core": "workspace:*",
     "@patterson/emitter-claude-code": "workspace:*",
+    "@patterson/emitter-copilot": "workspace:*",
+    "@patterson/emitter-opencode": "workspace:*",
+    "@patterson/emitter-zed": "workspace:*",
+    "@patterson/emitter-vscode": "workspace:*",
+    "@patterson/emitter-cross": "workspace:*",
     "citty": "0.2.2",
     "@clack/prompts": "1.7.0",
     "zod": "4.4.3"

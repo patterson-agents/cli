@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "instructions.ts-rules",
+    "targetId": "opencode",
+    "reason": "opencode has no path-scoped instructions (C5); scopeFallback \"drop\": the block (scope `src/**/*.ts`) was not emitted for this target.",
+    "fallbackApplied": false
+  }
+]

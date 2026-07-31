@@ -1,0 +1,19 @@
+[
+  {
+    "path": ".vscode/extensions.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "recommendations"
+        ],
+        "value": [
+          "esbenp.prettier-vscode",
+          "DBAeumer.vscode-eslint",
+          "oxc.oxc-vscode"
+        ]
+      }
+    ]
+  }
+]

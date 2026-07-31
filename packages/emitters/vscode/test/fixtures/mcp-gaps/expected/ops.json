@@ -1,0 +1,47 @@
+[
+  {
+    "path": ".vscode/mcp.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "servers",
+          "slow"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "bunx",
+          "args": [
+            "slow-server"
+          ]
+        }
+      },
+      {
+        "keyPath": [
+          "servers",
+          "first"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "run-server",
+          "env": {
+            "KEY": "${input:shared}"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "inputs"
+        ],
+        "value": [
+          {
+            "type": "promptString",
+            "id": "shared",
+            "description": "First definition."
+          }
+        ]
+      }
+    ]
+  }
+]

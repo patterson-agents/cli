@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "instructions.ts-rules",
+    "targetId": "opencode",
+    "reason": "opencode has no path-scoped instructions (C5); scopeFallback \"inline\": the block was folded into AGENTS.md with its scope (`src/**/*.ts`, `packages/**/*.ts`) marked as unenforced.",
+    "fallbackApplied": true
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "instructions.bad id!",
+    "targetId": "opencode",
+    "reason": "Instruction id is not usable as a sentinel id / instructions filename (allowed: alphanumerics plus \"._-\", starting alphanumeric).",
+    "fallbackApplied": false
+  }
+]

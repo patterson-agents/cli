@@ -81,19 +81,34 @@ function isEmitter(value: unknown): value is Emitter {
 }
 
 /**
- * Resolve the claude-code emitter from `@patterson/emitter-claude-code`
- * without pinning its export name (the emitter unit owns that): any export
- * shaped like the Emitter contract is accepted. Returns null when the package
- * does not (yet) export one.
+ * Emitter packages per target. Every P2 emitter package follows the same
+ * export contract (contracts/emitter.md): an `Emitter`-shaped export (named
+ * `<camel>Emitter` by convention, but resolved by shape, not name), plus
+ * optional `snapshotPaths(ir)` and `coverageGaps(ir, snapshot)` exports.
+ * devcontainer/codespaces/github-actions land in P6 and stay unlisted until
+ * then — `runEmitPipeline` reports them as `unsupported`, never silently.
  */
-async function loadClaudeCodeEmitter(): Promise<ResolvedEmitter | null> {
+const EMITTER_PACKAGES: Partial<Record<TargetId, string>> = {
+  "claude-code": "@patterson/emitter-claude-code",
+  copilot: "@patterson/emitter-copilot",
+  opencode: "@patterson/emitter-opencode",
+  zed: "@patterson/emitter-zed",
+  vscode: "@patterson/emitter-vscode",
+};
+
+/**
+ * Resolve a target's emitter from its package without pinning export names
+ * (the emitter unit owns those): any export shaped like the Emitter contract
+ * is accepted. Returns null when the package does not (yet) export one.
+ */
+async function loadEmitterPackage(target: TargetId, pkg: string): Promise<ResolvedEmitter | null> {
   let mod: Record<string, unknown>;
   try {
-    mod = (await import("@patterson/emitter-claude-code")) as Record<string, unknown>;
+    mod = (await import(pkg)) as Record<string, unknown>;
   } catch {
     return null;
   }
-  const candidates = [mod["claudeCodeEmitter"], mod["emitter"], mod["default"], ...Object.values(mod)];
+  const candidates = [mod["emitter"], mod["default"], ...Object.values(mod)];
   const emitter = candidates.find(isEmitter);
   if (!emitter) return null;
 
@@ -101,27 +116,23 @@ async function loadClaudeCodeEmitter(): Promise<ResolvedEmitter | null> {
   const snapshotPaths =
     typeof snapshotPathsExport === "function"
       ? (ir: PattersonProject) => (snapshotPathsExport as (ir: PattersonProject) => string[])(ir)
-      : claudeCodeSnapshotPaths;
+      : target === "claude-code"
+        ? claudeCodeSnapshotPaths
+        : () => ["AGENTS.md"];
 
   const gapsExport = mod["coverageGaps"];
   const resolved: ResolvedEmitter = { emitter, snapshotPaths };
   if (typeof gapsExport === "function") {
     resolved.coverageGaps = (ir, snapshot) =>
       (gapsExport as (ir: PattersonProject, snapshot: FsSnapshot) => CoverageGap[])(ir, snapshot);
-  } else if (typeof mod["compileClaudeCode"] === "function") {
-    // Fallback: derive gaps from the full compile surface.
-    const compile = mod["compileClaudeCode"] as (
-      ir: PattersonProject,
-      snapshot: FsSnapshot,
-    ) => { gaps: CoverageGap[] };
-    resolved.coverageGaps = (ir, snapshot) => compile(ir, snapshot).gaps;
   }
   return resolved;
 }
 
 export const defaultEmitterResolver: EmitterResolver = async (target) => {
-  if (target === "claude-code") return loadClaudeCodeEmitter();
-  return null;
+  const pkg = EMITTER_PACKAGES[target];
+  if (!pkg) return null;
+  return loadEmitterPackage(target, pkg);
 };
 
 /** `<repo>/templates` resolved relative to this source file (monorepo layout). */

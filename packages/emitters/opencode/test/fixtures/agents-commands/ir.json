@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "name": "agents-commands",
+  "targets": ["claude-code", "opencode"],
+  "agents": [
+    {
+      "name": "reviewer",
+      "description": "Reviews PRs.",
+      "prompt": "Be strict.\n",
+      "tools": ["Read", "Grep"]
+    },
+    {
+      "name": "general",
+      "description": "Collides with an opencode built-in.",
+      "prompt": "Never emitted."
+    },
+    {
+      "name": "scribe",
+      "description": "Writes docs.",
+      "prompt": "Write well.",
+      "model": "anthropic/claude-sonnet-4-5"
+    }
+  ],
+  "commands": [
+    {
+      "name": "changelog",
+      "description": "Generate a changelog.",
+      "template": "Generate a changelog for $ARGUMENTS."
+    },
+    { "name": "empty-cmd", "template": "" }
+  ],
+  "models": {
+    "default": "anthropic/claude-opus-4-5",
+    "fallback": "anthropic/claude-sonnet-4-5",
+    "perAgent": {
+      "reviewer": "anthropic/claude-haiku-4-5",
+      "ghost": "anthropic/claude-haiku-4-5",
+      "scribe": "opus"
+    }
+  }
+}

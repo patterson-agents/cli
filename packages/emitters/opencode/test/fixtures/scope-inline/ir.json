@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "scope-inline",
+  "targets": ["opencode"],
+  "instructions": [
+    {
+      "id": "ts-rules",
+      "body": "Use strict TypeScript everywhere.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["src/**/*.ts", "packages/**/*.ts"] }
+    }
+  ]
+}

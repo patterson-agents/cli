@@ -1,0 +1,33 @@
+[
+  {
+    "path": ".vscode/tasks.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "version"
+        ],
+        "value": "2.0.0"
+      },
+      {
+        "keyPath": [
+          "tasks"
+        ],
+        "value": [
+          {
+            "label": "patterson: lint",
+            "type": "process",
+            "command": "bunx",
+            "args": [
+              "biome",
+              "check",
+              "."
+            ],
+            "problemMatcher": []
+          }
+        ]
+      }
+    ]
+  }
+]

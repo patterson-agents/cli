@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "scope-drop",
+  "targets": ["opencode"],
+  "instructions": [
+    {
+      "id": "ts-rules",
+      "body": "Use strict TypeScript everywhere.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["src/**/*.ts"] }
+    }
+  ],
+  "emit": { "scopeFallback": "drop" }
+}

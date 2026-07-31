@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "name": "mcp-remote",
+  "targets": ["opencode"],
+  "mcp": [
+    {
+      "name": "linear",
+      "transport": {
+        "kind": "http",
+        "url": "https://mcp.linear.app/mcp",
+        "headers": {
+          "Authorization": { "kind": "env", "name": "LINEAR_TOKEN" }
+        }
+      },
+      "timeoutMs": 15000,
+      "scope": "project"
+    },
+    {
+      "name": "legacy-sse",
+      "transport": { "kind": "sse", "url": "https://example.com/sse" },
+      "scope": "project"
+    },
+    {
+      "name": "sockets",
+      "transport": { "kind": "ws", "url": "wss://example.com/ws" },
+      "scope": "project"
+    },
+    {
+      "name": "oauthy",
+      "transport": {
+        "kind": "http",
+        "url": "https://example.com/mcp",
+        "oauth": { "clientId": "abc123" }
+      },
+      "scope": "project"
+    }
+  ]
+}

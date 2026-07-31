@@ -1,0 +1,63 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      },
+      {
+        "keyPath": [
+          "model"
+        ],
+        "value": "anthropic/claude-opus-4-5"
+      },
+      {
+        "keyPath": [
+          "agent",
+          "reviewer"
+        ],
+        "value": {
+          "description": "Reviews PRs.",
+          "mode": "subagent",
+          "model": "anthropic/claude-haiku-4-5",
+          "prompt": "Be strict.\n"
+        }
+      },
+      {
+        "keyPath": [
+          "agent",
+          "scribe"
+        ],
+        "value": {
+          "description": "Writes docs.",
+          "mode": "subagent",
+          "prompt": "Write well."
+        }
+      },
+      {
+        "keyPath": [
+          "command",
+          "changelog"
+        ],
+        "value": {
+          "template": "Generate a changelog for $ARGUMENTS.",
+          "description": "Generate a changelog."
+        }
+      }
+    ]
+  }
+]

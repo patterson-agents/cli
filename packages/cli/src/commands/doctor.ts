@@ -16,6 +16,7 @@ import {
   type CommandResult,
   type Finding,
 } from "@patterson/core";
+import { crossChecks } from "@patterson/emitter-cross";
 
 import {
   defaultDeps,
@@ -141,6 +142,8 @@ export function makeDoctorCommand(deps: CommandDeps = defaultDeps) {
             message: `Target "${target}" has no emitter in this phase; its files are not managed yet.`,
           })),
       });
+
+      for (const check of crossChecks) registry.register(check);
 
       const report = await registry.runAll({ cwd: ctx.cwd, ir });
 

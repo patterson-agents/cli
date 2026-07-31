@@ -161,6 +161,43 @@ and the spike registry. Full evidence: session task outputs
   `.agents/skills/`) must always be followed by per-agent linking. Default
   `linkMode: "symlink"` confirmed as the correct default.
 
+- **S6 RESOLVED (2026-07-31)**: **Project-scope `.zed/settings.json` DOES carry
+  `context_servers` — verdict: file.** Source-verified against zed-industries/zed
+  `main` (local binary: Zed preview 1.10.0 / 8d56867; no display/Xvfb in this
+  container, so verification is source + docs, not a GUI run):
+  - Local settings files are parsed as `ProjectSettingsContent`
+    (`crates/settings/src/settings_store.rs`, `set_local_settings` →
+    `parse_and_migrate_zed_settings::<ProjectSettingsContent>` → stored as
+    `SettingsContent { project: …, ..Default::default() }`) — i.e. only the
+    project subset of settings takes effect at project scope.
+  - `ProjectSettingsContent` includes `pub context_servers:
+    HashMap<Arc<str>, ContextServerSettingsContent>` and
+    `context_server_timeout` (`crates/settings_content/src/project.rs` ~L70).
+  - The consumer resolves them worktree-scoped: `ContextServerStore` calls
+    `ProjectSettings::get(Some(SettingsLocation { worktree_id, .. }))
+    .context_servers` (`crates/project/src/context_server_store.rs` ~L1140),
+    so local values from `.zed/settings.json` are honored (merged over user
+    scope; local wins per Zed's default→user→local merge in
+    `recompute_values`).
+  - Official docs corroborate indirectly: `session.trust_all_worktrees` —
+    "When trusted, project settings are synchronized automatically, language
+    and MCP servers are downloaded and started automatically." The dedicated
+    context-servers docs page only shows user-scope examples; project scope is
+    undocumented but implemented.
+  - **Trust gate (emitter consequence)**: project-defined context servers do
+    NOT start until the worktree is trusted (Zed's worktree-trust prompt, or
+    `session.trust_all_worktrees: true`). Emit the file, and have SETUP.md /
+    doctor note the one-time trust prompt.
+  - **Unknown-key behavior (drift consequence)**: `ProjectSettingsContent` has
+    no `deny_unknown_fields` — at load time Zed SILENTLY ignores unknown or
+    user-only keys in `.zed/settings.json`. The strict project-settings JSON
+    schema (`root_schema_for::<ProjectSettingsContent>()` with
+    `DefaultDenyUnknownFields`) only powers in-editor diagnostics when the
+    file is open in Zed. So patterson cannot rely on Zed to flag drift: a
+    misspelled or user-scope-only key (e.g. `theme`) in the emitted file
+    fails silently — `patterson doctor` must validate emitted Zed settings
+    against the project-scope whitelist itself.
+
 ## Known-stale watchlist (re-verify at implementation touch-time)
 
 - awesome-copilot layout (restructured 2026-02; pin @SHA; `.schemas/` contains a

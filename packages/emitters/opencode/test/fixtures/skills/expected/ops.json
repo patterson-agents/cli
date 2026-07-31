@@ -1,0 +1,36 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      }
+    ]
+  },
+  {
+    "path": ".agents/skills/deploy/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: deploy\ndescription: \"Deploy the app.\"\nallowed-tools: \"Bash(bun run deploy:*), Read\"\n---\n\nRun the deploy steps.\n"
+  },
+  {
+    "path": ".agents/skills/review-notes/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: review-notes\ndescription: \"Review notes.\"\n---\n\nNotes body.\n"
+  }
+]

@@ -20,12 +20,17 @@
       "name": "@patterson/cli",
       "version": "0.0.1",
       "bin": {
-        "patterson": "src/index.ts",
+        "patterson": "./src/index.ts",
       },
       "dependencies": {
         "@clack/prompts": "1.7.0",
         "@patterson/core": "workspace:*",
         "@patterson/emitter-claude-code": "workspace:*",
+        "@patterson/emitter-copilot": "workspace:*",
+        "@patterson/emitter-cross": "workspace:*",
+        "@patterson/emitter-opencode": "workspace:*",
+        "@patterson/emitter-vscode": "workspace:*",
+        "@patterson/emitter-zed": "workspace:*",
         "citty": "0.2.2",
         "zod": "4.4.3",
       },

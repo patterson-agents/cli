@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "permission-raw",
+  "targets": ["opencode"],
+  "policy": {
+    "allow": ["Read"],
+    "deny": [],
+    "ask": [],
+    "opencode": {
+      "edit": "ask",
+      "bash": { "bun test *": "allow", "*": "ask" },
+      "webfetch": "deny"
+    }
+  }
+}

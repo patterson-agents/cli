@@ -1,0 +1,31 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "AGENTS.md",
+    "format": "markdown",
+    "mode": "merge",
+    "sentinelId": "instruction:ts-rules:unscoped",
+    "content": "> **Note**: intended scope `src/**/*.ts`, `packages/**/*.ts` — the scope is NOT enforced on this surface (opencode has no path-scoped instructions; C5 fallback \"inline\").\n\nUse strict TypeScript everywhere."
+  }
+]

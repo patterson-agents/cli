@@ -1,0 +1,37 @@
+[
+  {
+    "path": ".vscode/tasks.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "version"
+        ],
+        "value": "2.0.0"
+      },
+      {
+        "keyPath": [
+          "tasks"
+        ],
+        "value": [
+          {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo hi"
+          },
+          {
+            "label": "patterson: lint",
+            "type": "process",
+            "command": "bunx",
+            "args": [
+              "oxlint",
+              "."
+            ],
+            "problemMatcher": []
+          }
+        ]
+      }
+    ]
+  }
+]

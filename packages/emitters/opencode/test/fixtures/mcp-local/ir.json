@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "name": "mcp-local",
+  "targets": ["opencode"],
+  "mcp": [
+    {
+      "name": "docs",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bun", "run", "tools/mcp/server.ts", "--stdio"],
+          "cwd": "tools/mcp",
+          "env": {
+            "API_KEY": { "kind": "env", "name": "DOCS_API_KEY" },
+            "MODE": "fast",
+            "ROOT": { "kind": "env", "name": "PROJECT_DIR", "default": "." }
+          }
+        }
+      },
+      "timeoutMs": 10000,
+      "scope": "project"
+    },
+    {
+      "name": "secret-prompt",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["deno", "serve"],
+          "env": {
+            "TOKEN": { "kind": "prompt", "id": "tok", "description": "API token", "password": true }
+          }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "userscope",
+      "transport": { "kind": "stdio", "exec": { "argv": ["some-server"] } },
+      "scope": "user"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "path": ".vscode/mcp.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "servers",
+          "docs"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "bunx",
+          "args": [
+            "docs-server",
+            "--root",
+            "."
+          ],
+          "cwd": "packages/docs",
+          "env": {
+            "MODE": "fast"
+          }
+        }
+      }
+    ]
+  }
+]

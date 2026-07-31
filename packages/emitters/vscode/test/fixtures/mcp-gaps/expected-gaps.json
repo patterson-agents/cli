@@ -1,0 +1,38 @@
+[
+  {
+    "entityId": "mcp.sockets",
+    "targetId": "vscode",
+    "reason": "Transport \"ws\" is not supported by VS Code MCP (documented server types: stdio, http, sse — https://code.visualstudio.com/docs/agents/reference/mcp-configuration); ws is reachable only on claude-code.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.helper-secret",
+    "targetId": "vscode",
+    "reason": "KEY: SecretRef kind \"helper\" is inexpressible in .vscode/mcp.json (no credential-helper mechanism); use { kind: \"env\" } or { kind: \"prompt\" } instead.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.command-secret",
+    "targetId": "vscode",
+    "reason": "KEY: SecretRef kind \"command\" is inexpressible in .vscode/mcp.json: VS Code command-type inputs run a VS Code command ID, not a shell command. Use { kind: \"env\" }, { kind: \"prompt\" }, or configure the secret out of band.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.userscope",
+    "targetId": "vscode",
+    "reason": "MCP scope \"user\" is not emittable: .vscode/mcp.json is workspace (project) scope; user/local servers live in the user profile, which patterson never writes.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.slow.timeoutMs",
+    "targetId": "vscode",
+    "reason": ".vscode/mcp.json has no per-server timeout field; timeoutMs was dropped for this target.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.second",
+    "targetId": "vscode",
+    "reason": "Input id \"shared\" is already defined differently by an earlier server in .vscode/mcp.json inputs[]; rename the SecretRef id (or env name) to emit this server.",
+    "fallbackApplied": false
+  }
+]

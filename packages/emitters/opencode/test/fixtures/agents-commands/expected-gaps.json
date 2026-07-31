@@ -1,0 +1,38 @@
+[
+  {
+    "entityId": "models.fallback",
+    "targetId": "opencode",
+    "reason": "opencode has no fallback-model chain (small_model is a summarization concern, not a fallback); models.fallback was dropped for this target.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "agents.reviewer.tools",
+    "targetId": "opencode",
+    "reason": "opencode's agent tools map is deprecated (vendored schema) and enable-only — it cannot express a claude-style allowlist; tools were dropped for this target (use agent-level permission via raw opencode config).",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "agents.general",
+    "targetId": "opencode",
+    "reason": "Agent name \"general\" collides with an opencode BUILT-IN agent (plan, build, general, explore, title, summary, compaction); emitting it would reconfigure the built-in. Rename the agent or configure the built-in by hand.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "agents.scribe.model",
+    "targetId": "opencode",
+    "reason": "Model \"opus\" is not an opencode \"provider/model\" reference (vendored config schema); the agent was emitted without a model override.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "models.perAgent.ghost",
+    "targetId": "opencode",
+    "reason": "models.perAgent names agent \"ghost\", but no opencode-targeted agent with that name exists.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "commands.empty-cmd",
+    "targetId": "opencode",
+    "reason": "opencode commands REQUIRE a non-empty template (vendored config schema: command.<name>.template is required); the command was not emitted.",
+    "fallbackApplied": false
+  }
+]

@@ -151,11 +151,46 @@ hand-edit then sync --yes preserves + exits 2.
 
 **Checkpoint**: US2 safety core proven; US1 minimally demoable.
 
-## Epics (elaborated at phase boundaries — placeholder scope only)
+## Phase 4: P2b — remaining agent/editor emitters (elaborated 2026-07-31 at boundary)
 
-- [ ] E-P2b [US1,US2] Remaining emitters: copilot, opencode, zed (S6 first), vscode +
-      cross-cutting C7 chain guard (foreign .cursorrules fixture) + coverage reporter.
-      Cut line: zed/vscode → v1.1
+- [X] T029 [P] S6 spike: empirically determine whether Zed reads `context_servers`
+      from project `.zed/settings.json` (zed CLI if present; else primary-source doc
+      dig + issue trawl); record in research.md; outcome selects zed emitter mode
+      (file vs instruct for MCP)
+- [X] T030 [P] [US1] copilot emitter in packages/emitters/copilot/: instructions
+      (.github/copilot-instructions.md real copy + .github/instructions/*.instructions.md
+      applyTo comma-string), .github/agents/<n>.agent.md (agent: era), .github/prompts/
+      *.prompt.md, .github/skills/<n>/ (copy linkMode), copilot-setup-steps.yml
+      (job id literal, ≤59min), coding-agent MCP = instruct-mode blob w/ tools[] +
+      COPILOT_MCP_* secrets; fixtures + roundtrip per emitter contract
+- [X] T031 [P] [US1] opencode emitter in packages/emitters/opencode/: opencode.json(c)
+      ($schema, mcp {type local/remote, command as string[]}, permission, instructions[],
+      skills.paths [".agents/skills"] ALWAYS), .opencode/agent/*.md, .opencode/command/
+      *.md (template required), AGENTS.md shared-sentinel coordination with claude-code
+      emitter (same block id), C12 hostile-co-writer: never own-tier inside .opencode/;
+      fixtures + roundtrip
+- [X] T032 [P] [US1] zed emitter in packages/emitters/zed/: mode per S6 (context_servers
+      file or instruct), .zed/settings.json merge-tier (project-scope-valid keys only),
+      extensions warning (installs to user machine), C7 participation; fixtures
+- [X] T033 [P] [US1] vscode emitter in packages/emitters/vscode/: .vscode/mcp.json
+      (servers + synthesized inputs[] from SecretRef prompt/pick kinds), settings.json
+      deviations-only merge, extensions.json recommendations, tasks.json; fixtures +
+      roundtrip incl. JSONC comment preservation
+- [X] T034 [US2] cross package in packages/emitters/cross/: C7 chain guard — scan the
+      full Zed first-match chain ON DISK (.rules, .cursorrules, .windsurfrules,
+      .clinerules, copilot-instructions, AGENT.md, AGENTS.md, CLAUDE.md) incl. files
+      patterson never wrote; report winning file + unreachable-block findings + fix
+      decisions; fixture with pre-existing .cursorrules. Coverage reporter: aggregate
+      CoverageGaps from ALL emitters into the check table (extend check.ts multi-emitter)
+- [X] T035 [US2] Multi-target integration: create/sync/init accept
+      --agents claude-code,copilot,opencode --editors vscode,zed; emitter registry in
+      cli wires all five; cross-emitter conflicts (AGENTS.md sentinel sharing) proven;
+      E2E extended to all-targets scaffold; instruct-mode SETUP.md gets copilot
+      coding-agent blob (verification #4)
+- [X] T036 Gate: tsc/test/oxlint green; multi-target demo transcript appended to
+      artifacts/; commit "P2b"
+
+## Epics (elaborated at phase boundaries — placeholder scope only)
 - [ ] E-P3 [US1] Design + create: vendored DS snapshot build (manifest/theme/
       thumbnails/templates), materializer, full wizard steps (template picker w/
       thumbnail fallback), create-patterson shim, S5, offline-safe network steps,

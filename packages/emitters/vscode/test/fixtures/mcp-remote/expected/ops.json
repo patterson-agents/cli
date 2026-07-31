@@ -1,0 +1,51 @@
+[
+  {
+    "path": ".vscode/mcp.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "servers",
+          "gh"
+        ],
+        "value": {
+          "type": "http",
+          "url": "https://api.example.com/mcp",
+          "headers": {
+            "Authorization": "${input:gh-token}"
+          },
+          "oauth": {
+            "provider": "github"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "servers",
+          "events"
+        ],
+        "value": {
+          "type": "sse",
+          "url": "https://events.example.com/sse",
+          "headers": {
+            "X-Api-Version": "2"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "inputs"
+        ],
+        "value": [
+          {
+            "type": "promptString",
+            "id": "gh-token",
+            "description": "GitHub token",
+            "password": true
+          }
+        ]
+      }
+    ]
+  }
+]

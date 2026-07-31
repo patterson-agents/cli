@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "mcp.sockets",
+    "targetId": "opencode",
+    "reason": "MCP transport \"ws\" is reachable only on claude-code (data-model.md McpServerDef); opencode remote servers are HTTP(S)-url based.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.oauthy.oauth",
+    "targetId": "opencode",
+    "reason": "Explicit oauth config was not passed through (the IR oauth record is free-form; opencode's McpOAuthConfig is additionalProperties: false). opencode auto-detects OAuth for remote servers; configure oauth in opencode.json manually if the auto-detection is insufficient.",
+    "fallbackApplied": true
+  }
+]

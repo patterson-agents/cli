@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "name": "permission-gaps",
+  "targets": ["opencode"],
+  "policy": {
+    "allow": ["Read", "Bash(bun test:*)"],
+    "deny": ["WebFetch"],
+    "ask": ["Write"],
+    "defaultMode": "acceptEdits"
+  }
+}

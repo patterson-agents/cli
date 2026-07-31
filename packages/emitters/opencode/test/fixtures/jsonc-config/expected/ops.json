@@ -1,0 +1,53 @@
+[
+  {
+    "path": "opencode.jsonc",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          "vendor/skills",
+          ".agents/skills"
+        ]
+      },
+      {
+        "keyPath": [
+          "instructions"
+        ],
+        "value": [
+          "docs/style.md",
+          ".agents/instructions/jsonc-note.md"
+        ]
+      },
+      {
+        "keyPath": [
+          "mcp",
+          "docs"
+        ],
+        "value": {
+          "type": "local",
+          "command": [
+            "bun",
+            "mcp.ts"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "path": ".agents/instructions/jsonc-note.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "Keep the comments intact.\n"
+  }
+]

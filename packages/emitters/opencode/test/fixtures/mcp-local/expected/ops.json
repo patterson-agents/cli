@@ -1,0 +1,46 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      },
+      {
+        "keyPath": [
+          "mcp",
+          "docs"
+        ],
+        "value": {
+          "type": "local",
+          "command": [
+            "bun",
+            "run",
+            "tools/mcp/server.ts",
+            "--stdio"
+          ],
+          "cwd": "tools/mcp",
+          "environment": {
+            "API_KEY": "{env:DOCS_API_KEY}",
+            "MODE": "fast",
+            "ROOT": "{env:PROJECT_DIR}"
+          },
+          "timeout": 10000
+        }
+      }
+    ]
+  }
+]

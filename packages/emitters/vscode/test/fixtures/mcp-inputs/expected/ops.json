@@ -1,0 +1,78 @@
+[
+  {
+    "path": ".vscode/mcp.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "servers",
+          "secrets"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "run-server",
+          "env": {
+            "TOKEN": "${input:DOCS_TOKEN}",
+            "PROJECT_DIR": "${input:PROJECT_DIR}",
+            "KEY": "${input:api-key}",
+            "REGION": "${input:region}"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "servers",
+          "reuse"
+        ],
+        "value": {
+          "type": "stdio",
+          "command": "other-server",
+          "env": {
+            "TOKEN2": "${input:DOCS_TOKEN}"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "inputs"
+        ],
+        "value": [
+          {
+            "type": "promptString",
+            "id": "hand-key",
+            "description": "Hand-added input."
+          },
+          {
+            "type": "promptString",
+            "id": "DOCS_TOKEN",
+            "description": "Value for the DOCS_TOKEN environment variable.",
+            "password": true
+          },
+          {
+            "type": "promptString",
+            "id": "PROJECT_DIR",
+            "description": "Value for the PROJECT_DIR environment variable.",
+            "password": true,
+            "default": "."
+          },
+          {
+            "type": "promptString",
+            "id": "api-key",
+            "description": "API key",
+            "password": true
+          },
+          {
+            "type": "pickString",
+            "id": "region",
+            "description": "Pick a value for \"region\".",
+            "options": [
+              "eu",
+              "us"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

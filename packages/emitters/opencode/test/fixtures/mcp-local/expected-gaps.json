@@ -1,0 +1,20 @@
+[
+  {
+    "entityId": "mcp.docs",
+    "targetId": "opencode",
+    "reason": "opencode's {env:NAME} substitution has no default form; the default(s) for [ROOT] were dropped — the variable(s) must be set in the environment.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.secret-prompt",
+    "targetId": "opencode",
+    "reason": "TOKEN: SecretRef kind \"prompt\" is inexpressible in opencode.json (only {env:NAME} substitution is supported); use { kind: \"env\" } or configure the secret out of band.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.userscope",
+    "targetId": "opencode",
+    "reason": "MCP scope \"user\" is not emittable: the project opencode.json is project-scope only, and patterson never writes the user-global opencode config.",
+    "fallbackApplied": false
+  }
+]

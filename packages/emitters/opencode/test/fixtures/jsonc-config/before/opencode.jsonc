@@ -1,0 +1,9 @@
+{
+  // hand-maintained config — comments and unknown keys must survive surgery
+  "$schema": "https://opencode.ai/config.json",
+  "theme": "dark", // user-scope key patterson never touches
+  "skills": {
+    "paths": ["vendor/skills"]
+  },
+  "instructions": ["docs/style.md"]
+}

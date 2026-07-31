@@ -1,0 +1,58 @@
+[
+  {
+    "path": "opencode.json",
+    "format": "json",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "$schema"
+        ],
+        "value": "https://opencode.ai/config.json"
+      },
+      {
+        "keyPath": [
+          "skills",
+          "paths"
+        ],
+        "value": [
+          ".agents/skills"
+        ]
+      },
+      {
+        "keyPath": [
+          "mcp",
+          "linear"
+        ],
+        "value": {
+          "type": "remote",
+          "url": "https://mcp.linear.app/mcp",
+          "headers": {
+            "Authorization": "{env:LINEAR_TOKEN}"
+          },
+          "timeout": 15000
+        }
+      },
+      {
+        "keyPath": [
+          "mcp",
+          "legacy-sse"
+        ],
+        "value": {
+          "type": "remote",
+          "url": "https://example.com/sse"
+        }
+      },
+      {
+        "keyPath": [
+          "mcp",
+          "oauthy"
+        ],
+        "value": {
+          "type": "remote",
+          "url": "https://example.com/mcp"
+        }
+      }
+    ]
+  }
+]

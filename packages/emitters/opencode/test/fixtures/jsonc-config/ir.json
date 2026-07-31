@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "jsonc-config",
+  "targets": ["opencode"],
+  "instructions": [
+    {
+      "id": "jsonc-note",
+      "body": "Keep the comments intact.",
+      "reach": "universal",
+      "targets": ["opencode"]
+    }
+  ],
+  "mcp": [
+    {
+      "name": "docs",
+      "transport": { "kind": "stdio", "exec": { "argv": ["bun", "mcp.ts"] } },
+      "scope": "project"
+    }
+  ]
+}

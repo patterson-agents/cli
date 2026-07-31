@@ -1,0 +1,72 @@
+P2b MULTI-TARGET DEMO TRANSCRIPT
+generated: 2026-07-31T15:28:04Z
+flow: create (5 targets) → sync → doctor → check → .cursorrules → doctor (C7 guard)
+==============================================================================
+
+### 1. create --yes --agents claude-code,copilot,opencode,zed,vscode
+Scaffolded "demo" in /tmp/patterson-p2b-demo-3cNixZ/demo: 4 template file(s), 2 emitted file(s).
+  - Skipped bun install (--no-install).
+  - Skipped git init (--no-git).
+  => exit code 0
+
+### 2. sync — one IR, five surfaces
+Sync complete: 14 file(s) written, 0 conflicts.
+  - [gap] mcp.search.tools → copilot: The Copilot coding agent requires an explicit per-server tools[] allowlist; none was declared, so the configuration falls back to ["*"] (ALL tools enabled) — review before pasting.
+  - [gap] instructions.api-rules → opencode: opencode has no path-scoped instructions (C5); scopeFallback "inline": the block was folded into AGENTS.md with its scope (`src/api/**`) marked as unenforced.
+  - [gap] mcp.docs → zed: DOCS_TOKEN: SecretRef kind "env" is inexpressible in .zed/settings.json — Zed has no verified environment interpolation for project-scope context servers; configure the secret out of band (shell wrapper or user-machine environment).
+  - [gap] instructions.api-rules → zed: Zed reads exactly one instructions file via its first-match chain (C7); path-scoped instruction blocks are inexpressible for zed.
+  - [gap] agents.reviewer → zed: Zed has no project-scope custom-agent surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).
+  => exit code 0
+
+--- files emitted ---
+  ./AGENTS.md
+  ./.claude/agents/reviewer.md
+  ./CLAUDE.md
+  ./.claude/rules/api-rules.md
+  ./.github/agents/reviewer.agent.md
+  ./.github/copilot-instructions.md
+  ./.github/instructions/api-rules.instructions.md
+  ./.mcp.json
+  ./opencode.json
+  ./package.json
+  ./patterson.config.ts
+  ./.patterson/emitted.json
+  ./README.md
+  ./SETUP.md
+  ./src/index.ts
+  ./.vscode/extensions.json
+  ./.vscode/mcp.json
+  ./.zed/settings.json
+
+### 3. doctor — zero drift, C7 chain guard clean
+doctor: 0 drift conflicts, 0 warning(s).
+  - [info] Config valid: project "demo", targets [claude-code, copilot, opencode, zed, vscode].
+  - [info] Zed reads ".github/copilot-instructions.md", not AGENTS.md, but every managed instruction block is folded behind a patterson sentinel there — all blocks reach Zed.
+  => exit code 0
+
+### 4. check — coverage table (zed SecretRef gap reported, never dropped)
+check: 21 covered, 5 gap(s) across 5 target(s).
+  - [gap] mcp.search.tools → copilot: The Copilot coding agent requires an explicit per-server tools[] allowlist; none was declared, so the configuration falls back to ["*"] (ALL tools enabled) — review before pasting.
+  - [gap] instructions.api-rules → opencode: opencode has no path-scoped instructions (C5); scopeFallback "inline": the block was folded into AGENTS.md with its scope (`src/api/**`) marked as unenforced.
+  - [gap] instructions.api-rules → zed: Zed reads exactly one instructions file via its first-match chain (C7); path-scoped instruction blocks are inexpressible for zed.
+  - [gap] agents.reviewer → zed: Zed has no project-scope custom-agent surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).
+  - [gap] mcp.docs → zed: DOCS_TOKEN: SecretRef kind "env" is inexpressible in .zed/settings.json — Zed has no verified environment interpolation for project-scope context servers; configure the secret out of band (shell wrapper or user-machine environment).
+  => exit code 0
+
+### 5. Foreign .cursorrules appears (a Cursor past) → C7 guard names the real winner
+doctor: 0 drift conflicts, 2 warning(s).
+  - [warn] Instruction block "core" is unreachable in Zed: it compiles into AGENTS.md but ".cursorrules" wins the first-match chain.
+  - [warn] Zed reads ".cursorrules", not AGENTS.md — it is the first match in Zed's instructions chain (present: .cursorrules → .github/copilot-instructions.md → AGENTS.md → CLAUDE.md). 1 managed instruction block(s) never reach Zed.
+  - [info] Config valid: project "demo", targets [claude-code, copilot, opencode, zed, vscode].
+  => exit code 0
+
+### 6. SETUP.md excerpt — instruct-tier: Copilot coding agent MCP (web-UI-only, C3) + COPILOT_MCP_* secrets (C4)
+  33:        "DOCS_TOKEN": "COPILOT_MCP_DOCS_TOKEN"
+  35:      "tools": [
+  46:      "tools": [
+  57:   `COPILOT_MCP_`):
+  59:   - `COPILOT_MCP_DOCS_TOKEN` ← value of `DOCS_TOKEN`
+
+### 7. AGENTS.md — one shared file, sentinel blocks from multiple emitters
+  1:<!-- patterson:begin id=instruction:core hash=sha256:844d9eb4e414a9ffaff288a85fb05d5b8518eb388a13403e140b7f55b02b43b6 -->
+  5:<!-- patterson:begin id=instruction:api-rules:unscoped hash=sha256:32c7129487befef6c9497edea4a37d5b8a69bc311db2de5d751fec6b7a35d468 -->
