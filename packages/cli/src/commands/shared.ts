@@ -98,8 +98,9 @@ function isEmitter(value: unknown): value is Emitter {
  * export contract (contracts/emitter.md): an `Emitter`-shaped export (named
  * `<camel>Emitter` by convention, but resolved by shape, not name), plus
  * optional `snapshotPaths(ir)` and `coverageGaps(ir, snapshot)` exports.
- * devcontainer/codespaces/github-actions land in P6 and stay unlisted until
- * then — `runEmitPipeline` reports them as `unsupported`, never silently.
+ * devcontainer + codespaces share ONE emitter package (plan.md: one emitter,
+ * two targets). An unlisted target is reported by `runEmitPipeline` as
+ * `unsupported`, never silently dropped.
  */
 const EMITTER_PACKAGES: Partial<Record<TargetId, string>> = {
   "claude-code": "@patterson/emitter-claude-code",
@@ -107,6 +108,9 @@ const EMITTER_PACKAGES: Partial<Record<TargetId, string>> = {
   opencode: "@patterson/emitter-opencode",
   zed: "@patterson/emitter-zed",
   vscode: "@patterson/emitter-vscode",
+  devcontainer: "@patterson/emitter-devcontainer",
+  codespaces: "@patterson/emitter-devcontainer",
+  "github-actions": "@patterson/emitter-github-actions",
 };
 
 /**
@@ -256,12 +260,17 @@ export async function runEmitPipeline(
   const unsupported: TargetId[] = [];
   const gaps: CoverageGap[] = [];
 
+  // One emitter can own several targets (devcontainer + codespaces share a
+  // package); compile each emitter INSTANCE once or its ops would duplicate.
+  const compiled = new Set<Emitter>();
   for (const target of ir.targets) {
     const resolved = await deps.resolveEmitter(target);
     if (!resolved) {
       unsupported.push(target);
       continue;
     }
+    if (compiled.has(resolved.emitter)) continue;
+    compiled.add(resolved.emitter);
     const snapshot = await captureSnapshot(root, resolved.snapshotPaths(ir));
     ops.push(...resolved.emitter.compile(ir, snapshot));
     if (resolved.coverageGaps) gaps.push(...resolved.coverageGaps(ir, snapshot));

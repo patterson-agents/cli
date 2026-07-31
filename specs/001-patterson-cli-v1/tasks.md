@@ -202,7 +202,7 @@ hand-edit then sync --yes preserves + exits 2.
       wizard steps for skills/MCP)
 - [X] E-P5 [US5] Generators ×6 + post-scaffold validations; shared JSON-RPC handshake
       validator; `--plan` AI-assisted plan-first interview mode (FR-011)
-- [ ] E-P6 [US1,US2] devcontainer(+codespaces) + github-actions emitters with
+- [X] E-P6 [US1,US2] devcontainer(+codespaces) + github-actions emitters with
       `patterson ci`/`editor` consumers; S7-gated release scaffolds; doctor --fix
 - [ ] E-P7 [US6] Tutor: engine over check registry, 4 tracks from the 42 researched
       candidates, license tiers enforced in lesson frontmatter, cert-prep link-outs

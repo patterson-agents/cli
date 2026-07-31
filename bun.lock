@@ -29,6 +29,8 @@
         "@patterson/emitter-claude-code": "workspace:*",
         "@patterson/emitter-copilot": "workspace:*",
         "@patterson/emitter-cross": "workspace:*",
+        "@patterson/emitter-devcontainer": "workspace:*",
+        "@patterson/emitter-github-actions": "workspace:*",
         "@patterson/emitter-opencode": "workspace:*",
         "@patterson/emitter-vscode": "workspace:*",
         "@patterson/emitter-zed": "workspace:*",

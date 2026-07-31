@@ -1,0 +1,33 @@
+P6 DEVCONTAINER + GITHUB-ACTIONS DEMO TRANSCRIPT
+generated: 2026-07-31T15:59:00Z
+==============================================================================
+
+### 1. sync (devcontainer + codespaces + github-actions targets)
+Sync complete: 10 file(s) written, 0 conflicts.
+  - [gap] devops.release → github-actions: Release workflow covers a single package. Monorepo (changesets) releases are S7-gated: opt in with devops.release.monorepo: "experimental".
+  => exit code 0
+
+--- emitted ---
+  ./AGENTS.md
+  ./CLAUDE.md
+  ./commitlint.config.js
+  ./.devcontainer/devcontainer.json
+  ./.github/dependabot.yml
+  ./.github/workflows/patterson-ci.yml
+  ./.github/workflows/patterson-release.yml
+  ./.github/workflows/patterson-security.yml
+  ./lefthook.yml
+  ./.patterson/emitted.json
+  ./SETUP.md
+
+### 2. doctor (C7 guard + env surfaces healthy)
+doctor: 0 drift conflicts, 0 warning(s).
+  - [info] Config valid: project "envdemo", targets [claude-code, devcontainer, codespaces, github-actions].
+  => exit code 0
+
+### 3. doctor --fix after deleting a workflow + hand-editing lefthook.yml
+2 drift conflict(s) — hand-edited content was kept, not overwritten:
+  - .github/workflows/patterson-ci.yml was deleted by hand; kept as-is. Re-run with --accept-generated to overwrite.
+  - lefthook.yml was edited by hand; kept as-is. Re-run with --accept-generated to overwrite.
+Re-run with --accept-generated to overwrite (a backup is taken first).
+  => exit code 0

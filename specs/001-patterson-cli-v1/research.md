@@ -198,6 +198,17 @@ and the spike registry. Full evidence: session task outputs
     fails silently — `patterson doctor` must validate emitted Zed settings
     against the project-scope whitelist itself.
 
+- **S7 RESOLVED-FOR-BUN (2026-07-31, P6)**: `bun pm pack` on
+  `packages/create-patterson` (carries `"@patterson/cli": "workspace:*"`)
+  rewrites the dependency to the concrete version (`"0.0.1"`) in the packed
+  tarball — verified by extracting the tarball's package.json. The `npm pack`
+  comparison could not run in this environment (the socket-firewall PATH shim
+  wraps npm and the mise npm launcher fails under it), but the decision needs
+  only the bun half: release scaffolds pack with `bun pm pack` and publish the
+  tarball via Node 24 `npm publish --provenance` (C13), so npm never packs.
+  Monorepo (changesets) release scaffolds stay gated behind
+  `devops.release.monorepo: "experimental"` as planned.
+
 - **S5 PARTIALLY RESOLVED (2026-07-31, P3)**: the GitHub-door hook is in place
   but the empirical fire test is **deferred to publish time (P8)**.
   - Root `package.json` now carries

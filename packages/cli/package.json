@@ -15,6 +15,8 @@
     "@patterson/emitter-zed": "workspace:*",
     "@patterson/emitter-vscode": "workspace:*",
     "@patterson/emitter-cross": "workspace:*",
+    "@patterson/emitter-devcontainer": "workspace:*",
+    "@patterson/emitter-github-actions": "workspace:*",
     "@patterson/design": "workspace:*",
     "@patterson/mcp": "workspace:*",
     "@patterson/skills": "workspace:*",

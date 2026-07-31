@@ -39,7 +39,15 @@ const FindingSchema = z.strictObject({
   fix: z.string().optional(),
 });
 
-export const DoctorInputSchema = z.strictObject({});
+export const DoctorInputSchema = z.strictObject({
+  /**
+   * Apply the SAFE fixes: emit pending (never-written) files. Drifted files
+   * are still only reported — overwriting them takes `sync --accept-generated`
+   * (Constitution II: --fix never clobbers hand edits). Optional (not
+   * defaulted) so `{}` remains a valid direct-call input.
+   */
+  fix: z.boolean().optional(),
+});
 
 export const DoctorOutputSchema = z.strictObject({
   ok: z.boolean(),
@@ -74,7 +82,8 @@ export function makeDoctorCommand(deps: CommandDeps = defaultDeps) {
     inputSchema: DoctorInputSchema,
     outputSchema: DoctorOutputSchema,
     annotations: { readOnlyHint: true, destructiveHint: false },
-    async run(_args, ctx): Promise<CommandResult<DoctorOutput>> {
+    async run(rawArgs, ctx): Promise<CommandResult<DoctorOutput>> {
+      const fix = rawArgs.fix === true;
       const config = await loadProjectConfig(ctx.cwd);
       if (!config.ok) {
         return {
@@ -86,8 +95,11 @@ export function makeDoctorCommand(deps: CommandDeps = defaultDeps) {
       }
       const ir = config.ir;
 
-      // Dry-run emission: full drift comparison, zero writes.
-      const outcome = await runEmitPipeline(ir, ctx.cwd, { dryRun: true }, deps);
+      // Default: dry-run emission — full drift comparison, zero writes.
+      // --fix: a real (non-accept-generated) pass, which writes pending files
+      // but still KEEPS drifted content (safe by construction).
+      const outcome = await runEmitPipeline(ir, ctx.cwd, { dryRun: !fix }, deps);
+      const fixedPending = fix ? outcome.apply.written : [];
 
       const registry = new CheckRegistry();
       registry.register({
@@ -120,17 +132,26 @@ export function makeDoctorCommand(deps: CommandDeps = defaultDeps) {
       registry.register({
         id: "emit.pending",
         description: "All compiled output has been emitted",
-        run: async (): Promise<Finding[]> =>
-          outcome.apply.written.length > 0
-            ? [
-                {
-                  checkId: "emit.pending",
-                  severity: "warn",
-                  message: `${outcome.apply.written.length} file(s) pending emission: ${outcome.apply.written.join(", ")}.`,
-                  fix: "patterson sync",
-                },
-              ]
-            : [],
+        run: async (): Promise<Finding[]> => {
+          if (outcome.apply.written.length === 0) return [];
+          if (fix) {
+            return [
+              {
+                checkId: "emit.pending",
+                severity: "info",
+                message: `--fix emitted ${fixedPending.length} pending file(s): ${fixedPending.join(", ")}.`,
+              },
+            ];
+          }
+          return [
+            {
+              checkId: "emit.pending",
+              severity: "warn",
+              message: `${outcome.apply.written.length} file(s) pending emission: ${outcome.apply.written.join(", ")}.`,
+              fix: "patterson sync (or patterson doctor --fix)",
+            },
+          ];
+        },
       });
       registry.register({
         id: "emit.targets",
