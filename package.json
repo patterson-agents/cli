@@ -1,7 +1,7 @@
 {
-  "name": "patterson-monorepo",
+  "name": "patterson-cli",
   "version": "0.1.0",
-  "description": "patterson — template-driven scaffolder and AI-agent configuration manager. Monorepo root (private).",
+  "description": "patterson — template-driven scaffolder and AI-agent configuration manager. Workspace root (private).",
   "private": true,
   "type": "module",
   "author": "Daniel Bodnar",
