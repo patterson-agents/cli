@@ -1,0 +1,67 @@
+/* ============================================================
+   Patterson brand theme for Starlight
+   Values sourced from packages/design/assets/snapshot/tokens/colors.css
+   and packages/design/assets/snapshot/theme.json (brand hexes verbatim —
+   navy #003767 / sky #00A8E1 with their tint scales). No gradients, ever.
+   ============================================================ */
+
+/* ---- Dark mode (Starlight's default :root theme) ----------
+   Sky ramp for accents; navy as the deep accent surface. */
+:root {
+  --sl-color-accent-low: #003767; /* --pat-navy */
+  --sl-color-accent: #00a8e1; /* --pat-sky */
+  --sl-color-accent-high: #99dcf3; /* --pat-sky-40 */
+}
+
+/* ---- Light mode -------------------------------------------
+   Navy ramp for accents; cool-gray neutral ramp from tokens. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #e5ebf0; /* --pat-navy-10 */
+  --sl-color-accent: #003767; /* --pat-navy */
+  --sl-color-accent-high: #003767; /* --pat-navy */
+
+  /* Neutral ramp (cool grays from the token file) */
+  --sl-color-white: #1d1d20; /* --pat-ink */
+  --sl-color-gray-1: #46464a; /* --pat-gray-700 */
+  --sl-color-gray-2: #58585b; /* --pat-gray-600 (body copy) */
+  --sl-color-gray-3: #7c7c80; /* --pat-gray-500 */
+  --sl-color-gray-4: #a3a3a7; /* --pat-gray-400 */
+  --sl-color-gray-5: #c9c9cc; /* --pat-gray-300 */
+  --sl-color-gray-6: #ececec; /* --pat-gray-100 */
+  --sl-color-gray-7: #f6f7f8; /* --pat-gray-50 */
+  --sl-color-black: #ffffff; /* --pat-white (page surface) */
+}
+
+/* ---- Controls ---------------------------------------------
+   Production Patterson buttons: 5px radius, semibold, flat fills,
+   200ms ease-in-out color transitions. Primary hover is a LIGHTER
+   NAVY (#315D83) — never sky. */
+.sl-link-button {
+  border-radius: 5px;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease-in-out,
+    color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+:root[data-theme='light'] .sl-link-button.primary:hover {
+  background-color: #315d83; /* --pat-primary-hover */
+}
+
+:root[data-theme='dark'] .sl-link-button.primary:hover {
+  background-color: #33b9e7; /* --pat-sky-80 */
+}
+
+/* ---- Badges -----------------------------------------------
+   Patterson badges are pill-shaped, flat navy/sky fills. */
+.sl-badge {
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* ---- Hero -------------------------------------------------
+   Keep the tagline in brand body gray; heading stays theme ink. */
+.hero .tagline {
+  color: var(--sl-color-gray-2);
+}

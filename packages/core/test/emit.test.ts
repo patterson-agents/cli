@@ -16,11 +16,14 @@
  */
 import { afterAll, describe, expect, test } from "bun:test";
 import { mkdtempSync, rmSync } from "node:fs";
+import { lstat, readlink, rm, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 import {
   applyFileOps,
+  assertInsideRoot,
+  NON_SYMLINK_HASH,
   backupFile,
   captureSnapshot,
   classifyDrift,
@@ -819,5 +822,119 @@ describe("determinism", () => {
     );
     expect(real.backups).toEqual(dry.backups);
     expect(await fileExists(root, planned ?? "")).toBe(true);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Root-escape guard + symlink materialization (engine)
+// ---------------------------------------------------------------------------
+
+describe("root-escape guard", () => {
+  test("a FileOp path that escapes the root aborts the whole batch before any write", async () => {
+    const root = makeRoot();
+    await expect(
+      applyFileOps(
+        [
+          { path: "innocent.md", format: "markdown", mode: "own", content: "hi" },
+          { path: "../outside.txt", format: "text", mode: "own", content: "escape!" },
+        ],
+        opts(root),
+      ),
+    ).rejects.toThrow(/escapes the project root/);
+    expect(await fileExists(root, "innocent.md")).toBe(false);
+    expect(await Bun.file(join(root, "..", "outside.txt")).exists()).toBe(false);
+  });
+
+  test("assertInsideRoot rejects absolute and dot-dot paths, accepts nested relative ones", () => {
+    expect(() => assertInsideRoot("/etc/passwd")).toThrow(/escapes/);
+    expect(() => assertInsideRoot("a/../../x")).toThrow(/escapes/);
+    expect(() => assertInsideRoot("..")).toThrow(/escapes/);
+    expect(() => assertInsideRoot("a/b/../c.txt")).not.toThrow();
+    expect(() => assertInsideRoot(".claude/skills/deploy")).not.toThrow();
+  });
+});
+
+const linkOp = (target = "../../.agents/skills/deploy"): FileOp => ({
+  path: ".claude/skills/deploy",
+  format: "text",
+  mode: "own",
+  content: target,
+  linkMode: "symlink",
+});
+
+describe("symlink-mode own tier (linkMode: \"symlink\")", () => {
+  test("materializes a real symlink, records linkMode, and is idempotent", async () => {
+    const root = makeRoot();
+    const first = await applyFileOps([linkOp()], opts(root));
+    expect(first.conflicts).toEqual([]);
+    expect(first.written).toEqual([".claude/skills/deploy"]);
+
+    const abs = join(root, ".claude/skills/deploy");
+    expect((await lstat(abs)).isSymbolicLink()).toBe(true);
+    expect(await readlink(abs)).toBe("../../.agents/skills/deploy");
+
+    const records = await loadProvenance(root);
+    expect(records.get(".claude/skills/deploy")?.linkMode).toBe("symlink");
+
+    const second = await applyFileOps([linkOp()], opts(root));
+    expect(second.conflicts).toEqual([]);
+  });
+
+  test("retargeted-by-hand link is drift: kept + reported; acceptGenerated retargets", async () => {
+    const root = makeRoot();
+    await applyFileOps([linkOp()], opts(root));
+    const abs = join(root, ".claude/skills/deploy");
+    await rm(abs);
+    await symlink("../../elsewhere", abs);
+
+    const drifted = await applyFileOps([linkOp()], opts(root));
+    expect(drifted.conflicts).toHaveLength(1);
+    expect(drifted.conflicts[0]?.reason).toBe("hand-edited");
+    expect(await readlink(abs)).toBe("../../elsewhere"); // kept
+
+    const accepted = await applyFileOps([linkOp()], opts(root, { acceptGenerated: true }));
+    expect(accepted.conflicts).toEqual([]);
+    expect(await readlink(abs)).toBe("../../.agents/skills/deploy");
+  });
+
+  test("deleted link is drift with ABSENT_HASH; acceptGenerated recreates", async () => {
+    const root = makeRoot();
+    await applyFileOps([linkOp()], opts(root));
+    await rm(join(root, ".claude/skills/deploy"));
+
+    const drifted = await applyFileOps([linkOp()], opts(root));
+    expect(drifted.conflicts[0]?.currentHash).toBe("absent");
+
+    await applyFileOps([linkOp()], opts(root, { acceptGenerated: true }));
+    expect((await lstat(join(root, ".claude/skills/deploy"))).isSymbolicLink()).toBe(true);
+  });
+
+  test("a real directory at the link path is refused even under acceptGenerated; adopt marks it foreign", async () => {
+    const root = makeRoot();
+    await writeFixture(root, ".claude/skills/deploy/SKILL.md", "# hand-authored\n");
+
+    const refused = await applyFileOps([linkOp()], opts(root, { acceptGenerated: true }));
+    expect(refused.conflicts).toHaveLength(1);
+    expect(refused.conflicts[0]?.currentHash).toBe(NON_SYMLINK_HASH);
+    expect(await readFile(root, ".claude/skills/deploy/SKILL.md")).toBe("# hand-authored\n");
+
+    const adopted = await applyFileOps([linkOp()], opts(root, { adopt: true }));
+    expect(adopted.conflicts).toEqual([]);
+    expect(adopted.foreignSkipped).toEqual([".claude/skills/deploy"]);
+    const records = await loadProvenance(root);
+    expect(records.get(".claude/skills/deploy")?.foreign).toEqual(["content"]);
+
+    // Foreign forever: later syncs skip silently, never replace the dir.
+    const later = await applyFileOps([linkOp()], opts(root, { acceptGenerated: true }));
+    expect(later.foreignSkipped).toEqual([".claude/skills/deploy"]);
+    expect(await readFile(root, ".claude/skills/deploy/SKILL.md")).toBe("# hand-authored\n");
+  });
+
+  test("dryRun reports the planned link without touching the filesystem", async () => {
+    const root = makeRoot();
+    const dry = await applyFileOps([linkOp()], opts(root, { dryRun: true }));
+    expect(dry.written).toEqual([".claude/skills/deploy"]);
+    expect(await fileExists(root, ".claude/skills/deploy")).toBe(false);
+    await expect(lstat(join(root, ".claude/skills/deploy"))).rejects.toThrow();
   });
 });

@@ -69,6 +69,14 @@ describe("suite-level never-write enforcement", () => {
         { path: "manual.yml", format: "yaml", mode: "instruct", content: "do it" },
         { path: ".claude/settings.local.json", format: "jsonc", mode: "own", content: "{}\n" },
         { path: "drifty.txt", format: "text", mode: "own", content: "generated\n" },
+        // Symlink materialization (the second guarded write path).
+        {
+          path: ".claude/skills/deploy",
+          format: "text",
+          mode: "own",
+          content: "../../.agents/skills/deploy",
+          linkMode: "symlink",
+        },
       ];
       const first = await applyFileOps(batch, { root, irHash: "sha256:" + "0".repeat(64) });
       expect(first.conflicts).toEqual([]);
@@ -86,6 +94,8 @@ describe("suite-level never-write enforcement", () => {
         [{ path: "skills-lock.json", format: "json", mode: "own", content: "{}" }],
         [{ path: ".agents/.skill-lock.json", format: "json", mode: "own", content: "{}" }],
         [{ path: ".claude/settings.local.json", format: "jsonc", mode: "own", content: "{ }\n" }],
+        // A symlink op may not target a never-write path either.
+        [{ path: "skills-lock.json", format: "text", mode: "own", content: "../x", linkMode: "symlink" }],
       ];
       for (const ops of forbidden) {
         expect(

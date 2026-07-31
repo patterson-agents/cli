@@ -9,8 +9,10 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { join } from "node:path";
 
 import { PattersonProjectSchema } from "@patterson/core";
+import { renderPattersonConfig } from "../../core/src/scaffold.ts";
 
 import { makeInitCommand } from "../src/commands/init.ts";
+import { defaultEmitterResolver } from "../src/commands/shared.ts";
 import { makeSyncCommand } from "../src/commands/sync.ts";
 import {
   makeCtx,
@@ -130,6 +132,84 @@ describe("init (T025b)", () => {
     if (synced.kind !== "ok") throw new Error("expected ok");
     expect(synced.value.foreignSkipped).toContain(".mcp.json#/mcpServers/docs");
     expect(await readText(root, ".mcp.json")).toBe(before);
+  });
+
+  test("plain init marks ALL pre-existing surfaces foreign — --accept-generated cannot clobber them later (FR-007)", async () => {
+    const root = await tempDir();
+    await seedFixtureRepo(root);
+    const realDeps = { ...stubDeps(), resolveEmitter: defaultEmitterResolver };
+    const realInit = makeInitCommand(realDeps);
+    const realSync = makeSyncCommand(realDeps);
+
+    // Plain init: the docs server is NOT lifted into the config.
+    const result = await realInit.run({ ...baseArgs }, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    expect(result.value.foreign).toContain(".mcp.json#/mcpServers/docs");
+    expect(result.value.foreign).toContain(".claude/settings.json#/permissions/allow");
+    expect(result.value.foreign).toContain("CLAUDE.md");
+
+    const before = await readText(root, ".mcp.json");
+
+    // The user later adds a same-named server to patterson.config.ts …
+    await Bun.write(
+      join(root, "patterson.config.ts"),
+      renderPattersonConfig({
+        version: 1,
+        name: "adopted",
+        targets: ["claude-code"],
+        mcp: [
+          {
+            name: "docs",
+            transport: { kind: "stdio", exec: { argv: ["totally-different-server"] } },
+            scope: "project",
+          },
+        ],
+      }),
+    );
+
+    // … and even sync --accept-generated must NOT overwrite the hand-written
+    // definition: foreign is immune to --accept-generated.
+    const synced = await realSync.run({ acceptGenerated: true, dryRun: false }, makeCtx(root));
+    expect(synced.kind).toBe("ok");
+    if (synced.kind !== "ok") throw new Error("expected ok");
+    expect(synced.value.foreignSkipped).toContain(".mcp.json#/mcpServers/docs");
+    expect(await readText(root, ".mcp.json")).toBe(before);
+    expect(await readText(root, ".mcp.json")).not.toContain("totally-different-server");
+  });
+
+  test("--import adopts instruction content in place — no duplicated bodies (real emitter)", async () => {
+    const root = await tempDir();
+    await seedFixtureRepo(root);
+    const realDeps = { ...stubDeps(), resolveEmitter: defaultEmitterResolver };
+    const realInit = makeInitCommand(realDeps);
+
+    const result = await realInit.run({ ...baseArgs, import: true }, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+
+    // The imported bodies appear EXACTLY once (inside sentinel regions).
+    const agentsMd = await readText(root, "AGENTS.md");
+    expect(agentsMd.split("# House rules").length - 1).toBe(1);
+    expect(agentsMd.split("# Agent guide").length - 1).toBe(1);
+
+    // CLAUDE.md is now the shim, not a second copy of the old prose.
+    const claudeMd = await readText(root, "CLAUDE.md");
+    expect(claudeMd).toContain("@AGENTS.md");
+    expect(claudeMd).not.toContain("# House rules");
+  });
+
+  test("--dry-run plans the adoption without writing anything", async () => {
+    const root = await tempDir();
+    await seedFixtureRepo(root);
+    const result = await init.run({ ...baseArgs, dryRun: true }, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    expect(result.value.dryRun).toBe(true);
+    expect(result.value.written.length).toBeGreaterThan(0);
+    // Nothing on disk: no config, no provenance.
+    expect(await Bun.file(join(root, "patterson.config.ts")).exists()).toBe(false);
+    expect(await Bun.file(join(root, ".patterson/emitted.json")).exists()).toBe(false);
   });
 
   test("re-init without --force is an error", async () => {

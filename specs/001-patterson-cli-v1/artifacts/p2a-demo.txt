@@ -1,0 +1,162 @@
+P2a WALKING-SKELETON DEMO TRANSCRIPT
+generated: 2026-07-31T09:37:13.297Z
+flow: create → sync (symlink skill) → doctor → hand-edit → sync (exit 2)
+      → sync --accept-generated → doctor → init adoption → never-write guard
+==============================================================================
+
+### 1. Scripted create (--yes --template skeleton --agents claude-code --no-install --no-git)
+$ patterson create demo-app --yes --template skeleton --agents claude-code --no-install --no-git    (cwd: /tmp/patterson-p2a-demo-ypa26T)
+  Scaffolded "demo-app" in /tmp/patterson-p2a-demo-ypa26T/demo-app: 4 template file(s), 1 emitted file(s).
+    - Skipped bun install (--no-install).
+    - Skipped git init (--no-git).
+  => exit code 0
+
+--- patterson.config.ts (generated) ---
+  /**
+   * Patterson project configuration (authoring form).
+   * Edit this file, then run `patterson sync` to re-emit target configs.
+   */
+  import type { PattersonProjectInput } from "@patterson/core";
+  
+  const config: PattersonProjectInput = {
+    "version": 1,
+    "name": "demo-app",
+    "targets": [
+      "claude-code"
+    ]
+  };
+  
+  export default config;
+
+### 2. Author real surfaces: instruction + policy + agent + symlink-mode skill
+$ $EDITOR patterson.config.ts   (hand edit, then sync)
+
+### 3. sync — emits AGENTS.md/CLAUDE.md/settings/agent + materializes the skill symlink
+$ patterson sync    (cwd: /tmp/patterson-p2a-demo-ypa26T/demo-app)
+  Sync complete: 6 file(s) written, 0 conflicts.
+  => exit code 0
+
+### 3a. The skill link is a REAL symlink (S3: .claude/skills link is mandatory)
+$ ls -la .claude/skills/deploy
+  symlink: true  ->  ../../.agents/skills/deploy
+
+### 4. doctor — zero drift right after emission (exit 0)
+$ patterson doctor    (cwd: /tmp/patterson-p2a-demo-ypa26T/demo-app)
+  doctor: 0 drift conflicts, 0 warning(s).
+    - [info] Config valid: project "demo-app", targets [claude-code].
+  => exit code 0
+
+### 5. Hand-edit an emitted file
+$ echo 'Hand-added note.' >> .claude/agents/reviewer.md
+
+### 6. sync — drift kept + reported, exit 2 (never clobbered non-interactively)
+$ patterson sync    (cwd: /tmp/patterson-p2a-demo-ypa26T/demo-app)
+  1 drift conflict(s) — hand-edited content was kept, not overwritten:
+    - .claude/agents/reviewer.md was edited by hand; kept as-is. Re-run with --accept-generated to overwrite.
+  Re-run with --accept-generated to overwrite (a backup is taken first).
+  => exit code 2
+
+--- .claude/agents/reviewer.md (edit PRESERVED) ---
+  ---
+  name: reviewer
+  description: "Reviews code."
+  ---
+  
+  Be strict.
+  
+  Hand-added note.
+
+### 7. sync --accept-generated — overwrites after a backup
+$ patterson sync --accept-generated    (cwd: /tmp/patterson-p2a-demo-ypa26T/demo-app)
+  Sync complete: 1 file(s) written, 0 conflicts.
+    - Backups: .patterson/backup/2026-07-31T09-37-13.766Z-.claude__agents__reviewer.md
+  => exit code 0
+
+--- .claude/agents/reviewer.md (regenerated) ---
+  ---
+  name: reviewer
+  description: "Reviews code."
+  ---
+  
+  Be strict.
+
+### 8. doctor — clean again (exit 0)
+$ patterson doctor    (cwd: /tmp/patterson-p2a-demo-ypa26T/demo-app)
+  doctor: 0 drift conflicts, 0 warning(s).
+    - [info] Config valid: project "demo-app", targets [claude-code].
+  => exit code 0
+
+### 9. init adoption fixture: a repo that had claude-code config before patterson
+$ ls adopt-me → .mcp.json  CLAUDE.md  .claude/settings.json
+
+### 9a. init — pre-existing keys/files become foreign (hand-owned forever)
+$ patterson init --name adopted    (cwd: /tmp/patterson-p2a-demo-ypa26T/adopt-me)
+  Initialized "adopted": 3 pre-existing file(s) detected, 0 MCP server(s) and 0 instruction file(s) imported.
+    - Detected: .mcp.json, CLAUDE.md, .claude/settings.json
+    - Foreign (hand-owned, never overwritten): .mcp.json#/mcpServers/docs, .claude/settings.json#/permissions/allow, CLAUDE.md
+  => exit code 0
+
+--- .patterson/emitted.json (foreign marks) ---
+  {
+    "version": 1,
+    "files": [
+      {
+        "path": ".claude/settings.json",
+        "mode": "merge",
+        "emittedAt": "2026-07-31T09:37:13.950Z",
+        "irHash": "adopted",
+        "keyPaths": [
+          {
+            "path": "/permissions/allow",
+            "value": [
+              "Read"
+            ],
+            "hash": "sha256:fd3226ebfe0637690c23e8d6b13336b1efc88897a7368308ba8903904ab7133d"
+          }
+        ],
+        "foreign": [
+          "/permissions/allow"
+        ]
+      },
+      {
+        "path": ".mcp.json",
+        "mode": "merge",
+        "emittedAt": "2026-07-31T09:37:13.950Z",
+        "irHash": "adopted",
+        "keyPaths": [
+          {
+            "path": "/mcpServers/docs",
+            "value": {
+              "command": "hand-written-server",
+              "args": [
+                "--serve"
+              ]
+            },
+            "hash": "sha256:a4bd8051b5f9ef3332052bdcc338ff7d712d677dbae11578d0f6d8807f800086"
+          }
+        ],
+        "foreign": [
+          "/mcpServers/docs"
+        ]
+      },
+      {
+        "path": "CLAUDE.md",
+        "mode": "own",
+        "emittedAt": "2026-07-31T09:37:13.950Z",
+        "irHash": "adopted",
+        "contentHash": "sha256:562b5214d47c5b83c141f42db981c99f8294f68e52b21b41de8be101205510f1",
+        "foreign": [
+          "content"
+        ]
+      }
+    ]
+  }
+
+### 10. Never-write guard: writing skills-lock.json through the engine throws
+$ bun -e 'applyFileOps([{ path: "skills-lock.json", ... }])'
+  threw: PattersonNeverWriteError: Refusing to write "skills-lock.json": "skills-lock.json" is on the never-write list (Constitution II).
+  skills-lock.json exists: false
+
+==============================================================================
+DEMO COMPLETE — all steps behaved per the drift protocol (Constitution II).
+

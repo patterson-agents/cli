@@ -458,6 +458,22 @@ describe("SkillDef name", () => {
       SkillDefSchema.safeParse({ ...base, name: "ok", description: "d".repeat(1025) }).success,
     ).toBe(false);
   });
+
+  test.each([
+    "../../../secret", // traversal
+    "/etc/passwd", // absolute
+    "a\\b", // backslash
+    "./x", // "." segment
+    "a//b", // empty segment
+  ])("traversal-unsafe files entry %p rejected", (file) => {
+    expect(SkillDefSchema.safeParse({ ...base, name: "ok", files: [file] }).success).toBe(false);
+  });
+
+  test("safe relative files entries accepted", () => {
+    expect(
+      SkillDefSchema.safeParse({ ...base, name: "ok", files: ["helper.sh", "docs/usage.md"] }).success,
+    ).toBe(true);
+  });
 });
 
 // ---------------------------------------------------------------------------

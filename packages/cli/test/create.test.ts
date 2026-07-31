@@ -164,6 +164,47 @@ describe("create (T024)", () => {
     expect(pkg.name).toBe("wizard-made");
   });
 
+  test("--dry-run plans the scaffold + emission and writes nothing", async () => {
+    const root = await tempDir();
+    const result = await create.run(
+      { ...base, dir: root, name: "planned", dryRun: true },
+      makeCtx(root),
+    );
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    expect(result.value.dryRun).toBe(true);
+    // The plan lists what a real run would touch …
+    expect(result.value.scaffolded).toContain("package.json");
+    expect(result.value.scaffolded).toContain("patterson.config.ts");
+    expect(result.value.emitted.length).toBeGreaterThan(0);
+    // … but nothing exists on disk.
+    expect(await exists(root, "package.json")).toBe(false);
+    expect(await exists(root, "patterson.config.ts")).toBe(false);
+    expect(await exists(root, ".patterson/emitted.json")).toBe(false);
+  });
+
+  test("rejects a traversal-shaped --name (wizard-equivalent validation)", async () => {
+    const root = await tempDir();
+    const result = await create.run(
+      { ...base, dir: root, name: "../evil" },
+      makeCtx(root),
+    );
+    expect(result.kind).toBe("error");
+    if (result.kind !== "error") throw new Error("expected error");
+    expect(result.code).toBe("INVALID_NAME");
+    expect(await exists(root, "package.json")).toBe(false);
+  });
+
+  test("a .patterson bookkeeping dir does not count toward the emptiness check", async () => {
+    const root = await tempDir();
+    await Bun.write(
+      join(root, ".patterson/wizard.json"),
+      JSON.stringify({ version: 1, completedSteps: [] }),
+    );
+    const result = await create.run({ ...base, dir: root, name: "wizarded" }, makeCtx(root));
+    expect(result.kind).toBe("ok");
+  });
+
   test("git init runs unless --no-git", async () => {
     const root = await tempDir();
     const result = await create.run(

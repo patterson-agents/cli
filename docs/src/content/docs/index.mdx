@@ -1,0 +1,48 @@
+---
+title: patterson
+description: One command. Every agent configured. Zero drift.
+template: splash
+hero:
+  title: patterson
+  tagline: One command. Every agent configured. Zero drift.
+  image:
+    light: ../../assets/patterson-logo-navy.svg
+    dark: ../../assets/patterson-logo-white.svg
+    alt: Patterson
+  actions:
+    - text: Get started
+      link: /start/getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Command reference
+      link: /reference/commands/
+      icon: open-book
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+<CardGrid stagger>
+  <Card title="Scaffold" icon="rocket">
+    Pick one of the Patterson design-system templates — docs sites,
+    storefronts, decks, corporate pages — and get a branded, agent-ready
+    project in under a minute. Fully offline. Non-empty dirs refused,
+    never clobbered.
+  </Card>
+  <Card title="Manage" icon="setting">
+    `patterson.config.ts` is the single source of truth. `sync` re-emits
+    every surface; `doctor` reports drift; `check` shows exactly which
+    intent reaches which agent — and *why not* when a surface can't
+    express it.
+  </Card>
+  <Card title="Agent-native" icon="puzzle">
+    The entire CLI is also a stdio MCP server. Any agent can drive every
+    command — prompts become structured decisions, destructive ops require
+    explicit consent, and nothing ever silently overwrites your edits.
+  </Card>
+  <Card title="Learn as you go" icon="open-book">
+    `patterson tutor` runs hands-on AI-fluency lessons validated against
+    your real project — Claude Code, Copilot, and MCP tracks, with paths
+    to the official credentials.
+  </Card>
+</CardGrid>

@@ -24,3 +24,11 @@ Previously scored this session:
 - @opentui/core 97 / react 97 / solid 97 / solid-js 100 — currently being REMOVED (P0).
 
 No package hits the hard denylist. No vulnerability dimension below 100.
+
+## Docs site (added 2026-07-31 04:3x, user-directed Starlight docs)
+
+| Package | SC | Maint | Qual | Vuln | Lic | Disposition |
+| --- | --- | --- | --- | --- | --- | --- |
+| astro@7.1.5 | **88** | 97 | 87 | 100 | 100 | `[high] obfuscatedFile` fires identically on 7.1.4/7.1.5/7.1.6 → stable characteristic of astro's bundled compiler (minified+WASM), not version-specific injection; withastro org publisher continuity; vulns 100. Score delta vs 66 on neighbors tracks `recentlyPublished` decay. ACCEPT pinned, docs-only dependency (isolated lockfile in docs/, not in workspace). Avoided 7.1.6 (published <48h). |
+| @astrojs/starlight@0.41.5 | 98 | 96 | **84** | 100 | 100 | Quality 84 on a docs-site devDependency. ACCEPT. |
+| sharp@0.35.3 | 96 | 93 | 100 | 100 | 100 | — (image pipeline; shellAccess = libvips install, its function) |
