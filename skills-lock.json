@@ -1,11 +1,83 @@
 {
   "version": 1,
   "skills": {
+    "claude-command-converter": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/claude-command-converter/SKILL.md",
+      "computedHash": "37541f349f5916236d3ead3b05bce8df1a381d846540dfbde4eed6172863e435"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "computedHash": "b146008599c31057cef1c145774cea5d5afb30e8f43fa802e47a4b461419aaaf"
+    },
     "opentui": {
       "source": "anomalyco/opentui",
       "sourceType": "github",
       "skillPath": "packages/web/src/content/SKILL.md",
       "computedHash": "9750356a385419f792fb1b17981d9c5f13817efdff6048f390df579be5b2e47a"
+    },
+    "speckit-analyze": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-analyze/SKILL.md",
+      "computedHash": "3272a312596982bbdc8a7634f0a9c738fb6b2c6c0f7e638c391d5fa953bb02e3"
+    },
+    "speckit-baseline": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-baseline/SKILL.md",
+      "computedHash": "2f6a12fb3b0270c9a718a59ce19d7b09567c0ba14953af01a039471bcb557c6b"
+    },
+    "speckit-checklist": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-checklist/SKILL.md",
+      "computedHash": "7e36d2d85e1c08d5e33911b273f6629c1859a3e0999f520f9badf21e01bb43e9"
+    },
+    "speckit-clarify": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-clarify/SKILL.md",
+      "computedHash": "774977d99ed6e978d6b0db08ea8a693595af4deb1e69aa71748e95afa68a85f8"
+    },
+    "speckit-constitution": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-constitution/SKILL.md",
+      "computedHash": "fae47ed8f44e5600e9dc164ff8fcc4a42f20e19459ce1bbf97fcc2cdf3f8bcfd"
+    },
+    "speckit-implement": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-implement/SKILL.md",
+      "computedHash": "27296242ce4f4ec783fab05d5b777e3e481865737c02fcf0667fd4e738ea07b0"
+    },
+    "speckit-plan": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-plan/SKILL.md",
+      "computedHash": "66ce4262b7fa6e22faabb123bc75ec68b8e496396e75a219b8add33587ed1407"
+    },
+    "speckit-specify": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-specify/SKILL.md",
+      "computedHash": "38ef8cf58ce94df2100ab547bff3dbe3c57761a4c9d5e53d8f44ab0b0f416cd2"
+    },
+    "speckit-tasks": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-tasks/SKILL.md",
+      "computedHash": "59889b43cbec42a81dcf9a514d0a56a1fb80be9f82497cb6a5f282f9a0d1be9a"
+    },
+    "speckit-taskstoissues": {
+      "source": "dceoy/speckit-agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/speckit-taskstoissues/SKILL.md",
+      "computedHash": "f123e447bbd034794619d71d75afc0a1af5a47729ea90b6f536aa97d2a0b8636"
     }
   }
 }
