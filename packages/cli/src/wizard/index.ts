@@ -27,6 +27,7 @@ export {
   AGENT_CHOICES,
   agentsStep,
   builtinTemplateSource,
+  designAwareTemplateSource,
   nameStep,
   templateStep,
   validateProjectName,

@@ -22,7 +22,8 @@ import {
 } from "@patterson/core";
 
 import { runWizard, type WizardRunResult } from "../wizard/driver.ts";
-import type { Prompter, WizardFlags } from "../wizard/types.ts";
+import { designAwareTemplateSource } from "../wizard/steps.ts";
+import type { Prompter, TemplateSource, WizardFlags } from "../wizard/types.ts";
 
 import { createCommand } from "./create.ts";
 import { renderResult, runDescriptor } from "./frontend.ts";
@@ -85,6 +86,8 @@ export interface CreateEntryOptions {
   prompter?: Prompter;
   /** Registry override (tests); default buildRegistry(). */
   registry?: CommandRegistry;
+  /** Template source override (tests); default skeleton + design snapshot. */
+  templates?: TemplateSource;
   io?: CommandIo;
   cwd?: string;
 }
@@ -123,6 +126,7 @@ export async function runCreateCli(
     cwd,
     prompter,
     registry,
+    templates: options.templates ?? designAwareTemplateSource,
     flags: wizardFlagsFrom(parsedArgs),
     resume: parsedArgs["resume"] === true,
     io,

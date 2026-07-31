@@ -30,6 +30,7 @@ import {
   PATTERSON_CONFIG_BASENAME,
   renderDefaultSetupMd,
   renderPattersonConfig,
+  substituteTemplateVars,
   writeScaffoldFiles,
 } from "../../../core/src/scaffold.ts";
 
@@ -124,14 +125,28 @@ export function makeCreateCommand(deps: CommandDeps = defaultDeps) {
         };
       }
 
+      // Template resolution: built-in templates/ first, then the vendored
+      // design-system snapshot (E-P3). Both produce the same ScaffoldFile
+      // shape, so everything downstream is source-agnostic.
       const templateDir = join(deps.templatesDir, args.template);
-      const available = await directoryEntries(deps.templatesDir);
-      if (!available.includes(args.template)) {
-        return {
-          kind: "error",
-          code: "UNKNOWN_TEMPLATE",
-          message: `Unknown template "${args.template}". Available: ${available.join(", ") || "(none)"}.`,
-        };
+      const builtin = await directoryEntries(deps.templatesDir);
+      const isBuiltin = builtin.includes(args.template);
+      let designWarnings: string[] = [];
+      let designFiles: { path: string; content: string }[] | null = null;
+      if (!isBuiltin) {
+        const designAvailable = await deps.designTemplates.list();
+        if (designAvailable.some((template) => template.name === args.template)) {
+          const materialized = await deps.designTemplates.materialize(args.template);
+          designFiles = materialized.files;
+          designWarnings = materialized.warnings;
+        } else {
+          const all = [...builtin, ...designAvailable.map((template) => template.name)];
+          return {
+            kind: "error",
+            code: "UNKNOWN_TEMPLATE",
+            message: `Unknown template "${args.template}". Available: ${all.join(", ") || "(none)"}.`,
+          };
+        }
       }
 
       const root = resolve(ctx.cwd, args.dir);
@@ -167,7 +182,14 @@ export function makeCreateCommand(deps: CommandDeps = defaultDeps) {
         }
       }
 
-      const templateFiles = await collectTemplateFiles(templateDir, { name });
+      // Design-template files get the same {{name}} substitution as built-in
+      // ones (paths and contents) so the two sources behave identically.
+      const templateFiles = designFiles
+        ? designFiles.map((file) => ({
+            path: substituteTemplateVars(file.path, { name }),
+            content: substituteTemplateVars(file.content, { name }),
+          }))
+        : await collectTemplateFiles(templateDir, { name });
       const wouldTouch = [
         ...templateFiles.map((file) => file.path),
         PATTERSON_CONFIG_BASENAME,
@@ -250,6 +272,7 @@ export function makeCreateCommand(deps: CommandDeps = defaultDeps) {
       for (const target of outcome.unsupported) {
         details.push(`Target "${target}" has no emitter yet; nothing was emitted for it.`);
       }
+      details.push(...designWarnings);
       details.push(...describeGaps(outcome.gaps));
 
       const setupPath = outcome.apply.setupPath ?? (outcome.ops.some((op) => op.path === "SETUP.md") ? "SETUP.md" : null);

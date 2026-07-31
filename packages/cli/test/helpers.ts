@@ -127,8 +127,23 @@ export const stubResolver: EmitterResolver = async (target) => {
 /** Repo-root templates directory (packages/cli/test → repo root). */
 export const TEMPLATES_DIR = join(import.meta.dir, "..", "..", "..", "templates");
 
+/** Empty design-template source: unit tests exercise builtin templates only. */
+export const stubDesignTemplates: CommandDeps["designTemplates"] = {
+  async list() {
+    return [];
+  },
+  async materialize(name) {
+    throw new Error(`stubDesignTemplates cannot materialize "${name}".`);
+  },
+};
+
 export function stubDeps(overrides: Partial<CommandDeps> = {}): CommandDeps {
-  return { resolveEmitter: stubResolver, templatesDir: TEMPLATES_DIR, ...overrides };
+  return {
+    resolveEmitter: stubResolver,
+    templatesDir: TEMPLATES_DIR,
+    designTemplates: stubDesignTemplates,
+    ...overrides,
+  };
 }
 
 // ---------------------------------------------------------------------------

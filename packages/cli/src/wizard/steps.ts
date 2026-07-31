@@ -20,9 +20,8 @@ import {
 // ---------------------------------------------------------------------------
 
 /**
- * v1 template source: the skeleton template only (T024 creates
- * templates/skeleton/). The P3 design package supplies a richer source
- * (design-system snapshot with thumbnails) via the same interface.
+ * Built-in template source: the skeleton template (T024 creates
+ * templates/skeleton/).
  */
 export const builtinTemplateSource: TemplateSource = {
   async list() {
@@ -32,6 +31,28 @@ export const builtinTemplateSource: TemplateSource = {
         label: "Skeleton",
         description: "Minimal Bun project with patterson wired in",
       },
+    ];
+  },
+};
+
+/**
+ * Full P3 source: skeleton first, then the 11 vendored design-system
+ * templates (lazy import keeps the design snapshot out of module graphs that
+ * never open the picker). Offline by construction — the design package reads
+ * only vendored bytes.
+ */
+export const designAwareTemplateSource: TemplateSource = {
+  async list() {
+    const builtin = await builtinTemplateSource.list();
+    const design = await import("@patterson/design");
+    const templates = await design.listDesignTemplates();
+    return [
+      ...builtin,
+      ...templates.map((template) => ({
+        name: template.name,
+        label: template.label,
+        description: template.description,
+      })),
     ];
   },
 };
@@ -124,16 +145,16 @@ export const nameStep: WizardStep = {
 // ---------------------------------------------------------------------------
 
 /**
- * Agent target surfaces offered by the wizard. Only claude-code is enabled in
- * P2a (the walking-skeleton emitter); the rest arrive with their emitters
- * (P2b / v1.1) and flip `disabled` off without any driver change.
+ * Agent target surfaces offered by the wizard. All five P2 emitters are live
+ * (P2b); a future surface starts `disabled: true` and flips off when its
+ * emitter lands — no driver change either way.
  */
 export const AGENT_CHOICES: readonly (PromptChoice & { value: TargetId })[] = [
   { value: "claude-code", label: "Claude Code" },
-  { value: "copilot", label: "GitHub Copilot", hint: "not yet available (P2b)", disabled: true },
-  { value: "opencode", label: "opencode", hint: "not yet available (P2b)", disabled: true },
-  { value: "zed", label: "Zed", hint: "not yet available (v1.1)", disabled: true },
-  { value: "vscode", label: "VS Code", hint: "not yet available (v1.1)", disabled: true },
+  { value: "copilot", label: "GitHub Copilot" },
+  { value: "opencode", label: "opencode" },
+  { value: "zed", label: "Zed", hint: "MCP servers with env secrets need out-of-band setup" },
+  { value: "vscode", label: "VS Code" },
 ];
 
 /** Validate raw agent ids (flag or prompt answers) into TargetIds. */

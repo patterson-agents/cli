@@ -15,6 +15,7 @@
     "@patterson/emitter-zed": "workspace:*",
     "@patterson/emitter-vscode": "workspace:*",
     "@patterson/emitter-cross": "workspace:*",
+    "@patterson/design": "workspace:*",
     "citty": "0.2.2",
     "@clack/prompts": "1.7.0",
     "zod": "4.4.3"

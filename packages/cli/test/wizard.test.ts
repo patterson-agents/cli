@@ -272,7 +272,7 @@ describe("interactive run", () => {
     expect(await Bun.file(wizardStatePath(root)).exists()).toBe(false);
   });
 
-  test("agents multiselect exposes only claude-code as enabled", async () => {
+  test("agents multiselect exposes every P2 emitter surface as enabled", async () => {
     const root = makeRoot();
     const { prompter, calls } = scriptedPrompter({
       select: ["skeleton"],
@@ -284,12 +284,7 @@ describe("interactive run", () => {
 
     const options = calls.multiselect[0]?.options ?? [];
     const enabled = options.filter((o) => !o.disabled).map((o) => o.value);
-    expect(enabled).toEqual(["claude-code"]);
-    // The other agent surfaces are present but disabled.
-    expect(options.length).toBeGreaterThan(1);
-    for (const choice of options) {
-      if (choice.value !== "claude-code") expect(choice.disabled).toBe(true);
-    }
+    expect(enabled).toEqual(["claude-code", "copilot", "opencode", "zed", "vscode"]);
   });
 
   test("state is persisted after every completed step", async () => {
@@ -378,7 +373,7 @@ describe("flags (processArgument)", () => {
     expect(invocations).toHaveLength(0);
   });
 
-  test("disabled agent via --agents ⇒ structured error result", async () => {
+  test("unknown agent via --agents ⇒ structured error result", async () => {
     const root = makeRoot();
     const { prompter } = scriptedPrompter({});
     const { registry, invocations } = stubCreateRegistry();
@@ -388,12 +383,12 @@ describe("flags (processArgument)", () => {
       prompter,
       registry,
       io: silentIo,
-      flags: { template: "skeleton", name: "x", agents: ["copilot"] },
+      flags: { template: "skeleton", name: "x", agents: ["cursor"] },
     });
 
     expect(outcome.kind).toBe("error");
     if (outcome.kind !== "error") throw new Error("unreachable");
-    expect(outcome.message).toContain("copilot");
+    expect(outcome.message).toContain("cursor");
     expect(invocations).toHaveLength(0);
   });
 
@@ -704,8 +699,8 @@ describe("template source", () => {
 });
 
 describe("AGENT_CHOICES", () => {
-  test("claude-code is the only enabled agent surface", () => {
+  test("all five P2 emitter surfaces are enabled", () => {
     const enabled = AGENT_CHOICES.filter((c) => !c.disabled).map((c) => c.value);
-    expect(enabled).toEqual(["claude-code"]);
+    expect(enabled).toEqual(["claude-code", "copilot", "opencode", "zed", "vscode"]);
   });
 });

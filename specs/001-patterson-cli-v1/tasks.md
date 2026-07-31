@@ -191,7 +191,7 @@ hand-edit then sync --yes preserves + exits 2.
       artifacts/; commit "P2b"
 
 ## Epics (elaborated at phase boundaries — placeholder scope only)
-- [ ] E-P3 [US1] Design + create: vendored DS snapshot build (manifest/theme/
+- [X] E-P3 [US1] Design + create: vendored DS snapshot build (manifest/theme/
       thumbnails/templates), materializer, full wizard steps (template picker w/
       thumbnail fallback), create-patterson shim, S5, offline-safe network steps,
       SETUP.md polish, `design refresh` command (authenticated refresh; unauthenticated

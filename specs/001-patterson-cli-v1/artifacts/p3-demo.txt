@@ -1,0 +1,70 @@
+P3 DESIGN + CREATE DEMO TRANSCRIPT
+generated: 2026-07-31T15:39:01Z
+flow: design templates → design tokens → design refresh (offline, FR-014)
+      → create --template docs-site (design materialization) → shim --help
+==============================================================================
+
+### 1. patterson design templates
+11 design template(s) available (vendored snapshot).
+  - canvas — Canvas: Patterson corporate page canvas — nav, hero, proof band, capability cards, CTA and footer. Three expressive tweaks reshape surface, density and how the page proves its claims.
+  - corporate-page — Corporate Page: Patterson brand page shell — sticky nav, navy hero, content band and footer, built on the component library.
+  - corporate-website — Corporate Website: Interactive recreation of pattersoncompanies.com — navy hero, capability pillars, We-Are-Patterson stats, tabbed capabilities, newsroom and footer.
+  - deck — Presentation Deck: Patterson 16:9 slide deck on the corporate PowerPoint master — cover panel, icon-rail content slides, navy section dividers, stats, comparison, quote, table and closing.
+  - docs-site — Docs Site: VitePress-style documentation site organised by Diátaxis — top nav, sidebar, article body with callouts and prev/next pager.
+  - executive-deck — Executive Deck: Patterson executive briefing on the corporate PowerPoint master — navy cover, icon-rail content slides (takeaways, breakdown, requirements, outputs, benefits) with speaker notes.
+  - file-manager — Skill Studio: Claude-powered skills & plugins studio — workspace editor, GitHub repo file-tree source selector (pre-approved orgs, cascading checkboxes), reference curator, light/dark themes, and a Claude assistant
+  - patterson-docs — Patterson Docs: VitePress-style documentation shell organised by Diátaxis. Five scaffolded pages (How-to + Reference) wired to the sidebar, top nav and prev/next pager, with a built-in settings panel (light/dark them
+  - purpose-vision-values — Purpose, Vision & Values Deck: Faithful reversal of the Patterson corporate Purpose·Vision·Values PowerPoint — cover, icon-rail content slides, navy section dividers, four-colour values columns, funnel, statement lockups and word-c
+  - storefront — Storefront (Dental & Vet): Patterson e-commerce shell on pattern library v5.7.2 — utility bar, search, category flyouts, featured products, Advantage Rewards. Switchable Dental ↔ Veterinary.
+  - tutorialkit — TutorialKit Shell: Patterson-branded interactive-tutorial platform — top bar, breadcrumbs, lesson content with all five callouts, file tree, editor and terminal. Four live themes.
+  => exit code 0
+
+### 2. patterson design tokens
+Patterson Companies Design System v1.1.0: 12 token group(s).
+  - colors: 50 token(s)
+  - fonts: 4 token(s)
+  - fontWeights: 9 token(s)
+  - fontSizes: 11 token(s)
+  - lineHeights: 5 token(s)
+  - letterSpacings: 5 token(s)
+  - space: 13 token(s)
+  - sizes: 5 token(s)
+  - radii: 10 token(s)
+  - borderWidths: 2 token(s)
+  - shadows: 8 token(s)
+  - transitions: 6 token(s)
+  => exit code 0
+
+### 3. patterson design refresh (unauthenticated → exit 0 + age warning)
+Snapshot is from 2026-07-31 (0 day(s) old, 150 files); not refreshed — the design endpoint requires claude.ai authentication.
+  - To refresh: open claude.ai/design project 3534f94f-a7e6-4612-81d4-6e830716f07d with the claude-design MCP connected and re-run the snapshot pull (see packages/design/assets/snapshot/snapshot-manifest.json).
+  - A stale snapshot only affects new scaffolds; existing projects keep their materialized copies.
+  => exit code 0
+
+### 4. patterson create demo --template docs-site (vendored design template)
+Scaffolded "demo" in /tmp/patterson-p3-demo-Q3XzK0/demo: 10 template file(s), 2 emitted file(s).
+  - Skipped bun install (--no-install).
+  - Skipped git init (--no-git).
+  => exit code 0
+
+--- materialized tree (design template at root, shared assets under design-system/) ---
+  demo/app.jsx
+  demo/collections.jsx
+  demo/data.jsx
+  demo/design-system/DESIGN.md
+  demo/design-system/styles.css
+  demo/index.html
+  demo/opencode.json
+  demo/pages1.jsx
+  demo/pages2.jsx
+  demo/patterson.config.ts
+  demo/.patterson/emitted.json
+  demo/README.md
+  demo/SETUP.md
+
+### 5. bunx create-patterson --help (shim → patterson create, one implementation)
+[90mScaffold a new patterson-managed project (non-interactive with --yes) (patterson create v0.0.1)[39m
+
+[4m[1mUSAGE[22m[24m [36mpatterson create [OPTIONS] [DIR][39m
+
+[4m[1mARGUMENTS[22m[24m

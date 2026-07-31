@@ -7,6 +7,7 @@ import { createRegistry, type CommandRegistry } from "@patterson/core";
 
 import { makeCheckCommand } from "./check.ts";
 import { makeCreateCommand } from "./create.ts";
+import { designRefreshCommand, designTemplatesCommand, designTokensCommand } from "./design.ts";
 import { makeDoctorCommand } from "./doctor.ts";
 import { makeInitCommand } from "./init.ts";
 import { defaultDeps, type CommandDeps } from "./shared.ts";
@@ -20,5 +21,8 @@ export function buildRegistry(deps: CommandDeps = defaultDeps): CommandRegistry 
   registry.register(makeSyncCommand(deps));
   registry.register(makeDoctorCommand(deps));
   registry.register(makeCheckCommand(deps));
+  registry.register(designTemplatesCommand);
+  registry.register(designTokensCommand);
+  registry.register(designRefreshCommand);
   return registry;
 }

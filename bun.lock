@@ -25,6 +25,7 @@
       "dependencies": {
         "@clack/prompts": "1.7.0",
         "@patterson/core": "workspace:*",
+        "@patterson/design": "workspace:*",
         "@patterson/emitter-claude-code": "workspace:*",
         "@patterson/emitter-copilot": "workspace:*",
         "@patterson/emitter-cross": "workspace:*",

@@ -198,7 +198,21 @@ and the spike registry. Full evidence: session task outputs
     fails silently — `patterson doctor` must validate emitted Zed settings
     against the project-scope whitelist itself.
 
-## Known-stale watchlist (re-verify at implementation touch-time)
+- **S5 PARTIALLY RESOLVED (2026-07-31, P3)**: the GitHub-door hook is in place
+  but the empirical fire test is **deferred to publish time (P8)**.
+  - Root `package.json` now carries
+    `"bun-create": { "postinstall": "bunx create-patterson --resume" }` —
+    one shell-free command (single-space split safe), and `--resume` on a
+    fresh directory degrades to a fresh wizard, so the hook is harmless
+    whether or not it fires.
+  - The empirical test (`bun create techdays-ai/patterson-cli`) is blocked:
+    the repo is **private**, and Bun's GitHub template path fetches a public
+    tarball. Cannot be validated until the repo is public or the package is
+    published.
+  - **Design consequence already absorbed**: the three-doors architecture
+    makes the canonical door `bunx create-patterson` (npm), which does not
+    depend on the hook at all. S5's only remaining stake is README wording
+    for the GitHub door — gate that on the publish-time test.
 
 - awesome-copilot layout (restructured 2026-02; pin @SHA; `.schemas/` contains a
   stale-path trap).

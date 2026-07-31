@@ -66,8 +66,29 @@ const main = defineCommand({
       ]);
       return cittyCommandFor(checkCommand);
     },
+    design: async () => {
+      const [{ designTemplatesCommand, designTokensCommand, designRefreshCommand }, { cittyCommandFor }] =
+        await Promise.all([import("./commands/design.ts"), import("./commands/frontend.ts")]);
+      return defineCommand({
+        meta: { name: "design", description: "Vendored design-system templates and tokens" },
+        subCommands: {
+          templates: cittyCommandFor(designTemplatesCommand),
+          tokens: cittyCommandFor(designTokensCommand),
+          refresh: cittyCommandFor(designRefreshCommand),
+        },
+      });
+    },
   },
 });
+
+/**
+ * Run `patterson create` with the given argv (create-patterson shim entry:
+ * `bunx create-patterson …` ≡ `patterson create …`, one implementation for
+ * all three distribution doors — plan.md, bun-create semantics).
+ */
+export async function runCreateFromArgv(argv: string[] = process.argv.slice(2)): Promise<void> {
+  await runMain(main, { rawArgs: ["create", ...argv] });
+}
 
 if (import.meta.main) {
   await runMain(main);

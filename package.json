@@ -32,6 +32,9 @@
     "packages/*",
     "packages/emitters/*"
   ],
+  "bun-create": {
+    "postinstall": "bunx create-patterson --resume"
+  },
   "scripts": {
     "cli": "bun run packages/cli/src/index.ts",
     "dev": "bun run --watch packages/cli/src/index.ts",

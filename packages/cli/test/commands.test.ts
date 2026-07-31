@@ -10,11 +10,14 @@ import { makeDoctorCommand } from "../src/commands/doctor.ts";
 import { stubDeps } from "./helpers.ts";
 
 describe("command registry wiring", () => {
-  test("all five skeleton commands are registered, sorted by id", () => {
+  test("all commands are registered, sorted by id", () => {
     const registry = buildRegistry(stubDeps());
     expect(registry.list().map((descriptor) => descriptor.id)).toEqual([
       "check",
       "create",
+      "design.refresh",
+      "design.templates",
+      "design.tokens",
       "doctor",
       "init",
       "sync",

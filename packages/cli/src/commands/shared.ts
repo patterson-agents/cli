@@ -52,10 +52,23 @@ export interface ResolvedEmitter {
 
 export type EmitterResolver = (target: TargetId) => Promise<ResolvedEmitter | null>;
 
+/**
+ * Design-template source for `create` (E-P3). Backed by @patterson/design's
+ * vendored snapshot by default; tests may inject a stub.
+ */
+export interface DesignTemplateProvider {
+  list(): Promise<{ name: string; label: string; description: string }[]>;
+  materialize(
+    name: string,
+  ): Promise<{ files: { path: string; content: string }[]; warnings: string[] }>;
+}
+
 export interface CommandDeps {
   resolveEmitter: EmitterResolver;
   /** Directory containing template directories (e.g. `<repo>/templates`). */
   templatesDir: string;
+  /** Design-system template source (vendored snapshot). */
+  designTemplates: DesignTemplateProvider;
 }
 
 /** Default snapshot paths for the claude-code surfaces (P2a set). */
@@ -138,9 +151,26 @@ export const defaultEmitterResolver: EmitterResolver = async (target) => {
 /** `<repo>/templates` resolved relative to this source file (monorepo layout). */
 export const DEFAULT_TEMPLATES_DIR = join(import.meta.dir, "..", "..", "..", "..", "templates");
 
+/** Lazy default: the vendored design snapshot from @patterson/design. */
+export const defaultDesignTemplates: DesignTemplateProvider = {
+  async list() {
+    const design = await import("@patterson/design");
+    return (await design.listDesignTemplates()).map(({ name, label, description }) => ({
+      name,
+      label,
+      description,
+    }));
+  },
+  async materialize(name) {
+    const design = await import("@patterson/design");
+    return design.materializeDesignTemplate(name);
+  },
+};
+
 export const defaultDeps: CommandDeps = {
   resolveEmitter: defaultEmitterResolver,
   templatesDir: DEFAULT_TEMPLATES_DIR,
+  designTemplates: defaultDesignTemplates,
 };
 
 // ---------------------------------------------------------------------------
