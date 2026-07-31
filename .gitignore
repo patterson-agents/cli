@@ -32,3 +32,9 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Stakpak session files
+.stakpak/session*
+.harn/
+.vtcode/
+vtcode.toml

@@ -6,6 +6,7 @@
   "module": "src/index.ts",
   "dependencies": {
     "@patterson/core": "workspace:*",
-    "@modelcontextprotocol/sdk": "1.30.0"
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.4.3"
   }
 }

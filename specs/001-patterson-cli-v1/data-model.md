@@ -39,7 +39,11 @@ Tutor state is NOT part of core IR (P7-gated extension module).
 | { kind:"pick", id, options[] } | { kind:"command", id, command, args? }
 | { kind:"helper", command }
 ```
-Rules: interpolated secret strings forbidden anywhere in the IR; emitters render
+Rules: interpolated secret strings forbidden anywhere in the IR *machine surfaces*
+(Exec.env values, Exec.argv/cwd, remote-transport headers, GitHookDef.argv) —
+enforced by schema rejection of `${`/`{env:` patterns with a pointer to SecretRef.
+**Prose surfaces are exempt** (InstructionBlock.body, AgentDef.prompt,
+CommandDef.template may legitimately discuss `${VAR}` syntax). Emitters render
 native syntax or raise a reported reachability error (e.g. `prompt` → opencode).
 
 ### Exec (C1)
@@ -132,6 +136,14 @@ string[] (adoption), linkMode?, emittedAt, irHash }`
 Drift algorithm: current==recorded → rewrite allowed; current!=recorded → keep +
 report (+ non-zero exit in non-interactive; structured conflict over MCP);
 `--accept-generated` overrides. Applies to OWN and MERGE tiers alike.
+**Deletion of recorded content is drift** (keep-absent + report; `--accept-generated`
+recreates); such conflicts carry the `ABSENT_HASH` marker `"absent"` instead of a
+`sha256:*` value — frontends must tolerate it. The IR parses **strict**: unknown keys
+at any level are errors, not silently stripped (release-note-worthy once configs
+exist in the wild). Root `targets` rejects duplicates.
+Implementation note: `emit`'s `DriftConflict` and `registry`'s `CommandDriftConflict`
+are distinct exported types; frontends adapt at the boundary (unify post-P2a if the
+adapter proves annoying).
 
 ### Never-write list (Principle II)
 `skills-lock.json`, `~/.agents/.skill-lock.json` (and XDG variant),

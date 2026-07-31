@@ -100,6 +100,67 @@ and the spike registry. Full evidence: session task outputs
 | S6 | Can `.zed/settings.json` carry `context_servers` at project scope? | P2b | zed emitter mode (file vs instruct) |
 | S7 | changesets × Bun workspaces `workspace:*`: tarball diff `bun pm pack` vs `npm pack` | P6 | release scaffold gating (`--experimental`) |
 
+## Spike resolutions
+
+- **S1 RESOLVED (2026-07-31)**: **sdk@1.30.0 works end to end with real Claude
+  Code (v2.1.220).** Artifacts: `packages/mcp/spike/server.ts` (McpServer +
+  StdioServerTransport, two dummy tools, zod@4.4.3 schemas) +
+  `packages/mcp/spike/handshake.test.ts` (raw newline-delimited JSON-RPC client
+  over a spawned process; 6 tests green).
+  - **Negotiated protocolVersion**: real Claude Code sends `"2025-11-25"` in
+    initialize (wire-captured via tee wrapper; `clientInfo:
+    {name:"claude-code", version:"2.1.220"}`); sdk@1.30.0's
+    `LATEST_PROTOCOL_VERSION` is exactly `2025-11-25`, echoed back verbatim.
+    No "2026-07-28-era" client exists in the wild on this machine — current
+    Claude Code still speaks 2025-11-25. `SUPPORTED_PROTOCOL_VERSIONS` in
+    1.30.0: `[2025-11-25, 2025-06-18, 2025-03-26, 2024-11-05, 2024-10-07]`; a
+    scripted client requesting unknown `"2026-07-28"` gets `"2025-11-25"` back
+    (SDK falls back to latest; per spec the client decides whether to proceed).
+  - **Live headless verification**: throwaway dir with `.mcp.json`
+    (`{command:"bun", args:[…/spike/server.ts]}`): `claude mcp list` shows the
+    server but `⏸ Pending approval` — project-scope `.mcp.json` needs
+    interactive trust, so headless runs must use `claude -p … --mcp-config
+    <file> --strict-mcp-config` (bypasses approval, skips unrelated servers).
+    With that, Claude Code listed both tools and called them:
+    `TOOLS=patterson_spike_add,patterson_spike_echo SUM=5`, echo `HI`.
+  - **Surprises**: (1) zod-invalid `tools/call` args do NOT yield a JSON-RPC
+    `error` — sdk@1.30.0 returns an `isError:true` tool *result* with text
+    `"MCP error -32602: Input validation error: …"`; registry error mapping
+    must not expect protocol-level errors for validation failures. (2) zod is
+    an SDK peer dep (`^3.25 || ^4.0`) but only installed in `packages/core`;
+    `packages/mcp` cannot `import "zod"` today (spike shims via a
+    `spike/node_modules/zod` symlink into the bun store — same physical
+    instance the SDK resolves, so `instanceof ZodType` holds); P1 must add
+    pinned `zod@4.4.3` to `packages/mcp/package.json`. (3) `tools/list`
+    round-trips `annotations` (readOnlyHint/destructiveHint) and derives
+    JSON-Schema `required` correctly from zod optionality. (4) Claude Code
+    attaches `_meta: {"claudecode/toolUseId": …, progressToken: …}` to
+    `tools/call` — handlers must tolerate `_meta`.
+  - **Gate outcome**: D3 confirmed; registry contract can freeze on
+    `@modelcontextprotocol/sdk@1.30.0` + zod v4 `registerTool` shape. Re-run
+    the wire capture if Claude Code's requested protocolVersion advances.
+
+- **S2 RESOLVED (2026-07-31)**: `https://www.schemastore.org/claude-code-settings.json`
+  (301 from json.schemastore.org) resolves; draft-07; **143 top-level properties**
+  including `permissions`, `hooks`, `statusLine`, `enabledPlugins`,
+  `extraKnownMarketplaces`, `sandbox`, `pluginConfigs` — and every key the research
+  pass had flagged possibly-hallucinated (`alwaysThinkingEnabled`, `autoMode`,
+  `fastMode`, `effortLevel`, `editorMode`, `autoCompactEnabled`, `tui`,
+  `fileCheckpointingEnabled`, `advisorModel`, `allowedHttpHookUrls`,
+  `channelsEnabled`) is present. Vendored to
+  `packages/emitters/claude-code/schema/settings.schema.json` as the emitter
+  whitelist + test-fixture oracle. The hallucination flag was the summarizer's
+  truncation, not the schema.
+
+- **S3 RESOLVED (2026-07-31)**: empirical canary test (two skills, one only in
+  `.agents/skills/`, one only in `.claude/skills/`, fresh git dir, headless
+  `claude -p` listing): **Claude Code does NOT scan `.agents/skills/`** — only the
+  `.claude/skills/` canary was visible. Consequence: the `.claude/skills/<n>` link
+  (symlink default, copy fallback) is MANDATORY for every skill that targets
+  claude-code; `skills experimental_install` (which restores only to
+  `.agents/skills/`) must always be followed by per-agent linking. Default
+  `linkMode: "symlink"` confirmed as the correct default.
+
 ## Known-stale watchlist (re-verify at implementation touch-time)
 
 - awesome-copilot layout (restructured 2026-02; pin @SHA; `.schemas/` contains a

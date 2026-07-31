@@ -1,0 +1,9 @@
+{
+  "name": "{{name}}",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "patterson": "patterson"
+  }
+}

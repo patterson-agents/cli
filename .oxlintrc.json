@@ -10,6 +10,7 @@
     ".claude",
     ".specify",
     "templates",
-    "specs"
+    "specs",
+    "packages/design/assets"
   ]
 }
