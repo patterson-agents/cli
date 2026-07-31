@@ -37,6 +37,7 @@
         "@patterson/generators": "workspace:*",
         "@patterson/mcp": "workspace:*",
         "@patterson/skills": "workspace:*",
+        "@patterson/tutor": "workspace:*",
         "citty": "0.2.2",
         "zod": "4.4.3",
       },
@@ -147,6 +148,15 @@
       "version": "0.0.1",
       "dependencies": {
         "@patterson/core": "workspace:*",
+        "zod": "4.4.3",
+      },
+    },
+    "packages/tutor": {
+      "name": "@patterson/tutor",
+      "version": "0.0.1",
+      "dependencies": {
+        "@patterson/core": "workspace:*",
+        "@patterson/generators": "workspace:*",
         "zod": "4.4.3",
       },
     },
@@ -269,6 +279,8 @@
     "@patterson/mcp": ["@patterson/mcp@workspace:packages/mcp"],
 
     "@patterson/skills": ["@patterson/skills@workspace:packages/skills"],
+
+    "@patterson/tutor": ["@patterson/tutor@workspace:packages/tutor"],
 
     "@simple-libs/child-process-utils": ["@simple-libs/child-process-utils@2.0.0", "", { "dependencies": { "@simple-libs/stream-utils": "^2.0.0" } }, "sha512-dvNoRKLijXnD0XoJAz94pbNuB5GQgDr55UhpSPhffDkTT0Cmcqh9jSCOtwfT2d4H6MI9E7c4SgtMuJXZ6F3c6A=="],
 

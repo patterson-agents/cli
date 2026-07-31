@@ -204,7 +204,7 @@ hand-edit then sync --yes preserves + exits 2.
       validator; `--plan` AI-assisted plan-first interview mode (FR-011)
 - [X] E-P6 [US1,US2] devcontainer(+codespaces) + github-actions emitters with
       `patterson ci`/`editor` consumers; S7-gated release scaffolds; doctor --fix
-- [ ] E-P7 [US6] Tutor: engine over check registry, 4 tracks from the 42 researched
+- [X] E-P7 [US6] Tutor: engine over check registry, 4 tracks from the 42 researched
       candidates, license tiers enforced in lesson frontmatter, cert-prep link-outs
 - [ ] E-P8 Polish: S4 + plugin loading/out-of-process fallback, --json sweep,
       bun build --compile binary, README, end-to-end demo

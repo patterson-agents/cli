@@ -66,6 +66,18 @@ const main = defineCommand({
       ]);
       return cittyCommandFor(checkCommand);
     },
+    tutor: async () => {
+      const [{ tutorListCommand, tutorStatusCommand, tutorNextCommand }, { cittyCommandFor }] =
+        await Promise.all([import("./commands/tutor.ts"), import("./commands/frontend.ts")]);
+      return defineCommand({
+        meta: { name: "tutor", description: "AI-fluency tutor: guided, locally-validated lessons" },
+        subCommands: {
+          list: cittyCommandFor(tutorListCommand),
+          status: cittyCommandFor(tutorStatusCommand),
+          next: cittyCommandFor(tutorNextCommand, { positionals: ["track"] }),
+        },
+      });
+    },
     new: async () => {
       const [{ newCommands }, { cittyCommandFor }] = await Promise.all([
         import("./commands/new.ts"),

@@ -31,6 +31,9 @@ describe("command registry wiring", () => {
       "skills.list",
       "skills.remove",
       "sync",
+      "tutor.list",
+      "tutor.next",
+      "tutor.status",
     ]);
   });
 

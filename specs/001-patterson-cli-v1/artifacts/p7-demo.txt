@@ -1,0 +1,46 @@
+P7 TUTOR DEMO TRANSCRIPT
+generated: 2026-07-31T16:03:38Z
+==============================================================================
+
+### 1. patterson tutor list
+15 lesson(s) across 5 track(s).
+  - fluency:
+  -   fluency-git-foundation — A repository for your AI work [original]
+  -   fluency-4ds — The 4Ds: Delegation, Description, Discernment, Diligence [link-out]
+  -   fluency-scaffold — Scaffold an agent-ready project with patterson [original]
+  - claude-code:
+  -   claude-instructions — CLAUDE.md and the instructions chain [link-out]
+  -   claude-skills — Your first Agent Skill [original]
+  -   claude-mcp — Project-scoped MCP servers (.mcp.json) [original]
+  -   claude-drift — Drift discipline: sync, doctor, --accept-generated [original]
+  - copilot:
+  -   copilot-instructions — Repository custom instructions [adapted-mit]
+  -   copilot-path-instructions — Path-scoped instructions (applyTo) [adapted-mit]
+  -   copilot-agents — Custom agents (.github/agents) [link-out]
+  => exit code 0
+
+### 2. tutor next fluency in an EMPTY dir (fails with hints — tutor never does the work)
+  - 3. Commit it: `git add README.md && git commit -m 'chore: init'`.
+  - 
+  - ✗ `git rev-parse --git-dir` exits 0 — Run `git init` in this directory.
+  - ✗ README.md exists — Create a README.md describing your project.
+  => exit code 0
+
+### 3. learner does the work: git init + README.md → re-validate
+  - ✓ `git rev-parse --git-dir` exits 0
+  - ✓ README.md exists
+  - Next up: The 4Ds: Delegation, Description, Discernment, Diligence (patterson tutor next fluency)
+  => exit code 0
+
+### 4. tutor status
+fluency 1/3, claude-code 0/4, copilot 0/3, mcp 0/3, cert-prep 0/2
+  - fluency: next → fluency-4ds
+  - claude-code: next → claude-instructions
+  - copilot: next → copilot-instructions
+  - mcp: next → mcp-scaffold
+  - cert-prep: next → cert-gh300
+  => exit code 0
+
+### 5. claude-code track in a non-git dir elsewhere: skip-with-explanation
+Skipped "CLAUDE.md and the instructions chain": this directory is not a git repository — run `git init` first (the fluency track's first lesson walks through it).
+  => exit code 0

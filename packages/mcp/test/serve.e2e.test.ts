@@ -149,6 +149,9 @@ describe("mcp serve (production registry over stdio)", () => {
       "patterson_skills_list",
       "patterson_skills_remove",
       "patterson_sync",
+      "patterson_tutor_list",
+      "patterson_tutor_next",
+      "patterson_tutor_status",
     ]);
     // Read/write annotations survive projection.
     const doctor = tools.find((tool) => tool.name === "patterson_doctor");

@@ -11,6 +11,7 @@ import { designRefreshCommand, designTemplatesCommand, designTokensCommand } fro
 import { newCommands } from "./new.ts";
 import { marketplaceListCommand } from "./plugins.ts";
 import { makeSkillsAddCommand, makeSkillsRemoveCommand, skillsListCommand, defaultSkillsDeps, type SkillsDeps } from "./skills.ts";
+import { tutorListCommand, tutorNextCommand, tutorStatusCommand } from "./tutor.ts";
 import { makeDoctorCommand } from "./doctor.ts";
 import { makeInitCommand } from "./init.ts";
 import { defaultDeps, type CommandDeps } from "./shared.ts";
@@ -35,5 +36,8 @@ export function buildRegistry(
   registry.register(makeSkillsRemoveCommand(skillsDeps));
   registry.register(marketplaceListCommand);
   for (const command of newCommands) registry.register(command);
+  registry.register(tutorListCommand);
+  registry.register(tutorStatusCommand);
+  registry.register(tutorNextCommand);
   return registry;
 }

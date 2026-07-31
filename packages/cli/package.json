@@ -21,6 +21,7 @@
     "@patterson/mcp": "workspace:*",
     "@patterson/skills": "workspace:*",
     "@patterson/generators": "workspace:*",
+    "@patterson/tutor": "workspace:*",
     "citty": "0.2.2",
     "@clack/prompts": "1.7.0",
     "zod": "4.4.3"
