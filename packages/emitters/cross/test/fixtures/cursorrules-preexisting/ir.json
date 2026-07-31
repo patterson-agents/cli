@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "cursorrules-preexisting",
+  "targets": ["claude-code", "zed"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" },
+    {
+      "id": "zed-extra",
+      "body": "Zed should prefer workspace tasks.",
+      "reach": "universal",
+      "targets": ["zed"]
+    },
+    {
+      "id": "claude-only",
+      "body": "Claude-specific: prefer bun over node.",
+      "reach": "universal",
+      "targets": ["claude-code"]
+    }
+  ]
+}

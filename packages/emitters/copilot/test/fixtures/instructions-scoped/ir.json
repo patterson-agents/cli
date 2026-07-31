@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "name": "instructions-scoped",
+  "targets": ["copilot"],
+  "instructions": [
+    {
+      "id": "frontend",
+      "body": "Use functional React components and hooks.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["src/components/**/*.tsx", "src/hooks/**/*.ts"] }
+    },
+    {
+      "id": "sql",
+      "body": "All migrations must be reversible.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["migrations/**"] }
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "name": "prompts-dir",
+  "targets": ["copilot"],
+  "commands": [
+    {
+      "name": "release-notes",
+      "description": "Draft release notes from merged PRs.",
+      "template": "Summarize the merged pull requests since the last tag."
+    },
+    {
+      "name": "triage",
+      "template": "Label the issue described by ${input:issue}.",
+      "args": ["issue"]
+    },
+    {
+      "name": "bad/name",
+      "template": "Never emitted."
+    }
+  ]
+}

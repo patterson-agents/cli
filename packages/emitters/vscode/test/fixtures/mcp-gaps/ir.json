@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "name": "mcp-gaps",
+  "targets": ["vscode"],
+  "mcp": [
+    {
+      "name": "sockets",
+      "transport": { "kind": "ws", "url": "wss://example.com/ws" },
+      "scope": "project"
+    },
+    {
+      "name": "helper-secret",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "KEY": { "kind": "helper", "command": "credential-helper" } }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "command-secret",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "KEY": { "kind": "command", "id": "getkey", "command": "op", "args": ["read"] } }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "userscope",
+      "transport": { "kind": "stdio", "exec": { "argv": ["run-server"] } },
+      "scope": "user"
+    },
+    {
+      "name": "slow",
+      "transport": { "kind": "stdio", "exec": { "argv": ["bunx", "slow-server"] } },
+      "timeoutMs": 30000,
+      "scope": "project"
+    },
+    {
+      "name": "first",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "KEY": { "kind": "prompt", "id": "shared", "description": "First definition." } }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "second",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "KEY": { "kind": "prompt", "id": "shared", "description": "Second definition." } }
+        }
+      },
+      "scope": "project"
+    }
+  ]
+}

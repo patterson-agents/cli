@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "name": "unreachable",
+  "targets": ["zed", "claude-code"],
+  "skills": [
+    {
+      "name": "review",
+      "description": "Review checklist skill.",
+      "body": "Use the checklist.",
+      "linkMode": "symlink"
+    },
+    {
+      "name": "claude-only-skill",
+      "description": "Not zed-reaching.",
+      "body": "Body.",
+      "linkMode": "symlink",
+      "targets": ["claude-code"]
+    }
+  ],
+  "agents": [
+    { "name": "reviewer", "description": "Reviews code.", "prompt": "Be strict." }
+  ],
+  "commands": [
+    { "name": "release-notes", "template": "Draft release notes for $VERSION." }
+  ],
+  "policy": {
+    "allow": ["Read"],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits"
+  },
+  "models": { "default": "claude-sonnet-4-5" },
+  "hooks": {
+    "agentHooks": [
+      { "event": "PreToolUse", "exec": { "argv": ["bun", "run", "guard.ts"] } },
+      {
+        "event": "PostToolUse",
+        "exec": { "argv": ["true"] },
+        "targets": ["claude-code"]
+      }
+    ],
+    "gitHooks": []
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "name": "mcp-inputs",
+  "targets": ["vscode"],
+  "mcp": [
+    {
+      "name": "secrets",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": {
+            "TOKEN": { "kind": "env", "name": "DOCS_TOKEN" },
+            "PROJECT_DIR": { "kind": "env", "name": "PROJECT_DIR", "default": "." },
+            "KEY": { "kind": "prompt", "id": "api-key", "description": "API key", "password": true },
+            "REGION": { "kind": "pick", "id": "region", "options": ["eu", "us"] }
+          }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "reuse",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["other-server"],
+          "env": { "TOKEN2": { "kind": "env", "name": "DOCS_TOKEN" } }
+        }
+      },
+      "scope": "project"
+    }
+  ]
+}

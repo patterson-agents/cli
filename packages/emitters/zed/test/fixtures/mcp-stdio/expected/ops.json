@@ -1,0 +1,42 @@
+[
+  {
+    "path": ".zed/settings.json",
+    "format": "jsonc",
+    "mode": "merge",
+    "patch": [
+      {
+        "keyPath": [
+          "context_servers",
+          "docs"
+        ],
+        "value": {
+          "command": "bunx",
+          "args": [
+            "docs-server",
+            "--root",
+            "."
+          ],
+          "env": {
+            "MODE": "fast"
+          }
+        }
+      },
+      {
+        "keyPath": [
+          "context_servers",
+          "bare"
+        ],
+        "value": {
+          "command": "run-server"
+        }
+      }
+    ]
+  },
+  {
+    "path": ".zed/settings.json",
+    "format": "markdown",
+    "mode": "instruct",
+    "sentinelId": "zed:worktree-trust",
+    "content": "Zed does not start project-defined context servers until the worktree is\ntrusted (S6). Open this project in Zed and accept the one-time worktree\ntrust prompt; MCP servers from `.zed/settings.json` start after that.\n(A user may instead set `session.trust_all_worktrees` in their Zed USER\nsettings — a user-machine decision patterson never writes.)"
+  }
+]

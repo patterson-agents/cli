@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "skills.release-helper",
+    "targetId": "copilot",
+    "reason": "Skill file \"missing.md\" was not found at .agents/skills/release-helper/missing.md (snapshot); the copy into .github/skills/release-helper/ was skipped.",
+    "fallbackApplied": false
+  }
+]

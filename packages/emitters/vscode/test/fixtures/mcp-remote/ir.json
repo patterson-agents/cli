@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "name": "mcp-remote",
+  "targets": ["vscode"],
+  "mcp": [
+    {
+      "name": "gh",
+      "transport": {
+        "kind": "http",
+        "url": "https://api.example.com/mcp",
+        "headers": {
+          "Authorization": { "kind": "prompt", "id": "gh-token", "description": "GitHub token", "password": true }
+        },
+        "oauth": { "provider": "github" }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "events",
+      "transport": {
+        "kind": "sse",
+        "url": "https://events.example.com/sse",
+        "headers": { "X-Api-Version": "2" }
+      },
+      "scope": "project"
+    }
+  ]
+}

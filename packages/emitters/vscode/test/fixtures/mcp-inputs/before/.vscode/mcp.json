@@ -1,0 +1,9 @@
+{
+  // Hand-maintained server + input: patterson must preserve both.
+  "servers": {
+    "hand": { "type": "http", "url": "https://example.com/mcp" }
+  },
+  "inputs": [
+    { "type": "promptString", "id": "hand-key", "description": "Hand-added input." }
+  ]
+}

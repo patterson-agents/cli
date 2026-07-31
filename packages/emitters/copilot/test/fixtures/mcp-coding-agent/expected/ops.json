@@ -1,0 +1,8 @@
+[
+  {
+    "path": "copilot-coding-agent/mcp-configuration",
+    "format": "markdown",
+    "mode": "instruct",
+    "content": "The Copilot coding agent reads its MCP configuration from the GitHub web UI\nonly — patterson cannot write it as a file. Apply it by hand:\n\n1. Open the repository on github.com → **Settings** → **Copilot** →\n   **Coding agent**.\n2. Paste the JSON below into the **MCP configuration** box and save:\n\n```json\n{\n  \"mcpServers\": {\n    \"sentry\": {\n      \"type\": \"local\",\n      \"command\": \"bunx\",\n      \"args\": [\n        \"@sentry/mcp-server@1.2.3\"\n      ],\n      \"env\": {\n        \"SENTRY_HOST\": \"sentry.example.com\",\n        \"SENTRY_AUTH_TOKEN\": \"COPILOT_MCP_SENTRY_AUTH_TOKEN\"\n      },\n      \"tools\": [\n        \"list_issues\",\n        \"get_issue\"\n      ]\n    },\n    \"docs\": {\n      \"type\": \"http\",\n      \"url\": \"https://docs.example.com/mcp\",\n      \"headers\": {\n        \"Authorization\": \"$COPILOT_MCP_DOCS_TOKEN\"\n      },\n      \"tools\": [\n        \"*\"\n      ]\n    }\n  }\n}\n```\n\n3. The configuration references Copilot environment secrets. In\n   **Settings** → **Environments** → **copilot**, add each secret (the\n   coding agent only exposes secrets whose names start with\n   `COPILOT_MCP_`):\n\n   - `COPILOT_MCP_DOCS_TOKEN` ← value of `DOCS_TOKEN`\n   - `COPILOT_MCP_SENTRY_AUTH_TOKEN` ← value of `SENTRY_AUTH_TOKEN`\n"
+  }
+]

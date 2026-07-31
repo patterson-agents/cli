@@ -1,0 +1,38 @@
+[
+  {
+    "entityId": "skills.review",
+    "targetId": "zed",
+    "reason": "Zed has no project-scope skills surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "agents.reviewer",
+    "targetId": "zed",
+    "reason": "Zed has no project-scope custom-agent surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "commands.release-notes",
+    "targetId": "zed",
+    "reason": "Zed has no project-scope command/prompt surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "hooks.agentHooks[0]",
+    "targetId": "zed",
+    "reason": "Zed has no project-scope agent-hook surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "policy",
+    "targetId": "zed",
+    "reason": "Zed has no verified project-scope permission surface (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "models",
+    "targetId": "zed",
+    "reason": "Zed model slots are not verified project-scope-valid (S6: Zed's project-scope settings subset carries only context_servers and context_server_timeout). Configure models in Zed USER settings; the raw.zed escape hatch is not emitted until a primary source verifies those keys at project scope (Constitution V).",
+    "fallbackApplied": false
+  }
+]

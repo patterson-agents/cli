@@ -10,5 +10,39 @@
   "dependencies": {
     "zod": "4.4.3",
     "jsonc-parser": "3.3.1"
+  },
+  "author": "Daniel Bodnar",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techdays-ai/patterson-cli.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/techdays-ai/patterson-cli#readme",
+  "bugs": {
+    "url": "https://github.com/techdays-ai/patterson-cli/issues"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  },
+  "description": "Canonical project model (IR), command registry, emit engine with drift-safe provenance, and check registry for the patterson CLI",
+  "keywords": [
+    "patterson",
+    "ai-agents",
+    "scaffolding",
+    "mcp",
+    "claude-code",
+    "copilot",
+    "opencode",
+    "developer-tools"
+  ],
+  "files": [
+    "src"
+  ],
+  "imports": {
+    "#ir": "./src/ir/index.ts",
+    "#emit": "./src/emit/index.ts",
+    "#registry": "./src/registry/index.ts",
+    "#checks": "./src/checks/index.ts"
   }
 }

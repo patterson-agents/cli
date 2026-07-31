@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "mcp-scopes",
+  "targets": ["zed"],
+  "mcp": [
+    {
+      "name": "user-wide",
+      "transport": { "kind": "stdio", "exec": { "argv": ["user-server"] } },
+      "scope": "user"
+    },
+    {
+      "name": "local-only",
+      "transport": { "kind": "stdio", "exec": { "argv": ["local-server"] } },
+      "scope": "local"
+    }
+  ]
+}

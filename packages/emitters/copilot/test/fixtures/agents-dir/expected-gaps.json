@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "models.perAgent.ghost",
+    "targetId": "copilot",
+    "reason": "models.perAgent names agent \"ghost\", but no copilot-targeted agent with that name exists.",
+    "fallbackApplied": false
+  }
+]

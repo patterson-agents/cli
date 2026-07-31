@@ -1,0 +1,32 @@
+[
+  {
+    "entityId": "mcp.docs.tools",
+    "targetId": "copilot",
+    "reason": "The Copilot coding agent requires an explicit per-server tools[] allowlist; none was declared, so the configuration falls back to [\"*\"] (ALL tools enabled) — review before pasting.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.docs.timeoutMs",
+    "targetId": "copilot",
+    "reason": "The Copilot coding agent MCP configuration has no per-server timeout field; timeoutMs was dropped for this target.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.realtime",
+    "targetId": "copilot",
+    "reason": "MCP transport \"ws\" is reachable only on claude-code; the Copilot coding agent supports local (stdio), http, and sse servers.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.personal",
+    "targetId": "copilot",
+    "reason": "MCP scope \"user\" is not emittable: the Copilot coding agent MCP configuration is repository-scoped only.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.prompted",
+    "targetId": "copilot",
+    "reason": "API_KEY: SecretRef kind \"prompt\" is inexpressible in the Copilot coding agent MCP configuration (only COPILOT_MCP_* environment secrets are supported); use { kind: \"env\" } or configure the secret out of band.",
+    "fallbackApplied": false
+  }
+]

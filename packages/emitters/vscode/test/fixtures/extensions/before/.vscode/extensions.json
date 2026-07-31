@@ -1,0 +1,7 @@
+{
+  // Team picks — hand-maintained order and casing survive the merge.
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "DBAeumer.vscode-eslint"
+  ]
+}

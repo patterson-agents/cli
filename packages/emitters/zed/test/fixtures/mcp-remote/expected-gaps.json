@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "mcp.sock",
+    "targetId": "zed",
+    "reason": "MCP transport \"ws\" is reachable only on claude-code (data-model.md McpServerDef rules).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.authed",
+    "targetId": "zed",
+    "reason": "Remote context-server headers/oauth have no verified representation in project-scope .zed/settings.json; configure authentication out of band.",
+    "fallbackApplied": false
+  }
+]

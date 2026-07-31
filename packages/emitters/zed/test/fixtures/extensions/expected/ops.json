@@ -1,0 +1,8 @@
+[
+  {
+    "path": "zed:extensions",
+    "format": "markdown",
+    "mode": "instruct",
+    "content": "WARNING: Zed installs extensions on the USER machine (globally, for every\nproject of that user), not into this repository — patterson cannot\nmaterialize them, and installing one affects more than this project.\nEach teammate installs them once by hand:\n\n1. Open Zed and run `zed: extensions` from the command palette.\n2. Search for and install:\n   - html\n   - toml"
+  }
+]

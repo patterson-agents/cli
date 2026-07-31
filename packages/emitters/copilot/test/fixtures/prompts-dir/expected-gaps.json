@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "commands.triage.args",
+    "targetId": "copilot",
+    "reason": "Copilot prompt files have no argument declaration surface; args [issue] are not rendered — reference them as ${input:<name>} in the template body instead.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "commands.bad/name",
+    "targetId": "copilot",
+    "reason": "Command name \"bad/name\" is not usable as a prompt-file basename (allowed: alphanumerics plus \"._-\", starting alphanumeric).",
+    "fallbackApplied": false
+  }
+]

@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "name": "mcp-stdio",
+  "targets": ["zed"],
+  "mcp": [
+    {
+      "name": "docs",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bunx", "docs-server", "--root", "."],
+          "env": { "MODE": "fast" }
+        }
+      },
+      "tools": ["search", "read"],
+      "timeoutMs": 30000,
+      "scope": "project"
+    },
+    {
+      "name": "bare",
+      "transport": {
+        "kind": "stdio",
+        "exec": { "argv": ["run-server"] }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "secretive",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["run-server"],
+          "env": { "TOKEN": { "kind": "env", "name": "DOCS_TOKEN" } }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "cwdful",
+      "transport": {
+        "kind": "stdio",
+        "exec": { "argv": ["run-server"], "cwd": "packages/app" }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "not-for-zed",
+      "transport": {
+        "kind": "stdio",
+        "exec": { "argv": ["other-server"] }
+      },
+      "scope": "project",
+      "targets": ["claude-code"]
+    }
+  ]
+}

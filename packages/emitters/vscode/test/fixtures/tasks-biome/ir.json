@@ -1,0 +1,6 @@
+{
+  "version": 1,
+  "name": "tasks-biome",
+  "targets": ["vscode"],
+  "devops": { "workflows": [], "lint": "biome" }
+}

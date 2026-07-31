@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "name": "instructions-chain",
+  "targets": ["zed", "claude-code"],
+  "instructions": [
+    { "id": "shared", "body": "Always run tests.", "reach": "universal" },
+    {
+      "id": "pair",
+      "body": "Zed and Claude both read AGENTS.md.",
+      "reach": "universal",
+      "targets": ["zed", "claude-code"]
+    },
+    {
+      "id": "zed-only",
+      "body": "Zed alone cannot be reached: nothing writes the chain for it.",
+      "reach": "universal",
+      "targets": ["zed"]
+    },
+    {
+      "id": "src-rules",
+      "body": "Path-scoped guidance.",
+      "reach": "path-scoped",
+      "scope": { "globs": ["src/**"] }
+    },
+    {
+      "id": "claude-tail",
+      "body": "Claude-only tail — no zed gap.",
+      "reach": "universal",
+      "targets": ["claude-code"]
+    }
+  ]
+}

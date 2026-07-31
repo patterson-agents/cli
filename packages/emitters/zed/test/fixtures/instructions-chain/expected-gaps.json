@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "instructions.zed-only",
+    "targetId": "zed",
+    "reason": "Zed reads instructions via its first-match chain (C7) and the zed emitter never writes that chain (AGENTS.md is expected to win); this block reaches no chain-writing target (claude-code, opencode, copilot), so Zed will never see it.",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "instructions.src-rules",
+    "targetId": "zed",
+    "reason": "Zed reads exactly one instructions file via its first-match chain (C7); path-scoped instruction blocks are inexpressible for zed.",
+    "fallbackApplied": false
+  }
+]

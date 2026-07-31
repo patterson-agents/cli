@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "agents-dir",
+  "targets": ["copilot"],
+  "agents": [
+    {
+      "name": "reviewer",
+      "description": "Reviews pull requests for correctness.",
+      "prompt": "Be strict about error handling.",
+      "tools": ["read", "edit"]
+    },
+    {
+      "name": "docs-writer",
+      "description": "Writes documentation.",
+      "prompt": "Prefer short sentences.",
+      "model": "gpt-5"
+    },
+    {
+      "name": "claude-only-agent",
+      "description": "Never reaches copilot.",
+      "prompt": "Invisible here.",
+      "targets": ["claude-code"]
+    }
+  ],
+  "models": {
+    "perAgent": {
+      "reviewer": "claude-sonnet-4-5",
+      "ghost": "gpt-5-mini"
+    }
+  }
+}

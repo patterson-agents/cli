@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "skills-copy",
+  "targets": ["copilot"],
+  "skills": [
+    {
+      "name": "release-helper",
+      "description": "Guides a release: changelog, tag, publish.",
+      "body": "Follow checklist.md step by step.",
+      "files": ["checklist.md", "missing.md"],
+      "allowedTools": ["Bash(git tag:*)", "Read"],
+      "linkMode": "symlink"
+    }
+  ]
+}

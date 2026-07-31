@@ -1,0 +1,14 @@
+[
+  {
+    "path": ".github/prompts/release-notes.prompt.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\ndescription: \"Draft release notes from merged PRs.\"\n---\n\nSummarize the merged pull requests since the last tag.\n"
+  },
+  {
+    "path": ".github/prompts/triage.prompt.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\ndescription: \"Run the triage command.\"\n---\n\nLabel the issue described by ${input:issue}.\n"
+  }
+]

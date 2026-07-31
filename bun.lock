@@ -96,6 +96,9 @@
       "dependencies": {
         "@patterson/core": "workspace:*",
       },
+      "devDependencies": {
+        "@patterson/emitter-claude-code": "workspace:*",
+      },
     },
     "packages/emitters/vscode": {
       "name": "@patterson/emitter-vscode",

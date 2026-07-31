@@ -1,0 +1,14 @@
+[
+  {
+    "entityId": "mcp.user-wide",
+    "targetId": "zed",
+    "reason": "MCP scope \"user\" is not emittable: .zed/settings.json is the project-scope surface, and Zed user settings live on the user machine (never written by patterson).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.local-only",
+    "targetId": "zed",
+    "reason": "MCP scope \"local\" is not emittable: .zed/settings.json is the project-scope surface, and Zed user settings live on the user machine (never written by patterson).",
+    "fallbackApplied": false
+  }
+]

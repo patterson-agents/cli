@@ -1,0 +1,8 @@
+[
+  {
+    "entityId": "env.copilotSetupSteps.timeout-minutes",
+    "targetId": "copilot",
+    "reason": "copilot-setup-steps jobs are capped at 59 minutes by GitHub; timeout-minutes 90 was clamped to 59.",
+    "fallbackApplied": true
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "mcp-remote",
+  "targets": ["zed"],
+  "mcp": [
+    {
+      "name": "api",
+      "transport": { "kind": "http", "url": "https://api.example.com/mcp" },
+      "scope": "project"
+    },
+    {
+      "name": "events",
+      "transport": { "kind": "sse", "url": "https://events.example.com/sse" },
+      "scope": "project"
+    },
+    {
+      "name": "sock",
+      "transport": { "kind": "ws", "url": "wss://sock.example.com/ws" },
+      "scope": "project"
+    },
+    {
+      "name": "authed",
+      "transport": {
+        "kind": "http",
+        "url": "https://authed.example.com/mcp",
+        "headers": { "Authorization": { "kind": "env", "name": "API_TOKEN" } }
+      },
+      "scope": "project"
+    }
+  ]
+}

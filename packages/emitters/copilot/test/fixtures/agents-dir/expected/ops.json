@@ -1,0 +1,14 @@
+[
+  {
+    "path": ".github/agents/reviewer.agent.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\ndescription: \"Reviews pull requests for correctness.\"\ntools: [\"read\", \"edit\"]\nmodel: \"claude-sonnet-4-5\"\n---\n\nBe strict about error handling.\n"
+  },
+  {
+    "path": ".github/agents/docs-writer.agent.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\ndescription: \"Writes documentation.\"\nmodel: \"gpt-5\"\n---\n\nPrefer short sentences.\n"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    // Hand-added task: preserved by the label-identity merge.
+    { "label": "echo", "type": "shell", "command": "echo hi" }
+  ]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "path": ".github/copilot-instructions.md",
+    "format": "markdown",
+    "mode": "merge",
+    "sentinelId": "instruction:core",
+    "content": "Always run tests before committing."
+  },
+  {
+    "path": ".github/copilot-instructions.md",
+    "format": "markdown",
+    "mode": "merge",
+    "sentinelId": "instruction:copilot-only",
+    "content": "Copilot-specific: prefer squash merges."
+  }
+]

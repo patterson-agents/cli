@@ -1,0 +1,22 @@
+[
+  {
+    "path": ".agents/skills/release-helper/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: release-helper\ndescription: \"Guides a release: changelog, tag, publish.\"\nallowed-tools: \"Bash(git tag:*), Read\"\n---\n\nFollow checklist.md step by step.\n"
+  },
+  {
+    "path": ".github/skills/release-helper/SKILL.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\nname: release-helper\ndescription: \"Guides a release: changelog, tag, publish.\"\nallowed-tools: \"Bash(git tag:*), Read\"\n---\n\nFollow checklist.md step by step.\n",
+    "linkMode": "copy"
+  },
+  {
+    "path": ".github/skills/release-helper/checklist.md",
+    "format": "text",
+    "mode": "own",
+    "content": "# Release checklist\n\n1. Update CHANGELOG.md.\n2. Tag the release.\n3. Publish.\n",
+    "linkMode": "copy"
+  }
+]

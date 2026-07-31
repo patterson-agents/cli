@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "name": "not-zed-targeted",
+  "targets": ["claude-code"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" }
+  ]
+}

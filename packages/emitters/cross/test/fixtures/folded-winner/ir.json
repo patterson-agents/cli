@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "name": "folded-winner",
+  "targets": ["zed"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "name": "mcp-coding-agent",
+  "targets": ["copilot"],
+  "mcp": [
+    {
+      "name": "sentry",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bunx", "@sentry/mcp-server@1.2.3"],
+          "env": {
+            "SENTRY_HOST": "sentry.example.com",
+            "SENTRY_AUTH_TOKEN": { "kind": "env", "name": "SENTRY_AUTH_TOKEN" }
+          }
+        }
+      },
+      "tools": ["list_issues", "get_issue"],
+      "scope": "project"
+    },
+    {
+      "name": "docs",
+      "transport": {
+        "kind": "http",
+        "url": "https://docs.example.com/mcp",
+        "headers": {
+          "Authorization": { "kind": "env", "name": "DOCS_TOKEN" }
+        }
+      },
+      "timeoutMs": 30000,
+      "scope": "project"
+    },
+    {
+      "name": "realtime",
+      "transport": { "kind": "ws", "url": "wss://realtime.example.com/mcp" },
+      "tools": ["subscribe"],
+      "scope": "project"
+    },
+    {
+      "name": "personal",
+      "transport": {
+        "kind": "stdio",
+        "exec": { "argv": ["bunx", "personal-mcp@0.1.0"] }
+      },
+      "tools": ["whoami"],
+      "scope": "user"
+    },
+    {
+      "name": "prompted",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bunx", "prompted-mcp@0.1.0"],
+          "env": {
+            "API_KEY": { "kind": "prompt", "id": "api-key", "description": "API key", "password": true }
+          }
+        }
+      },
+      "tools": ["run"],
+      "scope": "project"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  {
+    "path": ".github/workflows/copilot-setup-steps.yml",
+    "format": "yaml",
+    "mode": "own",
+    "content": "name: \"Copilot Setup Steps\"\n\non:\n  workflow_dispatch:\n  push:\n    paths:\n      - \".github/workflows/copilot-setup-steps.yml\"\n  pull_request:\n    paths:\n      - \".github/workflows/copilot-setup-steps.yml\"\n\njobs:\n  copilot-setup-steps:\n    runs-on: \"ubuntu-latest\"\n    timeout-minutes: 59\n    permissions:\n      contents: \"read\"\n    steps:\n      - name: \"Checkout code\"\n        uses: \"actions/checkout@v5\"\n      - name: \"Set up Bun\"\n        uses: \"oven-sh/setup-bun@v2\"\n        with:\n          bun-version: \"1.2.20\"\n      - name: \"Install dependencies\"\n        run: \"bun install --frozen-lockfile\"\n"
+  }
+]

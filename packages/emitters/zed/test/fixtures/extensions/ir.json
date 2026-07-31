@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "name": "extensions",
+  "targets": ["zed", "vscode"],
+  "extensions": [
+    { "id": "html" },
+    { "id": "toml", "targets": ["zed"] },
+    { "id": "dbaeumer.vscode-eslint", "targets": ["vscode"] }
+  ]
+}

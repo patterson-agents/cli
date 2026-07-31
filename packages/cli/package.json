@@ -5,7 +5,7 @@
   "type": "module",
   "module": "src/index.ts",
   "bin": {
-    "patterson": "src/index.ts"
+    "patterson": "./src/index.ts"
   },
   "dependencies": {
     "@patterson/core": "workspace:*",
@@ -13,5 +13,36 @@
     "citty": "0.2.2",
     "@clack/prompts": "1.7.0",
     "zod": "4.4.3"
-  }
+  },
+  "author": "Daniel Bodnar",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/techdays-ai/patterson-cli.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/techdays-ai/patterson-cli#readme",
+  "bugs": {
+    "url": "https://github.com/techdays-ai/patterson-cli/issues"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  },
+  "description": "patterson — template-driven scaffolder and AI-agent configuration manager (CLI frontend)",
+  "keywords": [
+    "patterson",
+    "ai-agents",
+    "scaffolding",
+    "mcp",
+    "claude-code",
+    "copilot",
+    "opencode",
+    "developer-tools"
+  ],
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ]
 }

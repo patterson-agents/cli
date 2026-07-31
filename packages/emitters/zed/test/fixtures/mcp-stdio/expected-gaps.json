@@ -1,0 +1,26 @@
+[
+  {
+    "entityId": "mcp.docs.timeoutMs",
+    "targetId": "zed",
+    "reason": "Zed has no per-server timeout: project scope only carries the global `context_server_timeout` (S6), which patterson does not map from a per-server value; timeoutMs was dropped for this target.",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.docs.tools",
+    "targetId": "zed",
+    "reason": "Zed has no verified per-server tool allowlist in project-scope settings; tools[] was dropped for this target (the server is emitted with all its tools reachable).",
+    "fallbackApplied": true
+  },
+  {
+    "entityId": "mcp.secretive",
+    "targetId": "zed",
+    "reason": "TOKEN: SecretRef kind \"env\" is inexpressible in .zed/settings.json — Zed has no verified environment interpolation for project-scope context servers; configure the secret out of band (shell wrapper or user-machine environment).",
+    "fallbackApplied": false
+  },
+  {
+    "entityId": "mcp.cwdful",
+    "targetId": "zed",
+    "reason": "Zed context servers have no verified cwd field at project scope.",
+    "fallbackApplied": false
+  }
+]

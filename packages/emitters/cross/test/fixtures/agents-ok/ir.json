@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "name": "agents-ok",
+  "targets": ["zed"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" }
+  ]
+}

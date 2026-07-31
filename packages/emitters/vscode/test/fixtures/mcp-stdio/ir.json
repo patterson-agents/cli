@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "name": "mcp-stdio",
+  "targets": ["vscode"],
+  "mcp": [
+    {
+      "name": "docs",
+      "transport": {
+        "kind": "stdio",
+        "exec": {
+          "argv": ["bunx", "docs-server", "--root", "."],
+          "cwd": "packages/docs",
+          "env": { "MODE": "fast" }
+        }
+      },
+      "scope": "project"
+    },
+    {
+      "name": "claude-only",
+      "transport": { "kind": "stdio", "exec": { "argv": ["bun", "styles.ts"] } },
+      "scope": "project",
+      "targets": ["claude-code"]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "name": "settings-no-deviations",
+  "targets": ["vscode"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests.", "reach": "universal" }
+  ]
+}

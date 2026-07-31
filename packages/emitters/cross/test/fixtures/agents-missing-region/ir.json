@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "name": "agents-missing-region",
+  "targets": ["zed"],
+  "instructions": [
+    { "id": "core", "body": "Always run tests before committing.", "reach": "universal" },
+    { "id": "style", "body": "Prefer small modules.", "reach": "universal" }
+  ]
+}

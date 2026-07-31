@@ -1,0 +1,14 @@
+[
+  {
+    "path": ".github/instructions/frontend.instructions.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\napplyTo: \"src/components/**/*.tsx,src/hooks/**/*.ts\"\n---\n\nUse functional React components and hooks.\n"
+  },
+  {
+    "path": ".github/instructions/sql.instructions.md",
+    "format": "markdown",
+    "mode": "own",
+    "content": "---\napplyTo: \"migrations/**\"\n---\n\nAll migrations must be reversible.\n"
+  }
+]

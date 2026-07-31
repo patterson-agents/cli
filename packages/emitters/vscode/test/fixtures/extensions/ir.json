@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "name": "extensions",
+  "targets": ["vscode", "zed"],
+  "extensions": [
+    { "id": "dbaeumer.vscode-eslint" },
+    { "id": "oxc.oxc-vscode", "targets": ["vscode"] },
+    { "id": "zed-industries.only-for-zed", "targets": ["zed"] }
+  ]
+}
