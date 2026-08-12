@@ -29,9 +29,96 @@ export function frontmatterName(content: string): string | null {
   return nameLine?.slice("name:".length).trim() ?? null;
 }
 
+/**
+ * The literal placeholder every scaffolded provenance file uses for a fact that
+ * has no primary source yet. Constitution V in template form: an unfilled slot
+ * must read as an unfilled slot, never as plausible-looking invented content.
+ * Replace `<source>` with the source document's name as you fill the file in.
+ */
+export const PROVENANCE_TBD = "[TBD: not specified in <source>]";
+
+/** Files every scaffolded skill carries besides SKILL.md. */
+export const SKILL_PROVENANCE_FILES = ["_SOURCES.md", "REFERENCES.md"] as const;
+
+/**
+ * `_SOURCES.md` — where the skill's claims come from, plus the maintenance
+ * rules that keep them traceable. Deliberately date-free: `generate()` is a
+ * pure function of `name` (Constitution I), so the "Retrieved" row is a
+ * placeholder the author fills in, not a stamp.
+ */
+function renderSkillSources(name: string): string {
+  return [
+    `# Sources — ${name}`,
+    "",
+    "Every factual claim in this skill traces to a primary source recorded below. Nothing",
+    "here is inferred, extrapolated, or carried over from another team's practice.",
+    "",
+    "---",
+    "",
+    "## Primary source",
+    "",
+    "| Field | Value |",
+    "|---|---|",
+    `| System | ${PROVENANCE_TBD} |`,
+    `| Collection | ${PROVENANCE_TBD} |`,
+    `| Document | ${PROVENANCE_TBD} |`,
+    `| Identifier | ${PROVENANCE_TBD} |`,
+    `| URL | ${PROVENANCE_TBD} |`,
+    `| Owner | ${PROVENANCE_TBD} |`,
+    `| Retrieved | ${PROVENANCE_TBD} |`,
+    "",
+    "> [!IMPORTANT]",
+    `> Where the source is silent, the skill text says \`${PROVENANCE_TBD}\` — with`,
+    "> `<source>` replaced by the document's name — rather than filling the gap.",
+    "",
+    "## Provenance rules for maintainers",
+    "",
+    "1. Do not add a requirement to this skill unless it appears in a source listed above.",
+    "2. When a source changes, update `references/` first, then trim [`SKILL.md`](SKILL.md)",
+    "   back to the decision rules an agent needs immediately.",
+    "3. Every `[TBD]` marker is a real gap in the source. Resolve it by getting the source",
+    "   amended, not by writing a plausible answer here.",
+    "4. Validator scripts must only enforce rules that are quoted in `references/`.",
+    "   A rule with no citation is a bug.",
+    "",
+  ].join("\n");
+}
+
+/** `REFERENCES.md` — canonical locations for everything the skill asserts. */
+function renderSkillReferences(name: string): string {
+  return [
+    `# References — ${name}`,
+    "",
+    "Canonical locations for everything this skill asserts.",
+    "",
+    "---",
+    "",
+    "## Authoritative sources",
+    "",
+    "| Source | Owner | URL |",
+    "|---|---|---|",
+    `| ${PROVENANCE_TBD} | ${PROVENANCE_TBD} | ${PROVENANCE_TBD} |`,
+    "",
+    "## Local reference files",
+    "",
+    "Full source text lives in `references/` next to this file — one file per source",
+    "document, quoting the clauses this skill depends on.",
+    "",
+    "| File | Covers |",
+    "|---|---|",
+    `| \`references/${PROVENANCE_TBD}\` | ${PROVENANCE_TBD} |`,
+    "",
+    "> [!TIP]",
+    "> [`SKILL.md`](SKILL.md) carries only the decision rules. Load a reference file when",
+    "> you need the full wording of a clause in order to cite it.",
+    "",
+  ].join("\n");
+}
+
 export const skillGenerator: Generator = {
   kind: "skill",
-  summary: "Scaffold an Agent Skill in .agents/skills/<name>/ (spec-valid, dir == name)",
+  summary:
+    "Scaffold an Agent Skill in .agents/skills/<name>/ (SKILL.md + provenance, dir == name)",
   generate(name) {
     return {
       files: [
@@ -51,13 +138,29 @@ export const skillGenerator: Generator = {
             "",
             "1. …",
             "",
+            "## Sources",
+            "",
+            "Claims in this skill are traceable: see [`_SOURCES.md`](_SOURCES.md) for the",
+            "primary source and provenance rules, [`REFERENCES.md`](REFERENCES.md) for the",
+            "canonical locations.",
+            "",
           ].join("\n"),
+        },
+        {
+          path: `.agents/skills/${name}/_SOURCES.md`,
+          content: renderSkillSources(name),
+        },
+        {
+          path: `.agents/skills/${name}/REFERENCES.md`,
+          content: renderSkillReferences(name),
         },
       ],
       notes: [
         `Canonical home: .agents/skills/${name}/ (D6). Link it for Claude Code:`,
         `  ln -s ../../.agents/skills/${name} .claude/skills/${name}`,
         "opencode needs `skills.paths: [\".agents/skills\"]` (patterson sync emits it).",
+        `Fill in _SOURCES.md and REFERENCES.md before adding claims: every "${PROVENANCE_TBD}"`,
+        "is a real gap — resolve it from a primary source, never by writing a plausible answer.",
       ],
     };
   },
@@ -83,6 +186,18 @@ export const skillGenerator: Generator = {
         severity: "error",
         message: `SKILL.md frontmatter name "${declared ?? "(missing)"}" must equal the directory name "${name}" (C6).`,
         path: `.agents/skills/${name}/SKILL.md`,
+      });
+    }
+    // A skill without its provenance files is a skill whose claims cannot be
+    // traced back to a primary source (Constitution V).
+    for (const file of SKILL_PROVENANCE_FILES) {
+      const relative = `.agents/skills/${name}/${file}`;
+      if (await Bun.file(join(root, relative)).exists()) continue;
+      findings.push({
+        checkId: "generators.skill.provenance",
+        severity: "error",
+        message: `Skill "${name}" is missing ${file}; every skill records where its claims come from.`,
+        path: relative,
       });
     }
     return findings;

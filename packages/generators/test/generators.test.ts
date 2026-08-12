@@ -35,11 +35,53 @@ describe("engine + skill generator (C6)", () => {
   test("skill scaffold is spec-valid: dir name == frontmatter name", async () => {
     const root = await tempDir();
     const result = await runGenerator(skillGenerator, "review-helper", root);
-    expect(result.written).toEqual([".agents/skills/review-helper/SKILL.md"]);
+    expect(result.written).toEqual([
+      ".agents/skills/review-helper/SKILL.md",
+      ".agents/skills/review-helper/_SOURCES.md",
+      ".agents/skills/review-helper/REFERENCES.md",
+    ]);
     expect(result.findings).toEqual([]);
 
     const content = await Bun.file(join(root, ".agents/skills/review-helper/SKILL.md")).text();
     expect(frontmatterName(content)).toBe("review-helper");
+  });
+
+  test("provenance files carry TBD placeholders, never invented content", async () => {
+    const root = await tempDir();
+    await runGenerator(skillGenerator, "review-helper", root);
+    const dir = join(root, ".agents/skills/review-helper");
+
+    const sources = await Bun.file(join(dir, "_SOURCES.md")).text();
+    expect(sources).toContain("# Sources — review-helper");
+    expect(sources).toContain("[TBD: not specified in <source>]");
+    expect(sources).toContain("| Retrieved |");
+    expect(sources).toContain("Provenance rules");
+
+    const references = await Bun.file(join(dir, "REFERENCES.md")).text();
+    expect(references).toContain("# References — review-helper");
+    expect(references).toContain("[TBD: not specified in <source>]");
+    expect(references).toContain("references/");
+  });
+
+  test("provenance templates are date-free (generate() stays a pure function)", () => {
+    const output = skillGenerator.generate("review-helper");
+    for (const file of output.files) {
+      // A stamped date would make re-generation non-deterministic (Constitution I).
+      expect(file.content).not.toMatch(/\b20\d{2}-\d{2}-\d{2}\b/);
+    }
+  });
+
+  test("post-validation catches a missing provenance file", async () => {
+    for (const missing of ["_SOURCES.md", "REFERENCES.md"]) {
+      const root = await tempDir();
+      await runGenerator(skillGenerator, "prov-skill", root);
+      await rm(join(root, ".agents/skills/prov-skill", missing));
+      const findings = await skillGenerator.postValidate?.(root, "prov-skill");
+      expect(findings).toHaveLength(1);
+      expect(findings?.[0]?.severity).toBe("error");
+      expect(findings?.[0]?.checkId).toBe("generators.skill.provenance");
+      expect(findings?.[0]?.path).toBe(`.agents/skills/prov-skill/${missing}`);
+    }
   });
 
   test("post-validation catches a name mismatch", async () => {
