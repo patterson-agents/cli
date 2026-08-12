@@ -1,5 +1,7 @@
 <div align="center">
 
+![patterson CLI](docs/assets/banner.svg)
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Patterson-Agents/design-system/main/assets/brand/patterson-logo-white.svg">
   <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/Patterson-Agents/design-system/main/assets/brand/patterson-logo-navy.svg">
