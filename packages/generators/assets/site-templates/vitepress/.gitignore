@@ -1,0 +1,16 @@
+# build output and vitepress cache.
+# `**/` on purpose: a pattern containing a slash is anchored to this directory, and
+# VitePress 2 writes a dep cache to `.vitepress/cache/` at the project root as well as
+# under `docs/`. Matching at any depth covers both.
+**/.vitepress/dist/
+**/.vitepress/cache/
+# deps
+node_modules/
+# env
+.env
+.env.production
+# logs
+npm-debug.log*
+bun-debug.log*
+# os
+.DS_Store

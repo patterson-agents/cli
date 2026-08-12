@@ -15,7 +15,9 @@ export type GeneratorKind =
   | "claude-plugin"
   | "marketplace"
   | "command"
-  | "cli-plugin";
+  | "cli-plugin"
+  | "starlight-site"
+  | "vitepress-site";
 
 /** Name rule shared by every generator (npm/dir/frontmatter-safe). */
 export const GENERATOR_NAME_RE = /^[a-z0-9][a-z0-9-]*$/;
@@ -40,6 +42,12 @@ export interface Generator {
   generate(name: string): GeneratedOutput;
   /** Structured plan-first interview sections for `--plan` (FR-011). */
   planSections(name: string): string[];
+  /**
+   * Refuse to run at all, before a single byte is written. An error finding
+   * here aborts the generator with nothing on disk — the guard that keeps
+   * "would overwrite" from ever becoming "did overwrite" (spec 003, FR-004).
+   */
+  preflight?(root: string, name: string): Promise<Finding[]>;
   /** Validate what landed on disk (spec-valid frontmatter, dir==name, …). */
   postValidate?(root: string, name: string): Promise<Finding[]>;
 }
@@ -48,18 +56,26 @@ export interface RunGeneratorResult {
   written: string[];
   notes: string[];
   findings: Finding[];
+  /** True when `preflight` refused and nothing was written at all. */
+  blocked: boolean;
 }
 
-/** Write a generator's output under `root`, then post-validate. */
+/** Pre-flight, write a generator's output under `root`, then post-validate. */
 export async function runGenerator(
   generator: Generator,
   name: string,
   root: string,
 ): Promise<RunGeneratorResult> {
+  // Pre-flight runs first and aborts with an empty `written` list: a generator
+  // that refuses must leave the filesystem exactly as it found it.
+  const blockers = (await generator.preflight?.(root, name)) ?? [];
+  if (blockers.some((finding) => finding.severity === "error")) {
+    return { written: [], notes: [], findings: blockers, blocked: true };
+  }
   const output = generator.generate(name);
   const written = await writeScaffoldFiles(root, output.files);
-  const findings = (await generator.postValidate?.(root, name)) ?? [];
-  return { written, notes: output.notes, findings };
+  const findings = [...blockers, ...((await generator.postValidate?.(root, name)) ?? [])];
+  return { written, notes: output.notes, findings, blocked: false };
 }
 
 /** Render the `--plan` SPEC.md (interview → SPEC.md → scaffold, FR-011). */

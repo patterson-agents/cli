@@ -145,6 +145,8 @@ describe("mcp serve (production registry over stdio)", () => {
       "patterson_new_mcp_server",
       "patterson_new_plugin",
       "patterson_new_skill",
+      "patterson_new_starlight_site",
+      "patterson_new_vitepress_site",
       "patterson_plugins_marketplace_list",
       "patterson_skills_add",
       "patterson_skills_list",

@@ -1,0 +1,65 @@
+---
+title: Patterson Docs
+description: Documentation, guides, and reference for teams building on the Patterson Companies design system.
+template: splash
+hero:
+  tagline: Trusted Expertise. Unrivaled Support.
+  image:
+    alt: Patterson Companies
+    dark: ../../assets/patterson-logo-white.svg
+    light: ../../assets/patterson-logo-navy.svg
+  actions:
+    - text: Get started
+      link: /getting-started/
+      icon: right-arrow
+      variant: primary
+    - text: Brand tokens
+      link: /guides/brand-tokens/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## A documentation foundation in the Patterson brand
+
+This starter pairs [Starlight](https://starlight.astro.build), Astro's documentation
+framework, with the Patterson Companies design system. You write Markdown. The navy
+chrome, the accent policy, Proxima Nova, the 5px shape language, and the sky focus
+ring come with it.
+
+<CardGrid stagger>
+  <Card title="On brand by default">
+    Every Patterson token is mapped onto Starlight's theme variables in one file,
+    `src/styles/patterson.css`. Nothing is ejected, so the theme survives Starlight
+    upgrades.
+  </Card>
+  <Card title="Pinned and verified">
+    Astro 7.1.5 and Starlight 0.41.5, pinned exactly and install-verified. The image
+    pipeline runs on Astro's passthrough service, so no image library is ever loaded
+    at build time.
+  </Card>
+  <Card title="Diataxis structure">
+    Start here, Guides, and Reference are wired into the sidebar. Guides and Reference
+    autogenerate, so a new file shows up without a config change.
+  </Card>
+  <Card title="Light and dark">
+    Both themes are tuned. Navy and link blue carry the accent on white; sky carries
+    it on dark. Sky is never text on a light canvas.
+  </Card>
+</CardGrid>
+
+## Run it
+
+```sh
+bun install
+bun run dev
+```
+
+The site builds to `dist/` with `bun run build`, and `bun run preview` serves that
+build locally.
+
+## Where to go next
+
+Read [Getting started](/getting-started/) to add your first page. [Brand tokens](/guides/brand-tokens/)
+covers the palette and shape rules. [Theming](/guides/theming/) explains how the
+Starlight mapping works and where to change it.

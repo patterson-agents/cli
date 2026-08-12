@@ -1,0 +1,227 @@
+/* ============================================================
+   Patterson Companies — Starlight theme
+   ------------------------------------------------------------
+   Remaps Starlight's `--sl-*` design tokens onto Patterson brand
+   tokens. Loaded via `customCss` in astro.config.mjs. This is the
+   only brand file in the project.
+
+   Strategy: override the ACCENT tiers, the type stacks, and the
+   brand chrome; leave Starlight's tuned neutral gray ramp intact
+   on dark. That maximizes brand signal without opening contrast
+   regressions.
+
+   Accent policy (WCAG):
+     - Light canvas: navy #003767 for strong text, link blue
+       #147EC2 for links. Sky is NEVER text on white.
+     - Dark canvas: sky #00A8E1 and its tints carry the accent.
+     - Sky is allowed on light only as non-text chrome — hairlines,
+       focus rings, rules.
+
+   Brand rules: 5px radius [BG25 p.57]; sentence case everywhere,
+   no uppercase transforms [BG25 p.25]; no emoji, ever.
+   ============================================================ */
+
+/* --- Patterson primitives (theme-agnostic) ---------------- */
+:root {
+  /* Brand core [BG25 p.24] */
+  --pat-navy: #003767;
+  --pat-sky: #00a8e1;
+  --pat-blue: #147ec2;
+  --pat-blue-light: #6dcff6;
+  --pat-gray: #58585b;
+  --pat-white: #ffffff;
+
+  /* Navy tints */
+  --pat-navy-80: #335f85;
+  --pat-navy-40: #99afc2;
+  --pat-navy-20: #ccd7e1;
+  --pat-navy-10: #e5ebf0;
+
+  /* Sky tints */
+  --pat-sky-80: #33b9e7;
+  --pat-sky-40: #99dcf3;
+  --pat-sky-20: #ccedf9;
+  --pat-sky-10: #e5f6fc;
+
+  /* Neutral ramp (cool grays) */
+  --pat-ink: #1d1d20;
+  --pat-gray-700: #46464a;
+  --pat-gray-600: #58585b;
+  --pat-gray-500: #7c7c80;
+  --pat-gray-400: #a3a3a7;
+  --pat-gray-300: #c9c9cc;
+  --pat-gray-100: #ececec;
+  --pat-gray-50: #f6f7f8;
+
+  /* Interaction states — the verified production values. Primary
+     hover is a LIGHTER NAVY, not sky. Do not substitute. */
+  --pat-primary-hover: #315d83;
+  --pat-primary-disabled: #93a9bc;
+  --pat-secondary-hover: #96dbf6;
+  --pat-secondary-disabled: #daedf5;
+
+  /* Shape [BG25 p.57] — 5px on controls, cards and callouts. */
+  --pat-radius: 5px;
+  --pat-radius-field: 2px;
+
+  /* Motion — production animates color and transform only, 100-200ms. */
+  --pat-transition: 0.2s ease-in-out;
+
+  /* Fonts — proxima-nova is the brand face [BG25 p.25], served by Adobe
+     Fonts kit uth1qfm (linked from astro.config.mjs `head`). Arial is the
+     sanctioned substitute [BG25 p.25]. Never self-host the face. */
+  --pat-font-sans: 'proxima-nova', Arial, sans-serif;
+  --pat-font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas,
+    monospace;
+
+  --sl-font: var(--pat-font-sans);
+  --sl-font-mono: var(--pat-font-mono);
+}
+
+/* --- DARK theme (Starlight's default = :root) --------------
+   Sky carries the accent on a dark canvas; navy is the deep
+   accent surface. Starlight's neutral ramp is left alone. */
+:root {
+  --sl-color-accent-low: #012d4d;
+  --sl-color-accent: #0a84b8;
+  --sl-color-accent-high: var(--pat-sky-40);
+}
+
+/* --- LIGHT theme -------------------------------------------
+   Navy and link blue carry the accent on white. */
+:root[data-theme='light'] {
+  --sl-color-accent-low: var(--pat-navy-10);
+  --sl-color-accent: var(--pat-blue);
+  --sl-color-accent-high: var(--pat-navy);
+
+  /* Neutral ramp from the Patterson cool grays. */
+  --sl-color-white: var(--pat-ink);
+  --sl-color-gray-1: var(--pat-gray-700);
+  --sl-color-gray-2: var(--pat-gray-600);
+  --sl-color-gray-3: var(--pat-gray-500);
+  --sl-color-gray-4: var(--pat-gray-400);
+  --sl-color-gray-5: var(--pat-gray-300);
+  --sl-color-gray-6: var(--pat-gray-100);
+  --sl-color-gray-7: var(--pat-gray-50);
+  --sl-color-black: var(--pat-white);
+}
+
+/* ============================================================
+   Brand chrome — the signature Patterson surfaces
+   ============================================================ */
+
+/* Navy top bar with a sky hairline, in BOTH themes, white foreground.
+   Sky as a rule is non-text chrome, so it is safe on light. */
+.header {
+  background-color: var(--pat-navy);
+  border-bottom: 1px solid var(--pat-sky);
+}
+.header a,
+.header button,
+.header .site-title,
+starlight-menu-button button {
+  color: var(--pat-white);
+}
+
+/* Search affordance legible on navy. */
+site-search button {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--pat-white);
+}
+site-search button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Sky focus ring everywhere — the brand's signature interaction. */
+:focus-visible {
+  outline: 2px solid var(--pat-sky);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Controls — production Patterson buttons
+   5px radius, semibold, flat fills, 200ms ease-in-out.
+   ============================================================ */
+.sl-link-button {
+  border-radius: var(--pat-radius);
+  font-weight: 600;
+  transition:
+    background-color var(--pat-transition),
+    border-color var(--pat-transition),
+    color var(--pat-transition);
+}
+
+:root[data-theme='light'] .sl-link-button.primary {
+  background-color: var(--pat-navy);
+  border-color: var(--pat-navy);
+  color: var(--pat-white);
+}
+:root[data-theme='light'] .sl-link-button.primary:hover {
+  background-color: var(--pat-primary-hover);
+  border-color: var(--pat-primary-hover);
+}
+:root[data-theme='light'] .sl-link-button.primary[aria-disabled='true'] {
+  background-color: var(--pat-primary-disabled);
+  border-color: var(--pat-primary-disabled);
+}
+
+:root[data-theme='dark'] .sl-link-button.primary {
+  background-color: var(--pat-sky);
+  border-color: var(--pat-sky);
+  color: var(--pat-navy);
+}
+:root[data-theme='dark'] .sl-link-button.primary:hover {
+  background-color: var(--pat-sky-80);
+  border-color: var(--pat-sky-80);
+}
+
+/* Secondary is a filled light blue with navy text — not an outline. */
+:root[data-theme='light'] .sl-link-button.secondary {
+  background-color: var(--pat-blue-light);
+  border-color: var(--pat-blue-light);
+  color: var(--pat-navy);
+}
+:root[data-theme='light'] .sl-link-button.secondary:hover {
+  background-color: var(--pat-secondary-hover);
+  border-color: var(--pat-secondary-hover);
+}
+
+/* Badges keep the brand radius rather than a pill — production has no
+   pill radius anywhere. */
+.sl-badge {
+  border-radius: var(--pat-radius);
+  font-weight: 600;
+}
+
+/* Cards, callouts and code frames → 5px radius [BG25 p.57]. */
+.card,
+.starlight-aside,
+.expressive-code .frame {
+  border-radius: var(--pat-radius);
+}
+.card {
+  border-color: var(--sl-color-hairline);
+}
+
+/* Form fields use the tighter production radius. */
+input,
+select,
+textarea {
+  border-radius: var(--pat-radius-field);
+}
+
+/* ============================================================
+   Hero
+   Tagline stays in body gray on light (sky text on white fails
+   contrast) and lifts to sky on dark.
+   ============================================================ */
+.hero .tagline {
+  font-weight: 600;
+}
+:root[data-theme='light'] .hero .tagline {
+  color: var(--pat-gray-600);
+}
+:root[data-theme='dark'] .hero .tagline {
+  color: var(--pat-sky-40);
+}

@@ -1,14 +1,20 @@
 /**
- * The six v1 generators (E-P5, US5): skill, mcp-server, plugin, marketplace,
- * command, cli-plugin. All templates are inline and deterministic; pinned
- * versions come from verified facts (sdk@1.30.0 per S1, zod@4.4.3 — the
- * exact pins this repo itself uses; no `@latest` anywhere, Constitution IV).
+ * The inline v1 generators (E-P5, US5): skill, mcp-server, plugin,
+ * claude-plugin, marketplace, command, cli-plugin. Every template in this file
+ * is an inline string and deterministic; pinned versions come from verified
+ * facts (sdk@1.30.0 per S1, zod@4.4.3 — the exact pins this repo itself uses;
+ * no `@latest` anywhere, Constitution IV).
+ *
+ * `ALL_GENERATORS` at the bottom additionally carries the two site generators
+ * from `./site.ts` (spec 003), whose content is vendored assets rather than
+ * inline strings.
  */
 import { join } from "node:path";
 
 import { MARKETPLACE_MANIFEST_PATHS, type Finding } from "@patterson/core";
 
 import type { Generator } from "./engine.ts";
+import { starlightSiteGenerator, vitepressSiteGenerator } from "./site.ts";
 
 /** Pins mirrored from this repo's own gated installs (Constitution IV). */
 export const PINS = {
@@ -812,4 +818,6 @@ export const ALL_GENERATORS: readonly Generator[] = [
   marketplaceGenerator,
   commandGenerator,
   cliPluginGenerator,
+  starlightSiteGenerator,
+  vitepressSiteGenerator,
 ];

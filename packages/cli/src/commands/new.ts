@@ -74,15 +74,19 @@ function makeNewCommand(generator: Generator) {
       const result = await runGenerator(generator, args.name, root);
       const errors = result.findings.filter((finding: Finding) => finding.severity === "error");
       if (errors.length > 0) {
+        // A pre-flight refusal is a distinct outcome from a bad scaffold: it
+        // means nothing was written, so the code names the refusal (spec 003).
         return {
           kind: "error",
-          code: "POST_VALIDATION_FAILED",
-          message: errors.map((finding) => finding.message).join("\n"),
+          code: result.blocked ? "TARGET_REFUSED" : "POST_VALIDATION_FAILED",
+          message: errors
+            .map((finding) => (finding.fix === undefined ? finding.message : `${finding.message}\n${finding.fix}`))
+            .join("\n"),
         };
       }
       return {
         kind: "ok",
-        value: { ...result, planned: false },
+        value: { written: result.written, notes: result.notes, findings: result.findings, planned: false },
         report: {
           summary: `Scaffolded ${generator.kind} "${args.name}": ${result.written.length} file(s).`,
           details: [...result.written.map((path) => `wrote ${path}`), ...result.notes],

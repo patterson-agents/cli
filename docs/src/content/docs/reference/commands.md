@@ -56,7 +56,8 @@ patterson mcp       list · add · remove · serve                (serve = be an
 patterson design    templates · pull · refresh · tokens
 patterson editor    vscode · zed · devcontainer · codespaces
 patterson ci        init · add <workflow> · sync
-patterson new       skill · mcp-server · plugin · marketplace · command · cli-plugin
+patterson new       skill · mcp-server · plugin · claude-plugin · marketplace · command ·
+                    cli-plugin · starlight-site · vitepress-site
 patterson tutor     [topic] · list · resume · status
 ```
 
@@ -195,12 +196,29 @@ generated skill passes upstream ecosystem validation.
 | --- | --- |
 | `skill` | A skill (directory name enforced equal to declared name) |
 | `mcp-server` | An MCP server with a passing protocol self-test |
-| `plugin` | A Claude Code plugin |
+| `plugin` | A patterson plugin package |
+| `claude-plugin` | A Claude plugin (`.claude-plugin/plugin.json` + a provenance-complete skill) |
 | `marketplace` | A plugin marketplace |
 | `command` | A new patterson subcommand (appears in help after restart) |
-| `cli-plugin` | A patterson CLI plugin |
+| `cli-plugin` | A distributable patterson CLI plugin |
+| `starlight-site` | A Patterson-branded Starlight docs site, from the vendored template |
+| `vitepress-site` | A Patterson-branded VitePress docs site, from the vendored template |
 
 Generators optionally run an AI-assisted plan-first interview (`--plan`).
+
+### Site generators
+
+`starlight-site` and `vitepress-site` copy a vendored, install-verified template —
+version pins and committed `bun.lock` included — into `<name>/`, rewriting only
+`package.json`'s `name` to the target directory. Nothing is fetched; the bytes ship as
+package assets, and their canonical home and content digests are recorded in
+`packages/generators/assets/site-templates/_SOURCES.md`.
+
+They **refuse a non-empty target** and write nothing at all, exiting with
+`TARGET_REFUSED`. There is deliberately no `--force`: the whole target is template
+content, so overwriting could only destroy existing work. This is the intended
+difference from `bun create`, which replaces an existing directory's contents without
+a prompt.
 
 ## `patterson tutor`
 

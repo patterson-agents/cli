@@ -36,6 +36,7 @@
     ".": "./src/index.ts"
   },
   "files": [
-    "src"
+    "src",
+    "assets"
   ]
 }

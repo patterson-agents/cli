@@ -108,7 +108,8 @@ patterson mcp       list · add · remove · serve                (serve = be an
 patterson design    templates · pull · refresh · tokens
 patterson editor    vscode · zed · devcontainer · codespaces
 patterson ci        init · add <workflow> · sync
-patterson new       skill · mcp-server · plugin · marketplace · command · cli-plugin
+patterson new       skill · mcp-server · plugin · claude-plugin · marketplace · command ·
+                    cli-plugin · starlight-site · vitepress-site
 patterson tutor     [topic] · list · resume · status
 ```
 

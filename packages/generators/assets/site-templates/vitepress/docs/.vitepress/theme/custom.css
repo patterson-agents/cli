@@ -1,0 +1,419 @@
+/* ============================================================
+   Patterson Companies — VitePress theme
+   ------------------------------------------------------------
+   Remaps VitePress's `--vp-*` design tokens onto Patterson brand
+   tokens. Loaded from `.vitepress/theme/index.ts`, which extends
+   the default theme rather than forking it — so this file is the
+   only brand surface and the theme survives VitePress upgrades.
+
+   The `--vp-c-*` vocabulary maps almost one-to-one onto the
+   Patterson docs UI kit's `--c-*` block, so the two render the
+   same brand.
+
+   Accent policy (WCAG):
+     - Light canvas: navy #003767 for strong text, link blue
+       #147EC2 for links. Sky is NEVER text on white.
+     - Dark canvas: sky #00A8E1 and light blue #6DCFF6 carry the
+       accent, text included.
+     - Sky on light is allowed only as non-text chrome — the nav
+       hairline, focus rings, rules.
+
+   Brand rules: 5px radius [BG25 p.57] — the docs kit's 9px is a
+   kit convention, not the brand value. Sentence case everywhere,
+   no uppercase transforms [BG25 p.25]. No emoji, ever.
+
+   TWO OVERRIDE MECHANISMS, and the difference matters:
+
+   1. Custom properties. Preferred, and used for everything that
+      VitePress reads from a variable. Resolution is by
+      inheritance, so a variable set on `:root` — or scoped to a
+      subtree like `.VPNavBar` — reaches deep into components
+      without any specificity contest.
+
+   2. `#app`-anchored selectors. VitePress's default theme is
+      built from Vue SFCs with `<style scoped>`, so its rules
+      compile to `.VPButton[data-v-hash]`. That attribute adds a
+      specificity level a bare `.VPButton` can never reach, and
+      such a rule is silently dropped. Where VitePress hard-codes
+      a literal (a 20px pill radius, a 12px card radius) the
+      override is anchored on `#app` — the mount node, and an id,
+      so it outranks any scoped rule without `!important`.
+
+   Rules that target the local search box are NOT anchored: that
+   component is teleported to `body`, outside `#app`.
+   ============================================================ */
+
+/* ============================================================
+   1. Patterson primitives (theme-agnostic)
+   ============================================================ */
+:root {
+  /* Brand core [BG25 p.24] */
+  --pat-navy: #003767;
+  --pat-sky: #00a8e1;
+  --pat-blue: #147ec2;
+  --pat-blue-light: #6dcff6;
+
+  /* The digital link blue [DS20 p.8]. Close to --pat-blue (PMS 7683) but not
+     the same value, and the distinction is load-bearing: link blue clears
+     4.5:1 on white, PMS 7683 lands at 4.38:1 and fails AA for body text.
+     Links use this one. */
+  --pat-digital-link: #147cbd;
+  --pat-gray: #58585b;
+  --pat-white: #ffffff;
+
+  /* Navy tints */
+  --pat-navy-80: #335f85;
+  --pat-navy-20: #ccd7e1;
+  --pat-navy-10: #e5ebf0;
+
+  /* Sky tints */
+  --pat-sky-80: #33b9e7;
+  --pat-sky-40: #99dcf3;
+  --pat-sky-10: #e5f6fc;
+
+  /* Neutral ramp (cool grays) */
+  --pat-ink: #1d1d20;
+  --pat-gray-700: #46464a;
+  --pat-gray-600: #58585b;
+  --pat-gray-500: #7c7c80;
+  --pat-gray-300: #c9c9cc;
+  --pat-gray-100: #ececec;
+  --pat-gray-50: #f6f7f8;
+
+  /* The boundary of a control sitting on the navy bar — the search field and
+     the appearance toggle. WCAG 1.4.11 asks for 3:1 between a UI component's
+     boundary and its adjacent background: white at 0.25 alpha over navy
+     measures 2.08:1 and fails, 0.40 measures 3.19:1 and passes. Do not lower
+     this for a softer look without re-checking the ratio. */
+  --pat-chrome-boundary: rgba(255, 255, 255, 0.4);
+
+  /* Interaction states — the verified production values. Primary hover is
+     a LIGHTER NAVY, not sky. Do not substitute. */
+  --pat-primary-hover: #315d83;
+  --pat-primary-disabled: #93a9bc;
+  --pat-secondary-hover: #96dbf6;
+
+  /* Shape [BG25 p.57]. Relative units throughout: every length here is
+     expressed in rem so it tracks the root font size rather than fixing a
+     device pixel count. The brand values are quoted in px because that is how
+     the brand guide states them, and at the 16px default root each rem value
+     below resolves to exactly that number. */
+  --pat-radius: 0.3125rem; /* 5px */
+  --pat-radius-field: 0.125rem; /* 2px */
+
+  /* Hairlines and the focus ring, as tokens so no bare length is repeated. */
+  --pat-hairline: 0.0625rem; /* 1px */
+  --pat-focus-width: 0.125rem; /* 2px */
+  --pat-focus-offset: 0.125rem; /* 2px */
+
+  /* 46px control height [BG25 p.57], as the line box inside a hairline
+     border: 2.75rem + 2 x 0.0625rem. */
+  --pat-control-line: 2.75rem; /* 44px */
+
+  /* Motion — production animates color and transform only, 100-200ms. */
+  --pat-transition: 0.2s ease-in-out;
+
+  /* Fonts — proxima-nova is the brand face [BG25 p.25], served by Adobe
+     Fonts kit uth1qfm (linked from the `head` entry in config.ts). Arial is
+     the sanctioned substitute [BG25 p.25]. Never self-host the face. */
+  --vp-font-family-base: 'proxima-nova', Arial, sans-serif;
+  --vp-font-family-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo,
+    Consolas, monospace;
+}
+
+/* ============================================================
+   2. Light theme — surfaces, text, brand tiers
+   ============================================================ */
+:root {
+  /* Surfaces */
+  --vp-c-bg: var(--pat-white);
+  --vp-c-bg-alt: #f8f8f8;
+  --vp-c-bg-soft: #f8f8f8;
+  --vp-c-bg-elv: var(--pat-white);
+
+  /* Text — headings are navy, body is Patterson gray */
+  --vp-c-text-1: var(--pat-navy);
+  --vp-c-text-2: var(--pat-gray-600);
+  --vp-c-text-3: #8a8a8e;
+
+  /* Rules */
+  --vp-c-divider: var(--pat-gray-100);
+  --vp-c-border: #e4e5e8;
+  --vp-c-gutter: #e4e5e8;
+
+  /* Brand tiers.
+     -1 is link and accent TEXT, so it must be the digital link blue on
+     white — the tier that has to clear 4.5:1.
+     -2 is the hover state, which darkens toward navy.
+     -3 is the solid fill behind white text, so it is navy. */
+  --vp-c-brand-1: var(--pat-digital-link);
+  --vp-c-brand-2: var(--pat-navy);
+  --vp-c-brand-3: var(--pat-navy);
+  --vp-c-brand-soft: rgba(0, 168, 225, 0.1);
+
+  /* Buttons — navy fill, lighter navy on hover, never sky. */
+  --vp-button-brand-bg: var(--pat-navy);
+  --vp-button-brand-text: var(--pat-white);
+  --vp-button-brand-border: transparent;
+  --vp-button-brand-hover-bg: var(--pat-primary-hover);
+  --vp-button-brand-hover-text: var(--pat-white);
+  --vp-button-brand-hover-border: transparent;
+  --vp-button-brand-active-bg: var(--pat-primary-hover);
+  --vp-button-brand-active-text: var(--pat-white);
+  --vp-button-brand-active-border: transparent;
+
+  /* Home hero — flat navy, no gradient. The brand does not use gradients. */
+  --vp-home-hero-name-color: var(--pat-navy);
+  --vp-home-hero-image-background-image: none;
+  --vp-home-hero-image-filter: none;
+
+  /* Code. The block background follows the canvas, light on light.
+     VitePress ships dual-theme Shiki: every token carries an inline
+     `--shiki-light` / `--shiki-dark` pair and the light values are picked
+     outside `.dark`. A dark block on the light theme therefore paints
+     dark GitHub-light tokens onto a dark field and the syntax disappears.
+     Keep this value light unless you also force the dark token set. */
+  --vp-code-bg: #f8f8f8;
+  --vp-code-block-bg: var(--pat-gray-50);
+
+  /* Custom blocks (tip/info/warning) pick up the brand soft tint. */
+  --vp-custom-block-tip-border: var(--pat-sky);
+  --vp-custom-block-tip-text: var(--pat-navy);
+  --vp-custom-block-tip-bg: var(--pat-sky-10);
+}
+
+/* ============================================================
+   3. Dark theme — sky forward
+   ============================================================ */
+.dark {
+  --vp-c-bg: #15181e;
+  --vp-c-bg-alt: #1b1f27;
+  --vp-c-bg-soft: #20252e;
+  --vp-c-bg-elv: #1b1f27;
+
+  --vp-c-text-1: #f1f3f5;
+  --vp-c-text-2: #b4bac4;
+  --vp-c-text-3: #828a96;
+
+  --vp-c-divider: #262b34;
+  --vp-c-border: #2a2f39;
+  --vp-c-gutter: #2a2f39;
+
+  /* On a dark canvas sky and light blue carry the accent, text included. */
+  --vp-c-brand-1: var(--pat-blue-light);
+  --vp-c-brand-2: var(--pat-sky-40);
+  --vp-c-brand-3: var(--pat-sky);
+  --vp-c-brand-soft: rgba(0, 168, 225, 0.14);
+
+  /* Sky fill with navy text — white on sky fails contrast. */
+  --vp-button-brand-bg: var(--pat-sky);
+  --vp-button-brand-text: var(--pat-navy);
+  --vp-button-brand-hover-bg: var(--pat-sky-80);
+  --vp-button-brand-hover-text: var(--pat-navy);
+  --vp-button-brand-active-bg: var(--pat-sky-80);
+  --vp-button-brand-active-text: var(--pat-navy);
+
+  --vp-home-hero-name-color: var(--pat-blue-light);
+
+  --vp-code-bg: #20252e;
+  --vp-code-block-bg: #0f141c;
+
+  --vp-custom-block-tip-text: var(--pat-sky-40);
+  --vp-custom-block-tip-bg: rgba(0, 168, 225, 0.14);
+}
+
+/* ============================================================
+   4. Brand chrome — the navy top bar
+   The nav is navy in BOTH themes with a sky hairline and white
+   foreground. Sky here is non-text chrome, so it is safe on light.
+   ============================================================ */
+:root {
+  --vp-nav-bg-color: var(--pat-navy);
+}
+
+/* Paint the whole bar, not just the content column.
+   With a sidebar and a viewport past `--vp-layout-max-width` (1440px),
+   VitePress paints only `.content-body`: the title block is absolutely
+   positioned and transparent, and `.content` is inset from both edges. The
+   page canvas therefore shows through as pale bands behind the logo and at
+   the right edge. Painting `.VPNavBar` itself carries the navy edge to edge
+   in every layout state, home and top included. */
+#app .VPNavBar {
+  background-color: var(--pat-navy);
+  border-bottom: var(--pat-hairline) solid var(--pat-sky);
+}
+
+/* The bar is a dark surface in both themes, so re-point the theme variables
+   inside it. VitePress's own scoped rules read these — `.VPNavBarMenuLink`
+   is `color: var(--vp-c-text-1)`, which is navy on the light theme and so
+   painted navy-on-navy. Variables are inherited rather than matched, so
+   this reaches every descendant without a specificity fight. */
+.VPNavBar {
+  --vp-c-text-1: var(--pat-white);
+  --vp-c-text-2: rgba(255, 255, 255, 0.78);
+  --vp-c-text-3: rgba(255, 255, 255, 0.6);
+
+  /* Active nav link. Link blue is a light-canvas value and reads at 2.2:1
+     on navy; light blue is the dark-canvas accent and clears 6.8:1. */
+  --vp-c-brand-1: var(--pat-blue-light);
+  --vp-c-brand-2: var(--pat-sky-40);
+
+  /* Surfaces inside the bar, including any flyout menu panel. */
+  --vp-c-bg: var(--pat-navy);
+  --vp-c-bg-alt: var(--pat-navy);
+  --vp-c-bg-elv: var(--pat-navy);
+
+  --vp-c-divider: rgba(255, 255, 255, 0.24);
+  --vp-c-border: rgba(255, 255, 255, 0.24);
+  /* The sky border above is the bar's only bottom rule — drop the default. */
+  --vp-c-gutter: transparent;
+}
+
+/* Search affordance legible on navy. Two selectors on purpose: VitePress 1.x
+   renders the local search trigger with the DocSearch class names, 2.x
+   renders `.VPNavBarSearchButton` with `.keys`/`kbd` children. Carrying both
+   keeps this file correct across that rename. */
+#app .VPNavBarSearch .DocSearch-Button,
+#app .VPNavBarSearchButton {
+  background-color: rgba(255, 255, 255, 0.12);
+  border: var(--pat-hairline) solid var(--pat-chrome-boundary);
+  border-radius: var(--pat-radius);
+  color: rgba(255, 255, 255, 0.85);
+}
+#app .VPNavBarSearch .DocSearch-Button:hover,
+#app .VPNavBarSearchButton:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+#app .VPNavBarSearch .DocSearch-Search-Icon {
+  color: rgba(255, 255, 255, 0.85);
+}
+#app .VPNavBarSearch .DocSearch-Button-Keys .DocSearch-Button-Key,
+#app .VPNavBarSearchButton .keys kbd {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: var(--pat-chrome-boundary);
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+}
+
+/* The appearance toggle sits on navy in both themes, so give it a
+   translucent-white track instead of the theme's grey-on-grey. */
+#app .VPNavBar .VPSwitch {
+  background-color: rgba(255, 255, 255, 0.16);
+  border: var(--pat-hairline) solid var(--pat-chrome-boundary);
+}
+#app .VPNavBar .VPSwitch:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+/* The mobile menu panel is a page-canvas surface outside `.VPNavBar`, so it
+   keeps the theme's own text and background values. Only the toggle strip
+   that stays on the navy bar is re-pointed above. */
+
+/* Sky focus ring everywhere — the brand's signature interaction.
+   Sky alone is not enough on the light canvas: #00A8E1 on white measures
+   2.73:1, under the 3:1 WCAG 1.4.11 asks of a focus indicator. It is fine on
+   the navy bar (4.41:1) and on the dark canvas (6.51:1), but white is where
+   most of the content sits.
+   So the ring is two-tone. The box-shadow paints navy from the border box out
+   past the outline, and the sky outline paints on top of it — giving a sky
+   band sandwiched in navy. Sky keeps its neighbor contrast against the navy
+   backing, and the indicator's outer edge is navy against the page, at
+   12.06:1 on white. The brand ring stays visibly sky.
+
+   Listed twice on purpose. The backing is a `box-shadow`, and a component
+   that sets its own `box-shadow` in a scoped rule would outrank a bare
+   `:focus-visible` and quietly drop it — `.VPSkipLink` is exactly that case,
+   and it is a keyboard-only control on a white background, so it is the last
+   place the backing should be lost. The `#app` copy outranks those; the bare
+   copy still covers the search box, which is teleported outside `#app`. */
+:focus-visible,
+#app :focus-visible {
+  outline: var(--pat-focus-width) solid var(--pat-sky);
+  outline-offset: var(--pat-focus-offset);
+  box-shadow: 0 0 0
+    calc(var(--pat-focus-offset) + var(--pat-focus-width) * 2)
+    var(--pat-navy);
+}
+
+/* ============================================================
+   5. Shape — 5px, not the docs kit's 9px [BG25 p.57]
+   VitePress hard-codes its radii and its control height as
+   literals inside scoped component styles (a 20px pill on
+   buttons, 12px on feature cards), so these are anchored on
+   `#app` to outrank the `[data-v-*]` selector. See the header.
+   ============================================================ */
+#app .VPButton {
+  border-radius: var(--pat-radius);
+  font-weight: 600;
+  transition:
+    background-color var(--pat-transition),
+    border-color var(--pat-transition),
+    color var(--pat-transition);
+}
+/* Brand control height [BG25 p.57]. A rem line box rather than a px one, so
+   the control grows with the root font size instead of clipping its label. */
+#app .VPButton.medium {
+  line-height: var(--pat-control-line);
+}
+#app .VPFeature,
+#app .custom-block,
+#app .vp-doc div[class*='language-'],
+#app .VPTeamMembersItem {
+  border-radius: var(--pat-radius);
+}
+/* The local search box is teleported to `body`, outside `#app`. */
+.VPLocalSearchBox .result {
+  border-radius: var(--pat-radius);
+}
+#app .vp-doc table tr,
+#app .vp-doc th,
+#app .vp-doc td {
+  border-radius: 0;
+}
+#app .vp-doc input,
+#app .vp-doc select,
+#app .vp-doc textarea {
+  border-radius: var(--pat-radius-field);
+}
+.VPLocalSearchBox .search-input {
+  border-radius: var(--pat-radius-field);
+}
+
+/* Feature cards get a brand hairline on hover rather than a shadow lift. */
+#app .VPFeature {
+  transition: border-color var(--pat-transition);
+}
+#app .VPFeature:hover {
+  border-color: var(--pat-sky);
+}
+
+/* A hairline gives the code block an edge on the light canvas, where its
+   background sits close to the page. */
+#app .vp-doc div[class*='language-'] {
+  border: var(--pat-hairline) solid var(--vp-c-divider);
+}
+
+/* ============================================================
+   6. Content details
+   ============================================================ */
+/* Headings are navy on light and stay on the theme ink on dark. */
+#app .vp-doc h1,
+#app .vp-doc h2,
+#app .vp-doc h3 {
+  color: var(--vp-c-text-1);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* The sidebar section labels are sentence case by authorship; make sure no
+   stylesheet turns them into all caps [BG25 p.25]. */
+#app .VPSidebarItem.level-0 > .item > .text {
+  text-transform: none;
+  font-weight: 700;
+}
+
+/* Footer sits on the subtle surface with a sky hairline. */
+#app .VPFooter {
+  border-top: var(--pat-hairline) solid var(--pat-sky);
+  background-color: var(--vp-c-bg-alt);
+}

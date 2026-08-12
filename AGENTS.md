@@ -53,7 +53,7 @@ packages/core         # IR schema, config loader, command registry, emit engine,
 packages/emitters/*   # one package per target surface + cross (chain guard, coverage)
 packages/design       # vendored design-system snapshot + materializer
 packages/skills       # pinned skills-CLI wrapper (bunx skills@1.5.21), lockfile READER
-packages/generators   # patterson new … (6 generators) + shared MCP handshake validator
+packages/generators   # patterson new … (9 generators) + shared MCP handshake validator
 packages/tutor        # AI-fluency tutor: lesson engine, 5 tracks, local validation
 packages/mcp          # stdio MCP server over core registry (no prompt code in graph)
 packages/cli          # citty tree + @clack wizard (step registry)
@@ -82,6 +82,14 @@ workspace deps resolve to source. Consequences:
 
 - **Design templates** are the 11 dirs under `packages/design/assets/snapshot/templates/`
   (vendored, offline). Root `templates/` holds only the scaffold `skeleton`.
+- **Site templates are a third, separate thing**: `packages/generators/assets/site-templates/`
+  holds the runnable Starlight and VitePress sites that `patterson new starlight-site` /
+  `new vitepress-site` copy. They are vendored *copies* — canonical home, commit, and
+  content digests are in that folder's `_SOURCES.md`, and the digests are asserted by
+  `packages/generators/test/site-generators.test.ts`. Never edit them here; fix upstream
+  and re-vendor with `git archive` (a `cp -R` drags in `.vitepress/cache/` and `dist/`).
+  `packages/*/assets` is excluded from the root tsconfig — vendored `.ts` files are other
+  projects' source, not ours.
 - **`docs/` is not a root workspace** — root workspaces are `packages/*` and
   `packages/emitters/*` only. `docs/` has its own `bun.lock`; use
   `bun run docs:dev|docs:build|docs:preview` (they shell out with `--cwd docs`).
