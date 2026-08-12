@@ -12,6 +12,7 @@ import {
   ABSENT_HASH,
   CheckRegistry,
   defineCommand,
+  marketplaceChecks,
   RESOLVING_FLAG,
   type CommandResult,
   type Finding,
@@ -164,6 +165,7 @@ export function makeDoctorCommand(deps: CommandDeps = defaultDeps) {
           })),
       });
 
+      for (const check of marketplaceChecks) registry.register(check);
       for (const check of crossChecks) registry.register(check);
 
       const report = await registry.runAll({ cwd: ctx.cwd, ir });

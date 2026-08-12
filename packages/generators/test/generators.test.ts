@@ -70,10 +70,35 @@ describe("every generator", () => {
   test("marketplace generator emits valid JSON at the in-repo path", async () => {
     const root = await tempDir();
     const result = await runGenerator(marketplaceGenerator, "dental-tools", root);
-    expect(result.written).toEqual([".github/plugin/marketplace.json"]);
+    expect(result.written).toEqual([
+      ".claude-plugin/marketplace.json",
+      ".github/plugin/marketplace.json",
+    ]);
     const parsed = JSON.parse(await Bun.file(join(root, ".github/plugin/marketplace.json")).text());
     expect(parsed.name).toBe("dental-tools");
     expect(Array.isArray(parsed.plugins)).toBe(true);
+    // Claude resolves plugin sources relative to the marketplace root and
+    // requires the "./" prefix — a bare "plugins/x" is not accepted.
+    expect(parsed.plugins[0].source.startsWith("./")).toBe(true);
+  });
+
+  test("marketplace generator emits BOTH manifests byte-identically", async () => {
+    const root = await tempDir();
+    await runGenerator(marketplaceGenerator, "dental-tools", root);
+    // Primary source for the dual-path convention: githubnext/ado-aw ships both
+    // files with identical bytes (sha256 f7010cf3…, verified against the
+    // vendored copy) — cross-vendor support is a COPY, not a transform.
+    const claude = await Bun.file(join(root, ".claude-plugin/marketplace.json")).arrayBuffer();
+    const github = await Bun.file(join(root, ".github/plugin/marketplace.json")).arrayBuffer();
+    expect(new Uint8Array(claude)).toEqual(new Uint8Array(github));
+  });
+
+  test("marketplace generator output is byte-identical across the two paths in memory", () => {
+    const output = marketplaceGenerator.generate("dental-tools");
+    const paths = output.files.map((file) => file.path).toSorted();
+    expect(paths).toEqual([".claude-plugin/marketplace.json", ".github/plugin/marketplace.json"]);
+    const contents = new Set(output.files.map((file) => file.content));
+    expect(contents.size).toBe(1);
   });
 });
 

@@ -98,4 +98,38 @@ describe("doctor (T025)", () => {
     expect(await exists(root, "CLAUDE.md")).toBe(false);
     expect(await exists(root, ".patterson/emitted.json")).toBe(false);
   });
+
+  test("diverged dual marketplace manifests surface as a doctor finding", async () => {
+    const root = await tempDir();
+    await seedSynced(root);
+    const manifest = `${JSON.stringify({ name: "demo", plugins: [] }, null, 2)}\n`;
+    await Bun.write(join(root, ".claude-plugin/marketplace.json"), manifest);
+    await Bun.write(
+      join(root, ".github/plugin/marketplace.json"),
+      manifest.replace('"demo"', '"drifted"'),
+    );
+
+    const result = await doctor.run({}, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    const report = DoctorOutputSchema.parse(result.value);
+    const finding = report.findings.find((f) => f.checkId === "marketplace.manifests-diverged");
+    expect(finding?.severity).toBe("error");
+    expect(report.ok).toBe(false);
+  });
+
+  test("identical dual marketplace manifests produce no doctor finding", async () => {
+    const root = await tempDir();
+    await seedSynced(root);
+    const manifest = `${JSON.stringify({ name: "demo", plugins: [] }, null, 2)}\n`;
+    await Bun.write(join(root, ".claude-plugin/marketplace.json"), manifest);
+    await Bun.write(join(root, ".github/plugin/marketplace.json"), manifest);
+
+    const result = await doctor.run({}, makeCtx(root));
+    expect(result.kind).toBe("ok");
+    if (result.kind !== "ok") throw new Error("expected ok");
+    const report = DoctorOutputSchema.parse(result.value);
+    expect(report.findings.some((f) => f.checkId === "marketplace.manifests-diverged")).toBe(false);
+    expect(report.ok).toBe(true);
+  });
 });

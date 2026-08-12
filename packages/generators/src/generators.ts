@@ -6,7 +6,7 @@
  */
 import { join } from "node:path";
 
-import type { Finding } from "@patterson/core";
+import { MARKETPLACE_MANIFEST_PATHS, type Finding } from "@patterson/core";
 
 import type { Generator } from "./engine.ts";
 
@@ -386,32 +386,45 @@ export const cliPluginGenerator: Generator = {
 
 export const marketplaceGenerator: Generator = {
   kind: "marketplace",
-  summary: "Scaffold an in-repo Claude plugin marketplace (.github/plugin/marketplace.json)",
+  summary:
+    "Scaffold an in-repo Claude plugin marketplace (dual .claude-plugin/ + .github/plugin/ manifests)",
   generate(name) {
+    // ONE manifest string, emitted at BOTH published paths. Cross-vendor
+    // support here is a copy, not a transform: githubnext/ado-aw ships
+    // .claude-plugin/marketplace.json and .github/plugin/marketplace.json with
+    // identical bytes (both sha256 f7010cf3…, verified with cmp/sha256sum
+    // against the vendored copy of that repo — Constitution V). Any divergence
+    // is drift, and `patterson doctor` reports it as
+    // `marketplace.manifests-diverged`.
+    const manifest = `${JSON.stringify(
+      {
+        name,
+        metadata: { description: `TODO: what does the ${name} marketplace collect?` },
+        plugins: [
+          {
+            name: "example-plugin",
+            // The "./" prefix is required: Claude resolves plugin sources
+            // relative to the marketplace root and does not accept a bare path.
+            source: "./plugins/example-plugin",
+            description: "TODO: replace with a real plugin entry",
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`;
     return {
       files: [
-        {
-          path: ".github/plugin/marketplace.json",
-          content: `${JSON.stringify(
-            {
-              name,
-              metadata: { description: `TODO: what does the ${name} marketplace collect?` },
-              plugins: [
-                {
-                  name: "example-plugin",
-                  source: "./plugins/example-plugin",
-                  description: "TODO: replace with a real plugin entry",
-                },
-              ],
-            },
-            null,
-            2,
-          )}\n`,
-        },
+        { path: MARKETPLACE_MANIFEST_PATHS.claude, content: manifest },
+        { path: MARKETPLACE_MANIFEST_PATHS.github, content: manifest },
       ],
       notes: [
-        "In-repo marketplace (research: prefer .github/plugin/marketplace.json over",
-        "floating collection repos). Consumers add it with:",
+        "In-repo marketplace, published at both known paths:",
+        `  ${MARKETPLACE_MANIFEST_PATHS.claude} (read by Claude Code)`,
+        `  ${MARKETPLACE_MANIFEST_PATHS.github} (in-repo convention)`,
+        "Keep them byte-identical — edit one and copy it over the other;",
+        "`patterson doctor` fails with marketplace.manifests-diverged otherwise.",
+        "Consumers add it with:",
         `  /plugin marketplace add <owner>/<this-repo>`,
       ],
     };

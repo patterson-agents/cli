@@ -6,3 +6,9 @@ export type { CheckCtx, CheckDef, Finding, Severity } from "./types.ts";
 
 export { CheckRegistry, compareFindings } from "./registry.ts";
 export type { CheckReport, CheckRunRecord } from "./registry.ts";
+
+export {
+  MARKETPLACE_MANIFEST_PATHS,
+  marketplaceChecks,
+  marketplaceManifestsDivergedCheck,
+} from "./marketplace.ts";
