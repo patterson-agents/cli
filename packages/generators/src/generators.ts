@@ -542,7 +542,7 @@ export const claudePluginGenerator: Generator = {
               author: { name: "TODO: owning team" },
               homepage: "TODO: https://… (delete this key if the plugin has no homepage)",
               repository: "TODO: https://… (delete this key if the plugin has no repo)",
-              license: "UNLICENSED",
+              license: "LicenseRef-Patterson-Internal",
               keywords: [name],
             },
             null,

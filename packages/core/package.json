@@ -12,7 +12,7 @@
     "jsonc-parser": "3.3.1"
   },
   "author": "Daniel Bodnar",
-  "license": "UNLICENSED",
+  "license": "LicenseRef-Patterson-Internal",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/patterson-agents/cli.git",

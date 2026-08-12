@@ -11,7 +11,7 @@
     "@patterson/cli": "workspace:*"
   },
   "author": "Daniel Bodnar",
-  "license": "UNLICENSED",
+  "license": "LicenseRef-Patterson-Internal",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/patterson-agents/cli.git",
