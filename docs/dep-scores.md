@@ -29,6 +29,16 @@ No package hits the hard denylist. No vulnerability dimension below 100.
 
 | Package | SC | Maint | Qual | Vuln | Lic | Disposition |
 | --- | --- | --- | --- | --- | --- | --- |
-| astro@7.1.5 | **88** | 97 | 87 | 100 | 100 | `[high] obfuscatedFile` fires identically on 7.1.4/7.1.5/7.1.6 → stable characteristic of astro's bundled compiler (minified+WASM), not version-specific injection; withastro org publisher continuity; vulns 100. Score delta vs 66 on neighbors tracks `recentlyPublished` decay. ACCEPT pinned, docs-only dependency (isolated lockfile in docs/, not in workspace). Avoided 7.1.6 (published <48h). |
-| @astrojs/starlight@0.41.5 | 98 | 96 | **84** | 100 | 100 | Quality 84 on a docs-site devDependency. ACCEPT. |
+| astro@7.1.5 | **88** | 97 | 87 | 100 | 100 | Superseded 2026-08-12 by 7.2.1 — see below. |
+| @astrojs/starlight@0.41.5 | 98 | 96 | **84** | 100 | 100 | Superseded 2026-08-12 by 0.41.7 — see below. |
 | sharp@0.35.3 | 96 | 93 | 100 | 100 | 100 | — (image pipeline; shellAccess = libvips install, its function) |
+
+### Docs site bump to latest (rescored 2026-08-12)
+
+| Package | SC | Maint | Qual | Vuln | Lic | Disposition |
+| --- | --- | --- | --- | --- | --- | --- |
+| astro@7.2.1 | 97 | 97 | **88** | 100 | 100 | Current `latest`. `[high] obfuscatedFile` no longer fires (it did on the 7.1.x line and was dispositioned there as a stable characteristic of astro's bundled minified+WASM compiler); supply chain now 97, up from 88. Remaining alerts are `[middle] recentlyPublished` and `[low] gptAnomaly`/`urlStrings`. Quality 88 on a docs-only dependency. ACCEPT. |
+| @astrojs/starlight@0.41.7 | 98 | 97 | **84** | 100 | 100 | Current `latest`. Quality 84 on a docs-site dependency, unchanged in character from 0.41.5. Only alert is `[low] urlStrings`. ACCEPT. |
+
+`sharp@0.35.3` is unchanged by the bump — the regenerated `docs/bun.lock` still resolves
+it. No vulnerability dimension below 100; nothing on the denylist.
