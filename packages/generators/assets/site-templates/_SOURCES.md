@@ -13,15 +13,15 @@ from vendored package assets, never the network.
 | Field | Value |
 |---|---|
 | Repository | `github.com/patterson-agents/design-plugins` |
-| Commit | `faf924a9ffc02bfc9c1543a1154aed326b20d6ec` |
+| Commit | `7a2b5111715a127a1c35f1241ff03d2b782b1cac` |
 | Vendored | 2026-08-12 |
 | Sync direction | design-plugins (canonical) → cli (vendored copy); **never the reverse** |
 | Method | `git archive HEAD:<canonical path>` — tracked files only, so no `node_modules/`, no `.vitepress/cache/`, no build output |
 
 | Template | Canonical path | Files | sha256 |
 |---|---|---|---|
-| `starlight/` | `plugins/patterson-starlight/ds/templates/starlight` | 18 | `3672e76fc23dc74418f9cb7aa7c3f18affc4b6408a6303523a9ec39f70c79f66` |
-| `vitepress/` | `plugins/patterson-vitepress/ds/templates/vitepress` | 15 | `78aa5887b848e7c30a189958be9f5ef7b48047cba0e16e79084c9ef362af7c6e` |
+| `starlight/` | `plugins/patterson-starlight/ds/templates/starlight` | 18 | `e57bcd6fbeef63636108118a0cfa189eea9ddb3d4fc4f01c0c4021385cd89d92` |
+| `vitepress/` | `plugins/patterson-vitepress/ds/templates/vitepress` | 15 | `ae2600d65fd0344c27d63d7a60e60a1ebf0ff35268a1ba8ca64508106b585f96` |
 
 The digest is sha256 over the manifest line `<sha256 of file>  <path>` (newline
 terminated) for every file, path-sorted. `siteTemplateDigest()` in `../../src/site.ts`
@@ -36,14 +36,14 @@ Both templates were install-verified upstream, and both carry a committed `bun.l
 
 | Template | Direct dependencies |
 |---|---|
-| `starlight/` | `astro@7.1.5`, `@astrojs/starlight@0.41.5` — exact, no range |
-| `vitepress/` | `vitepress@^2.0.0-alpha.19` — a caret range, resolved to `2.0.0-alpha.19` by the committed `bun.lock` |
+| `starlight/` | `astro@7.2.1`, `@astrojs/starlight@0.41.7` — exact, no range |
+| `vitepress/` | `vitepress@2.0.0-alpha.19` — exact, no range |
 
 > [!NOTE]
-> The `vitepress` caret is the upstream template's own specification and is copied
-> verbatim; tightening it here would break byte-identity with the canonical home. The
-> committed lockfile is what makes that install deterministic. Change it upstream first,
-> then re-vendor.
+> Version specs are copied verbatim from upstream; tightening or loosening one here would
+> break byte-identity with the canonical home. Change it upstream, where the template is
+> install-verified, then re-vendor. `2.0.0-alpha.19` is VitePress's current `next`
+> dist-tag and its newest release — `latest` is `1.6.4`, so moving there is a downgrade.
 
 ## Rules for maintainers
 

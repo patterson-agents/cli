@@ -57,19 +57,19 @@ export interface SiteTemplateProvenance {
  */
 export const SITE_TEMPLATE_PROVENANCE: SiteTemplateProvenance = {
   sourceRepo: "github.com/patterson-agents/design-plugins",
-  sourceCommit: "faf924a9ffc02bfc9c1543a1154aed326b20d6ec",
+  sourceCommit: "7a2b5111715a127a1c35f1241ff03d2b782b1cac",
   vendoredAt: "2026-08-12",
   syncDirection: "design-plugins (canonical) → cli (vendored copy); never the reverse",
   templates: {
     starlight: {
       canonicalPath: "plugins/patterson-starlight/ds/templates/starlight",
       fileCount: 18,
-      sha256: "3672e76fc23dc74418f9cb7aa7c3f18affc4b6408a6303523a9ec39f70c79f66",
+      sha256: "e57bcd6fbeef63636108118a0cfa189eea9ddb3d4fc4f01c0c4021385cd89d92",
     },
     vitepress: {
       canonicalPath: "plugins/patterson-vitepress/ds/templates/vitepress",
       fileCount: 15,
-      sha256: "78aa5887b848e7c30a189958be9f5ef7b48047cba0e16e79084c9ef362af7c6e",
+      sha256: "ae2600d65fd0344c27d63d7a60e60a1ebf0ff35268a1ba8ca64508106b585f96",
     },
   },
 };

@@ -5,7 +5,7 @@
     "": {
       "name": "patterson-vitepress-site",
       "devDependencies": {
-        "vitepress": "^2.0.0-alpha.19",
+        "vitepress": "2.0.0-alpha.19",
       },
     },
   },

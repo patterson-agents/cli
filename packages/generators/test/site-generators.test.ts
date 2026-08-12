@@ -151,8 +151,8 @@ describe("scaffolding is a byte-faithful copy", () => {
     const pkg = (await Bun.file(join(root, "my-docs/package.json")).json()) as {
       dependencies: Record<string, string>;
     };
-    expect(pkg.dependencies["astro"]).toBe("7.1.5");
-    expect(pkg.dependencies["@astrojs/starlight"]).toBe("0.41.5");
+    expect(pkg.dependencies["astro"]).toBe("7.2.1");
+    expect(pkg.dependencies["@astrojs/starlight"]).toBe("0.41.7");
   });
 
   test("next steps name install and the template's own dev script", () => {
@@ -208,7 +208,7 @@ describe("post-validation", () => {
     const root = await tempDir();
     await runGenerator(starlightSiteGenerator, "my-docs", root);
     const path = join(root, "my-docs/package.json");
-    await Bun.write(path, (await Bun.file(path).text()).replace('"7.1.5"', '"latest"'));
+    await Bun.write(path, (await Bun.file(path).text()).replace('"7.2.1"', '"latest"'));
 
     const findings = await starlightSiteGenerator.postValidate?.(root, "my-docs");
     expect(findings?.[0]?.severity).toBe("error");
