@@ -68,11 +68,11 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "oxlint": "1.76.0",
+    "oxlint": "1.77.0",
     "lefthook": "2.1.10",
     "@commitlint/cli": "21.2.1",
     "@commitlint/config-conventional": "21.2.0",
-    "skills": "1.5.21"
+    "skills": "1.5.22"
   },
   "peerDependencies": {
     "typescript": "^5"
