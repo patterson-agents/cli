@@ -14,12 +14,12 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/techdays-ai/patterson-cli.git",
+    "url": "git+https://github.com/patterson-agents/cli.git",
     "directory": "packages/create-patterson"
   },
-  "homepage": "https://github.com/techdays-ai/patterson-cli#readme",
+  "homepage": "https://github.com/patterson-agents/cli#readme",
   "bugs": {
-    "url": "https://github.com/techdays-ai/patterson-cli/issues"
+    "url": "https://github.com/patterson-agents/cli/issues"
   },
   "engines": {
     "bun": ">=1.3.0"

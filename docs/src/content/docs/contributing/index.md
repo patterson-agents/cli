@@ -57,7 +57,7 @@ dependency changes.
 
 ## The constitution in brief
 
-The [constitution](https://github.com/techdays-ai/patterson-cli/blob/main/.specify/memory/constitution.md)
+The [constitution](https://github.com/patterson-agents/cli/blob/main/.specify/memory/constitution.md)
 (v1.0.0) has seven binding principles. Summary — the full text wins on
 any nuance:
 

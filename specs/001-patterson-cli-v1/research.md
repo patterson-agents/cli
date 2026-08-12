@@ -226,7 +226,7 @@ and the spike registry. Full evidence: session task outputs
     one shell-free command (single-space split safe), and `--resume` on a
     fresh directory degrades to a fresh wizard, so the hook is harmless
     whether or not it fires.
-  - The empirical test (`bun create techdays-ai/patterson-cli`) is blocked:
+  - The empirical test (`bun create patterson-agents/cli`) is blocked:
     the repo is **private**, and Bun's GitHub template path fetches a public
     tarball. Cannot be validated until the repo is public or the package is
     published.
