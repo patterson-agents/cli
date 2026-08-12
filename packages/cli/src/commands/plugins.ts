@@ -4,8 +4,12 @@
  * The registry is DATA, pinned per research: Anthropic's official Claude
  * marketplaces by registered name, and awesome-copilot pinned @SHA (its
  * 2026-02 restructure broke floating refs — research.md, Copilot section).
- * The claude-code emitter renders `marketplaces` IR entries into settings;
- * this command group is the discovery surface.
+ * This command group is a DISCOVERY surface only: it lists the curated
+ * registry and writes nothing. The IR has a `marketplaces` field
+ * (ir/project.ts, MarketplaceRefSchema) but NO emitter reads it yet — nothing
+ * in packages/emitters/ consumes `ir.marketplaces`, so configuring a
+ * marketplace in patterson.config.ts currently has no emitted effect.
+ * Wiring it into the claude-code emitter is tracked as future work.
  */
 import { z } from "zod";
 
