@@ -12,6 +12,7 @@ import { join } from "node:path";
 
 import {
   ALL_GENERATORS,
+  claudePluginGenerator,
   frontmatterName,
   marketplaceGenerator,
   mcpServerGenerator,
@@ -141,6 +142,75 @@ describe("every generator", () => {
     expect(paths).toEqual([".claude-plugin/marketplace.json", ".github/plugin/marketplace.json"]);
     const contents = new Set(output.files.map((file) => file.content));
     expect(contents.size).toBe(1);
+  });
+});
+
+describe("claude-plugin generator", () => {
+  test("emits a plugin manifest and a provenance-complete example skill", async () => {
+    const root = await tempDir();
+    const result = await runGenerator(claudePluginGenerator, "dental-ops", root);
+    expect(result.written).toEqual([
+      "dental-ops/.claude-plugin/plugin.json",
+      "dental-ops/skills/example-skill/SKILL.md",
+      "dental-ops/skills/example-skill/_SOURCES.md",
+      "dental-ops/skills/example-skill/REFERENCES.md",
+      "dental-ops/README.md",
+    ]);
+    expect(result.findings).toEqual([]);
+
+    // Manifest keys are exactly the ones observed on shipped plugins
+    // (githubnext/ado-aw and patterson-corp) — nothing invented.
+    const manifest = JSON.parse(
+      await Bun.file(join(root, "dental-ops/.claude-plugin/plugin.json")).text(),
+    );
+    expect(manifest.name).toBe("dental-ops");
+    expect(manifest.version).toBe("0.1.0");
+    expect(Object.keys(manifest).toSorted()).toEqual([
+      "author",
+      "description",
+      "homepage",
+      "keywords",
+      "license",
+      "name",
+      "repository",
+      "version",
+    ]);
+
+    // C6 also binds inside a plugin: frontmatter name == skill directory name.
+    const skill = await Bun.file(join(root, "dental-ops/skills/example-skill/SKILL.md")).text();
+    expect(frontmatterName(skill)).toBe("example-skill");
+  });
+
+  test("intra-plugin paths use the literal ${CLAUDE_PLUGIN_ROOT} token, never expanded", () => {
+    const output = claudePluginGenerator.generate("dental-ops");
+    const skill = output.files.find((file) => file.path.endsWith("skills/example-skill/SKILL.md"));
+    // The token must survive verbatim into the file — an absolute path (or an
+    // interpolated empty string) breaks the plugin wherever it is installed.
+    expect(skill?.content).toContain("${CLAUDE_PLUGIN_ROOT}/skills/example-skill/");
+    // No file may carry an absolute path in place of the token.
+    for (const file of output.files) {
+      expect(file.content).not.toMatch(/^\s*[-*`]?\s*\/(home|tmp|workspaces|Users)\//m);
+    }
+  });
+
+  test("post-validation catches a manifest name that drifts from the directory", async () => {
+    const root = await tempDir();
+    await runGenerator(claudePluginGenerator, "dental-ops", root);
+    const path = join(root, "dental-ops/.claude-plugin/plugin.json");
+    await Bun.write(path, (await Bun.file(path).text()).replace('"dental-ops"', '"wrong-name"'));
+    const findings = await claudePluginGenerator.postValidate?.(root, "dental-ops");
+    expect(findings?.[0]?.severity).toBe("error");
+    expect(findings?.[0]?.checkId).toBe("generators.claude-plugin.manifest");
+  });
+
+  test("post-validation catches a missing provenance file in the bundled skill", async () => {
+    const root = await tempDir();
+    await runGenerator(claudePluginGenerator, "dental-ops", root);
+    await rm(join(root, "dental-ops/skills/example-skill/_SOURCES.md"));
+    const findings = await claudePluginGenerator.postValidate?.(root, "dental-ops");
+    expect(findings?.some((finding) => finding.checkId === "generators.skill.provenance")).toBe(
+      true,
+    );
   });
 });
 

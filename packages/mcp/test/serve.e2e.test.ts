@@ -138,6 +138,7 @@ describe("mcp serve (production registry over stdio)", () => {
       "patterson_design_tokens",
       "patterson_doctor",
       "patterson_init",
+      "patterson_new_claude_plugin",
       "patterson_new_cli_plugin",
       "patterson_new_command",
       "patterson_new_marketplace",

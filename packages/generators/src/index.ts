@@ -16,6 +16,8 @@ export type {
 } from "./engine.ts";
 export {
   ALL_GENERATORS,
+  CLAUDE_PLUGIN_ROOT_TOKEN,
+  claudePluginGenerator,
   cliPluginGenerator,
   commandGenerator,
   frontmatterName,

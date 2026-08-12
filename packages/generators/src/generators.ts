@@ -496,6 +496,193 @@ export const cliPluginGenerator: Generator = {
 };
 
 // ---------------------------------------------------------------------------
+// claude-plugin
+// ---------------------------------------------------------------------------
+
+/**
+ * The intra-plugin path token. It is written LITERALLY into emitted files and
+ * expanded by the host at load time — resolving it here to an absolute path
+ * would pin the plugin to the machine that scaffolded it. Kept in a plain
+ * double-quoted string (never a template literal) so TypeScript cannot
+ * interpolate it away.
+ */
+export const CLAUDE_PLUGIN_ROOT_TOKEN = "${CLAUDE_PLUGIN_ROOT}";
+
+/** The example skill every scaffolded plugin ships. */
+const EXAMPLE_SKILL = "example-skill";
+
+/**
+ * Claude plugin scaffold: `.claude-plugin/plugin.json` plus a provenance-
+ * complete example skill.
+ *
+ * The manifest's key set is taken from shipped plugins rather than from any
+ * summary (Constitution V): `githubnext/ado-aw`'s
+ * `agency/plugins/ado-aw/.claude-plugin/plugin.json` and patterson-corp's
+ * `plugins/patterson-engineering/.claude-plugin/plugin.json` both carry exactly
+ * name / version / description / author / homepage / repository / license /
+ * keywords. ado-aw additionally has `mcpServers`, which is deliberately NOT
+ * emitted here: this scaffold ships no `.mcp.json`, and a key pointing at a
+ * file that does not exist would be invented content.
+ */
+export const claudePluginGenerator: Generator = {
+  kind: "claude-plugin",
+  summary:
+    "Scaffold a Claude plugin (.claude-plugin/plugin.json + skills/, literal ${CLAUDE_PLUGIN_ROOT} paths)",
+  generate(name) {
+    const skillDir = `${name}/skills/${EXAMPLE_SKILL}`;
+    return {
+      files: [
+        {
+          path: `${name}/.claude-plugin/plugin.json`,
+          content: `${JSON.stringify(
+            {
+              name,
+              version: "0.1.0",
+              description: `TODO: one sentence — what does the ${name} plugin give an agent?`,
+              author: { name: "TODO: owning team" },
+              homepage: "TODO: https://… (delete this key if the plugin has no homepage)",
+              repository: "TODO: https://… (delete this key if the plugin has no repo)",
+              license: "UNLICENSED",
+              keywords: [name],
+            },
+            null,
+            2,
+          )}\n`,
+        },
+        {
+          path: `${skillDir}/SKILL.md`,
+          content: [
+            "---",
+            `name: ${EXAMPLE_SKILL}`,
+            "description: TODO — one sentence: when should an agent use this skill?",
+            "---",
+            "",
+            `# ${EXAMPLE_SKILL}`,
+            "",
+            "TODO: instructions the agent follows when this skill activates.",
+            "",
+            "## Steps",
+            "",
+            "1. …",
+            "",
+            "## Files this skill reads",
+            "",
+            "Intra-plugin paths use the literal token below — never an absolute path, so the",
+            "plugin resolves wherever it is installed:",
+            "",
+            `- \`${CLAUDE_PLUGIN_ROOT_TOKEN}/skills/${EXAMPLE_SKILL}/REFERENCES.md\``,
+            `- \`${CLAUDE_PLUGIN_ROOT_TOKEN}/skills/${EXAMPLE_SKILL}/references/\` — full clause text`,
+            "",
+            "## Sources",
+            "",
+            "See [`_SOURCES.md`](_SOURCES.md) for the primary source and the provenance rules,",
+            "[`REFERENCES.md`](REFERENCES.md) for canonical locations.",
+            "",
+          ].join("\n"),
+        },
+        { path: `${skillDir}/_SOURCES.md`, content: renderSkillSources(EXAMPLE_SKILL) },
+        { path: `${skillDir}/REFERENCES.md`, content: renderSkillReferences(EXAMPLE_SKILL) },
+        {
+          path: `${name}/README.md`,
+          content: [
+            `# ${name}`,
+            "",
+            "A Claude plugin scaffolded by `patterson new claude-plugin`.",
+            "",
+            "```",
+            `${name}/`,
+            "  .claude-plugin/plugin.json   # the manifest",
+            `  skills/${EXAMPLE_SKILL}/       # SKILL.md + _SOURCES.md + REFERENCES.md`,
+            "```",
+            "",
+            "## Rules",
+            "",
+            `- Every intra-plugin path is written as \`${CLAUDE_PLUGIN_ROOT_TOKEN}/…\`, literally.`,
+            "  The host expands it at load time; an absolute path pins the plugin to one machine.",
+            "- A skill's `SKILL.md` frontmatter `name` must be plain kebab-case and equal its",
+            "  directory name, or the skill is silently skipped.",
+            "- Every skill ships `_SOURCES.md` and `REFERENCES.md`. A claim with no source is a bug.",
+            "",
+            "## Publishing",
+            "",
+            "List the plugin in a marketplace manifest (`patterson new marketplace`), whose",
+            "`source` entries keep their `./` prefix.",
+            "",
+          ].join("\n"),
+        },
+      ],
+      notes: [
+        `Manifest: ${name}/.claude-plugin/plugin.json — fill in the TODO fields, and delete`,
+        "  homepage/repository rather than shipping a placeholder URL.",
+        `Keep \`${CLAUDE_PLUGIN_ROOT_TOKEN}\` literal in every intra-plugin path.`,
+        `Rename skills/${EXAMPLE_SKILL}/ and its frontmatter \`name\` together — they must match.`,
+      ],
+    };
+  },
+  planSections(name) {
+    return [
+      "## Capability",
+      `- What can an agent do with ${name} installed that it could not before?`,
+      "",
+      "## Contents",
+      "- Which skills, agents, and commands does the plugin ship?",
+      "",
+      "## Sources",
+      "- Which primary sources back the plugin's claims (_SOURCES.md per skill)?",
+    ];
+  },
+  async postValidate(root, name) {
+    const findings: Finding[] = [];
+    const manifestPath = `${name}/.claude-plugin/plugin.json`;
+    const raw = await Bun.file(join(root, manifestPath)).text();
+    let declared: unknown;
+    try {
+      declared = (JSON.parse(raw) as { name?: unknown }).name;
+    } catch (cause) {
+      findings.push({
+        checkId: "generators.claude-plugin.manifest",
+        severity: "error",
+        message: `plugin.json is not valid JSON: ${cause instanceof Error ? cause.message : String(cause)}`,
+        path: manifestPath,
+      });
+      return findings;
+    }
+    if (declared !== name) {
+      findings.push({
+        checkId: "generators.claude-plugin.manifest",
+        severity: "error",
+        message: `plugin.json name "${String(declared ?? "(missing)")}" must equal the plugin directory name "${name}".`,
+        path: manifestPath,
+      });
+    }
+
+    // The bundled skill is a skill: same C6 + provenance obligations.
+    const skillDir = `${name}/skills/${EXAMPLE_SKILL}`;
+    const skillPath = `${skillDir}/SKILL.md`;
+    const skillName = frontmatterName(await Bun.file(join(root, skillPath)).text());
+    if (skillName !== EXAMPLE_SKILL) {
+      findings.push({
+        checkId: "generators.skill.name",
+        severity: "error",
+        message: `SKILL.md frontmatter name "${skillName ?? "(missing)"}" must equal the directory name "${EXAMPLE_SKILL}" (C6).`,
+        path: skillPath,
+      });
+    }
+    for (const file of SKILL_PROVENANCE_FILES) {
+      const relative = `${skillDir}/${file}`;
+      if (await Bun.file(join(root, relative)).exists()) continue;
+      findings.push({
+        checkId: "generators.skill.provenance",
+        severity: "error",
+        message: `Skill "${EXAMPLE_SKILL}" is missing ${file}; every skill records where its claims come from.`,
+        path: relative,
+      });
+    }
+    return findings;
+  },
+};
+
+// ---------------------------------------------------------------------------
 // marketplace
 // ---------------------------------------------------------------------------
 
@@ -621,6 +808,7 @@ export const ALL_GENERATORS: readonly Generator[] = [
   skillGenerator,
   mcpServerGenerator,
   pluginGenerator,
+  claudePluginGenerator,
   marketplaceGenerator,
   commandGenerator,
   cliPluginGenerator,

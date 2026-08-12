@@ -20,6 +20,7 @@ describe("command registry wiring", () => {
       "design.tokens",
       "doctor",
       "init",
+      "new.claude-plugin",
       "new.cli-plugin",
       "new.command",
       "new.marketplace",

@@ -12,6 +12,7 @@ export type GeneratorKind =
   | "skill"
   | "mcp-server"
   | "plugin"
+  | "claude-plugin"
   | "marketplace"
   | "command"
   | "cli-plugin";
