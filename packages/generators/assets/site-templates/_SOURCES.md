@@ -13,15 +13,15 @@ from vendored package assets, never the network.
 | Field | Value |
 |---|---|
 | Repository | `github.com/patterson-agents/design-plugins` |
-| Commit | `7a2b5111715a127a1c35f1241ff03d2b782b1cac` |
+| Commit | `dd0b84b22d4cee3076456c07e60cbb9f2274e4da` |
 | Vendored | 2026-08-12 |
 | Sync direction | design-plugins (canonical) → cli (vendored copy); **never the reverse** |
 | Method | `git archive HEAD:<canonical path>` — tracked files only, so no `node_modules/`, no `.vitepress/cache/`, no build output |
 
 | Template | Canonical path | Files | sha256 |
 |---|---|---|---|
-| `starlight/` | `plugins/patterson-starlight/ds/templates/starlight` | 18 | `e57bcd6fbeef63636108118a0cfa189eea9ddb3d4fc4f01c0c4021385cd89d92` |
-| `vitepress/` | `plugins/patterson-vitepress/ds/templates/vitepress` | 15 | `ae2600d65fd0344c27d63d7a60e60a1ebf0ff35268a1ba8ca64508106b585f96` |
+| `starlight/` | `plugins/patterson-starlight/ds/templates/starlight` | 18 | `7892c997356ad0fcd23cd2d7adabe33bdd527d6bfde16019464782c0cb06ec67` |
+| `vitepress/` | `plugins/patterson-vitepress/ds/templates/vitepress` | 15 | `741166381d009876909eb72d29d33ab5174a99bcf809b566c53443eb9597c675` |
 
 The digest is sha256 over the manifest line `<sha256 of file>  <path>` (newline
 terminated) for every file, path-sorted. `siteTemplateDigest()` in `../../src/site.ts`

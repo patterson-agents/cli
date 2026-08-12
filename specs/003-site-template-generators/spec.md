@@ -208,9 +208,10 @@ provenance digest assertion fails.
 - The upstream templates are install-verified and carry a committed lockfile, so this
   feature does not re-run `bun install` as part of its gate; doing so would pull
   platform-native optional dependencies into a unit-test suite for no added signal.
-- The version specs the upstream templates declare are authoritative, including
-  `vitepress`'s caret range; tightening a spec is an upstream decision, and the committed
-  lockfile is what makes the install deterministic.
+- The version specs the upstream templates declare are authoritative and are copied
+  verbatim; tightening or loosening one is an upstream decision, taken where the template
+  is install-verified, and the committed lockfile is what makes the install deterministic
+  either way.
 - The target directory argument follows the existing generator name rule (lowercase
   letters, digits and `-`), because it becomes the npm `name` field.
 - Users who genuinely want the `bun create` path can still register a template by hand;

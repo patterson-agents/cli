@@ -1,31 +1,29 @@
 # Patterson VitePress site
 
 A Patterson Companies branded [VitePress](https://vitepress.dev) documentation site.
-VitePress `^2.0.0-alpha.19`, install-verified, with a committed lockfile.
+VitePress `2.0.0-alpha.19`, pinned exactly and install-verified, with a committed
+lockfile.
 
 ## Scaffold
 
+The **patterson CLI** is the first-class path. This template ships vendored inside it, so
+there is nothing to register and nothing to fetch:
+
 ```sh
-bun create patterson-vitepress my-docs
+patterson new vitepress-site my-docs
 cd my-docs
+bun install
 bun run docs:dev
 ```
 
-`bun create` copies this directory into the target, runs `bun install`, and initializes
-a git repository there. Three caveats, verified against Bun 1.3:
+It copies this directory into `my-docs/`, rewrites `package.json`'s `name` to the target
+directory, and leaves everything else verbatim — `.gitignore` and the committed
+`bun.lock` included. It **refuses a non-empty target and writes nothing**, so it cannot
+overwrite work that is already there.
 
-- **Point it at a new directory.** `bun create` does not refuse an existing one — it
-  replaces the contents, without a prompt. A file already sitting in the target is
-  gone afterward.
-- **The `name` field is rewritten** to the target directory name, so the scaffolded
-  project is `my-docs`, not `patterson-vitepress-site`. Everything else is copied
-  verbatim, `.gitignore` included.
-- **The template is resolved from `~/.bun-create/patterson-vitepress`.** If that copy
-  is missing, `bun create` falls back to looking the name up on npm, where it does not
-  exist. Register it once with
-  `cp -R <plugin>/ds/templates/vitepress ~/.bun-create/patterson-vitepress`.
+### Alternatives
 
-If you would rather not register anything, copy the folder directly:
+Copy the folder directly, if you have this plugin installed but not the CLI:
 
 ```sh
 cp -R "${CLAUDE_PLUGIN_ROOT}/ds/templates/vitepress" my-docs
@@ -33,6 +31,25 @@ cd my-docs
 bun install
 bun run docs:dev
 ```
+
+Or register the template with `bun create` yourself. This is optional and entirely local —
+nothing in this repository writes to `~/.bun-create`:
+
+```sh
+cp -R "${CLAUDE_PLUGIN_ROOT}/ds/templates/vitepress" ~/.bun-create/patterson-vitepress
+bun create patterson-vitepress my-docs
+```
+
+Three caveats of that route, verified against Bun 1.3:
+
+- **`bun create` does not refuse an existing directory** — it replaces the contents,
+  without a prompt. A file already sitting in the target is gone afterward. That is
+  precisely what `patterson new vitepress-site` refuses to do.
+- **The `name` field is rewritten** to the target directory name, so the scaffolded
+  project is `my-docs`, not `patterson-vitepress-site`. Everything else is copied
+  verbatim.
+- **The template is resolved from `~/.bun-create/patterson-vitepress`.** Without that
+  copy, `bun create` falls back to looking the name up on npm, where it does not exist.
 
 ## Scripts
 
@@ -91,14 +108,14 @@ sanctioned substitute when the kit is unreachable.
 
 ## Dependencies
 
-`vitepress@^2.0.0-alpha.19` is the only one. Adding a dependency to this template means
-supply-chain scoring it first.
+`vitepress@2.0.0-alpha.19` is the only one, pinned without a caret. Adding a dependency
+to this template means supply-chain scoring it first.
 
-Two things follow from that version being a caret range on a pre-release. A fresh
-`bun install` resolves the newest matching 2.x rather than the exact build this template
-was verified against, so **`bun.lock` is what reproduces the verified site** — keep it
-committed and install from it. And a 2.x alpha can still land breaking changes between
-releases; pin the exact version if you need the theme to hold still.
+That version is VitePress's current `next` dist-tag and its newest release. The `latest`
+tag still points at `1.6.4`, so moving there is a downgrade, not an upgrade — check which
+tag you are reading before "fixing" the pin. A 2.x alpha can still land breaking changes
+between releases, which is why the version is exact and **`bun.lock` is committed**:
+together they reproduce the verified site.
 
 ## Two build-time behaviors to know
 

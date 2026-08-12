@@ -1,31 +1,28 @@
 # Patterson Starlight site
 
 A Patterson Companies branded [Starlight](https://starlight.astro.build) documentation
-site. Astro 7.1.5 and Starlight 0.41.5, pinned exactly and install-verified.
+site. Astro 7.2.1 and Starlight 0.41.7, pinned exactly and install-verified.
 
 ## Scaffold
 
+The **patterson CLI** is the first-class path. This template ships vendored inside it, so
+there is nothing to register and nothing to fetch:
+
 ```sh
-bun create patterson-starlight my-docs
+patterson new starlight-site my-docs
 cd my-docs
+bun install
 bun run dev
 ```
 
-`bun create` copies this directory into the target, runs `bun install`, and initializes
-a git repository there. Three caveats, verified against Bun 1.3:
+It copies this directory into `my-docs/`, rewrites `package.json`'s `name` to the target
+directory, and leaves everything else verbatim — `.gitignore` and the committed
+`bun.lock` included. It **refuses a non-empty target and writes nothing**, so it cannot
+overwrite work that is already there.
 
-- **Point it at a new directory.** `bun create` does not refuse an existing one — it
-  replaces the contents, without a prompt. A file already sitting in the target is
-  gone afterward.
-- **The `name` field is rewritten** to the target directory name, so the scaffolded
-  project is `my-docs`, not `patterson-starlight-site`. Everything else is copied
-  verbatim, `.gitignore` included.
-- **The template is resolved from `~/.bun-create/patterson-starlight`.** If that copy
-  is missing, `bun create` falls back to looking the name up on npm, where it does not
-  exist. Register it once with
-  `cp -R <plugin>/ds/templates/starlight ~/.bun-create/patterson-starlight`.
+### Alternatives
 
-If you would rather not register anything, copy the folder directly:
+Copy the folder directly, if you have this plugin installed but not the CLI:
 
 ```sh
 cp -R "${CLAUDE_PLUGIN_ROOT}/ds/templates/starlight" my-docs
@@ -33,6 +30,25 @@ cd my-docs
 bun install
 bun run dev
 ```
+
+Or register the template with `bun create` yourself. This is optional and entirely local —
+nothing in this repository writes to `~/.bun-create`:
+
+```sh
+cp -R "${CLAUDE_PLUGIN_ROOT}/ds/templates/starlight" ~/.bun-create/patterson-starlight
+bun create patterson-starlight my-docs
+```
+
+Three caveats of that route, verified against Bun 1.3:
+
+- **`bun create` does not refuse an existing directory** — it replaces the contents,
+  without a prompt. A file already sitting in the target is gone afterward. That is
+  precisely what `patterson new starlight-site` refuses to do.
+- **The `name` field is rewritten** to the target directory name, so the scaffolded
+  project is `my-docs`, not `patterson-starlight-site`. Everything else is copied
+  verbatim.
+- **The template is resolved from `~/.bun-create/patterson-starlight`.** Without that
+  copy, `bun create` falls back to looking the name up on npm, where it does not exist.
 
 ## Scripts
 
@@ -78,12 +94,12 @@ sanctioned substitute when the kit is unreachable.
 
 ## Dependencies
 
-`astro@7.1.5` and `@astrojs/starlight@0.41.5`, pinned without a caret, are the only two
+`astro@7.2.1` and `@astrojs/starlight@0.41.7`, pinned without a caret, are the only two
 direct dependencies. Adding one to this template means supply-chain scoring it first.
 
 ### About sharp
 
-`astro@7.1.5` declares `sharp` as an **optional** dependency, and package managers
+`astro@7.2.1` declares `sharp` as an **optional** dependency, and package managers
 install optional dependencies by default — so `sharp@0.35.3` does appear in `bun.lock`
 and in `node_modules` after `bun install`. It is never loaded. `astro.config.mjs`
 configures `passthroughImageService()`, which copies images through untouched instead of
