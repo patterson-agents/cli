@@ -9,7 +9,6 @@ description: Where this starter fits in the Patterson design-system marketplace,
 |---|---|
 | Docs, guides, and reference on Astro | **This starter**, `patterson-starlight` |
 | Docs on Vite with a lighter toolchain | `patterson-vitepress` |
-| Interactive, in-browser coding tutorial | `patterson-tutorialkit` |
 | Single on-brand marketing page | `patterson-corporate-page` |
 | Full corporate site shell | `patterson-corporate-website` |
 

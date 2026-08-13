@@ -6,7 +6,6 @@
 |---|---|
 | Docs on Vite with a lighter toolchain | **This starter**, `patterson-vitepress` |
 | Docs, guides, and reference on Astro | `patterson-starlight` |
-| Interactive, in-browser coding tutorial | `patterson-tutorialkit` |
 | Static docs UI kit with no build step | `patterson-docs` |
 | Single on-brand marketing page | `patterson-corporate-page` |
 
