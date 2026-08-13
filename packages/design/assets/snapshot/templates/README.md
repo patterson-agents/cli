@@ -14,7 +14,6 @@ surface, and reference for layout, density and interaction patterns.
 | [`corporate-website/`](corporate-website) | pattersoncompanies.com — navy hero, We-Are-Patterson stats, capability tabs, newsroom, footer. |
 | [`storefront/`](storefront) | Patterson e-commerce shell (pattern library v5.7.2), switchable **Dental** ↔ **Veterinary**. |
 | [`docs-site/`](docs-site) | VitePress-style documentation site organised by Diátaxis. |
-| [`tutorialkit/`](tutorialkit) | TutorialKit lesson shell. Ships `theme.css` — all 98 `--tk-*` vars across four themes; drop that one file into any TutorialKit project to brand it. |
 
 ## Document & app shells
 

@@ -28,7 +28,6 @@ Interactive recreations of real Patterson properties. Use them as the starting s
 | [`corporate-website/`](templates/corporate-website) | pattersoncompanies.com — navy hero, We-Are-Patterson stats, capability tabs, newsroom, footer. |
 | [`storefront/`](templates/storefront) | Patterson e-commerce storefront (pattern library v5.7.2), switchable **Dental** ↔ **Veterinary**: utility bar, search, category nav + flyouts, hero, featured products, manufacturers, Advantage Rewards, footer. |
 | [`docs-site/`](templates/docs-site) | VitePress-style documentation site — top nav, Diátaxis sidebar, article body with callouts, prev/next pager. |
-| [`tutorialkit/`](templates/tutorialkit) | TutorialKit interactive-lesson shell — lesson nav, embedded editor and preview. Ships `theme.css`: all 98 `--tk-*` variables across four themes (light, dark navy, dental, veterinary). Drop that one file into any TutorialKit project to brand it. |
 
 ### Document & app shells
 
@@ -192,7 +191,7 @@ Every directory below has its own README, so browsing the repo on GitHub explain
 | [`tokens/`](tokens) | fonts · icons · colors · typography · spacing · effects · base |
 | [`components/`](components) | [core/](components/core) · [forms/](components/forms) · [feedback/](components/feedback) |
 | [`guidelines/`](guidelines) | foundation specimen cards (color, type, spacing, brand) |
-| [`templates/`](templates) | every starting point — [corporate-website](templates/corporate-website) · [storefront](templates/storefront) · [docs-site](templates/docs-site) · [tutorialkit](templates/tutorialkit) · [purpose-vision-values](templates/purpose-vision-values) · [deck](templates/deck) · [executive-deck](templates/executive-deck) · [canvas](templates/canvas) · [corporate-page](templates/corporate-page) · [patterson-docs](templates/patterson-docs) · [file-manager](templates/file-manager) |
+| [`templates/`](templates) | every starting point — [corporate-website](templates/corporate-website) · [storefront](templates/storefront) · [docs-site](templates/docs-site) · [purpose-vision-values](templates/purpose-vision-values) · [deck](templates/deck) · [executive-deck](templates/executive-deck) · [canvas](templates/canvas) · [corporate-page](templates/corporate-page) · [patterson-docs](templates/patterson-docs) · [file-manager](templates/file-manager) |
 | [`integrations/`](integrations) | [theme-ui](integrations/theme-ui.js) · tailwind ([v4](integrations/tailwind.css) / [v3](integrations/tailwind.config.js)) · [uno](integrations/uno.config.js) · [shadcn](integrations/shadcn-theme.css) |
 | [`assets/brand/`](assets/brand) | logo lockups, Veterinary favicons, wave watermark, photography |
 | [`assets/fonts/`](assets/fonts) | Proxima Nova 400/700/italic, patterson-icons, the official Typekit kit |

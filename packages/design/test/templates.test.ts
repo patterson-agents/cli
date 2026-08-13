@@ -34,7 +34,7 @@ describe("design template listing", () => {
     const manifest = await loadDsManifest();
     const templates = await listDesignTemplates();
     expect(templates.length).toBe(manifest.templates.length);
-    expect(templates.length).toBe(11);
+    expect(templates.length).toBe(10);
     for (const template of templates) {
       expect(template.folder.endsWith(`/${template.name}`)).toBe(true);
       expect(template.label.length).toBeGreaterThan(0);

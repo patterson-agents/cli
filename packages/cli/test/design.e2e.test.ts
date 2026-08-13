@@ -35,7 +35,7 @@ describe("design commands (offline, FR-014)", () => {
     expect(result.kind).toBe("ok");
     if (result.kind !== "ok") throw new Error("expected ok");
     const value = result.value as { templates: { name: string }[] };
-    expect(value.templates.length).toBe(11);
+    expect(value.templates.length).toBe(10);
     expect(value.templates.some((t) => t.name === "docs-site")).toBe(true);
   });
 

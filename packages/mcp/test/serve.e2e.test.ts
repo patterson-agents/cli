@@ -195,6 +195,6 @@ describe("mcp serve (production registry over stdio)", () => {
     );
     expect(res.isError).toBe(false);
     const value = res.body["value"] as { templates: unknown[] };
-    expect(value.templates.length).toBe(11);
+    expect(value.templates.length).toBe(10);
   });
 });

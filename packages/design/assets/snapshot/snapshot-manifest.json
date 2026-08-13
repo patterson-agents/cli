@@ -14,7 +14,7 @@
     },
     {
       "path": "SKILL.md",
-      "bytes": 3620,
+      "bytes": 3582,
       "etag": "1785469793668946"
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "path": "_ds_manifest.json",
-      "bytes": 32028,
+      "bytes": 31666,
       "etag": "1785469829080693"
     },
     {
@@ -429,7 +429,7 @@
     },
     {
       "path": "readme.md",
-      "bytes": 22446,
+      "bytes": 22113,
       "etag": "1785469793668946"
     },
     {
@@ -439,7 +439,7 @@
     },
     {
       "path": "templates/README.md",
-      "bytes": 2500,
+      "bytes": 2314,
       "etag": "1785469793668946"
     },
     {
@@ -691,21 +691,6 @@
       "path": "templates/storefront/index.html",
       "bytes": 4052,
       "etag": "1785440600537933"
-    },
-    {
-      "path": "templates/tutorialkit/README.md",
-      "bytes": 1736,
-      "etag": "1785440600537933"
-    },
-    {
-      "path": "templates/tutorialkit/index.html",
-      "bytes": 27985,
-      "etag": "1785440757311096"
-    },
-    {
-      "path": "templates/tutorialkit/theme.css",
-      "bytes": 15674,
-      "etag": "1785440752916544"
     },
     {
       "path": "theme.json",
