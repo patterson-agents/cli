@@ -23,8 +23,8 @@
     "@patterson/generators": "workspace:*",
     "@patterson/tutor": "workspace:*",
     "citty": "0.2.2",
-    "@clack/prompts": "1.7.0",
-    "zod": "4.4.3"
+    "@clack/prompts": "1.8.0",
+    "zod": "4.5.4"
   },
   "author": "Daniel Bodnar",
   "license": "LicenseRef-Patterson-Internal",

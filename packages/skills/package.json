@@ -6,7 +6,7 @@
   "module": "src/index.ts",
   "dependencies": {
     "@patterson/core": "workspace:*",
-    "zod": "4.4.3"
+    "zod": "4.5.4"
   },
   "author": "Daniel Bodnar",
   "license": "LicenseRef-Patterson-Internal",
